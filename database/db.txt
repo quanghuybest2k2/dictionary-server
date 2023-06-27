@@ -1,0 +1,177 @@
+create table ChuyenNganh
+(
+	ID INT IDENTITY(1,1) PRIMARY KEY,
+	TenChuyenNganh NVARCHAR(200) not null
+)
+go
+create table TuLoai
+(
+	ID INT IDENTITY(1,1) PRIMARY KEY,
+	TenLoai NVARCHAR(100) NOT NULL UNIQUE
+)
+go
+create table Tu
+(
+	ID INT IDENTITY(1,1) PRIMARY KEY,
+	TenTu VARCHAR(100) unique NOT NULL,
+	PhienAm NVARCHAR(100) not null,
+	ChuyenNganh INT references ChuyenNganh(ID),
+	DongNghia  VARCHAR(1000),
+	TraiNghia  VARCHAR(1000),
+	IDTK INT DEFAULT 0
+)
+go
+create table Nghia
+(
+	ID INT IDENTITY(1,1),
+	IDTu INT references Tu(ID),
+	IDTuLoai INT references TuLoai(ID),
+	Nghia nvarchar(200) not null,
+	MoTa NVARCHAR(1000),
+	ViDu VARCHAR(500),
+	primary key (IDTu, ID, IDTuLoai)
+)
+go
+create table TaiKhoan
+(
+	ID INT IDENTITY(1,1) PRIMARY KEY,
+	TenDangNhap varchar(100) NOT NULL,
+	MatKhau varchar(100) NOT NULL,
+	Email varchar(100) NOT NULL,
+	GioiTinh INT NOT NULL,
+	NgayTaoTK varchar(30) NOT NULL
+)
+go
+create table LichSuDich
+(
+	ID INT IDENTITY(1,1),
+	TiengAnh VARCHAR(400),
+	TiengViet NVARCHAR(400),
+	NgayHienTai varchar(30),
+	IDTK INT references TaiKhoan(ID),
+	primary key (ID, IDTK, NgayHienTai)
+)
+go
+create table LichSuTraTu
+(
+	ID INT IDENTITY(1,1),
+	TiengAnh VARCHAR(400),
+	PhienAm NVARCHAR(400),
+	TiengViet NVARCHAR(400),
+	NgayHienTai varchar(30),
+	IDTK INT references TaiKhoan(ID),
+	primary key (ID, IDTK, NgayHienTai)
+)
+go
+create table YeuThichTuVung
+(
+	ID INT IDENTITY(1,1),
+	TiengAnh VARCHAR(400),
+	PhienAm NVARCHAR(400),
+	TiengViet NVARCHAR(400),
+	GhiChu NVARCHAR(400),
+	IDTK INT references TaiKhoan(ID),
+	primary key (ID, IDTK)
+)
+go
+create table YeuThichVanBan
+(
+	ID INT IDENTITY(1,1),
+	TiengAnh VARCHAR(400),
+	TiengViet NVARCHAR(400),
+	GhiChu NVARCHAR(400),
+	IDTK INT references TaiKhoan(ID),
+	primary key (ID, IDTK)
+)
+------------------------------------------
+ // Tạo bảng ChuyenNganh
+        Schema::create('ChuyenNganh', function (Blueprint $table) {
+            $table->increments('ID');
+            $table->string('TenChuyenNganh', 200)->nullable(false);
+        });
+
+        // Tạo bảng TuLoai
+        Schema::create('TuLoai', function (Blueprint $table) {
+            $table->increments('ID');
+            $table->string('TenLoai', 100)->nullable(false)->unique();
+        });
+
+        // Tạo bảng Tu
+        Schema::create('Tu', function (Blueprint $table) {
+            $table->increments('ID');
+            $table->string('TenTu', 100)->nullable(false)->unique();
+            $table->string('PhienAm', 100)->nullable(false);
+            $table->integer('ChuyenNganh')->unsigned();
+            $table->foreign('ChuyenNganh')->references('ID')->on('ChuyenNganh');
+            $table->string('DongNghia', 1000)->nullable();
+            $table->string('TraiNghia', 1000)->nullable();
+            $table->integer('IDTK')->default(0);
+        });
+
+        // Tạo bảng Nghia
+        Schema::create('Nghia', function (Blueprint $table) {
+            $table->increments('ID');
+            $table->integer('IDTu')->unsigned();
+            $table->foreign('IDTu')->references('ID')->on('Tu');
+            $table->integer('IDTuLoai')->unsigned();
+            $table->foreign('IDTuLoai')->references('ID')->on('TuLoai');
+            $table->string('Nghia', 200)->nullable(false);
+            $table->string('MoTa', 1000)->nullable();
+            $table->string('ViDu', 500)->nullable();
+            $table->primary(['IDTu', 'ID', 'IDTuLoai']);
+        });
+
+        // Tạo bảng TaiKhoan
+        Schema::create('TaiKhoan', function (Blueprint $table) {
+            $table->increments('ID');
+            $table->string('TenDangNhap', 100)->nullable(false);
+            $table->string('MatKhau', 100)->nullable(false);
+            $table->string('Email', 100)->nullable(false);
+            $table->integer('GioiTinh')->nullable(false);
+            $table->string('NgayTaoTK', 30)->nullable(false);
+});
+    // Tạo bảng LichSuDich
+    Schema::create('LichSuDich', function (Blueprint $table) {
+        $table->increments('ID');
+        $table->string('TiengAnh', 400)->nullable();
+        $table->string('TiengViet', 400)->nullable();
+        $table->string('NgayHienTai', 30)->nullable();
+        $table->integer('IDTK')->unsigned();
+        $table->foreign('IDTK')->references('ID')->on('TaiKhoan');
+        $table->primary(['ID', 'IDTK', 'NgayHienTai']);
+    });
+
+    // Tạo bảng LichSuTraTu
+    Schema::create('LichSuTraTu', function (Blueprint $table) {
+        $table->increments('ID');
+        $table->string('TiengAnh', 400)->nullable();
+        $table->string('PhienAm', 400)->nullable();
+        $table->string('TiengViet', 400)->nullable();
+        $table->string('NgayHienTai', 30)->nullable();
+        $table->integer('IDTK')->unsigned();
+        $table->foreign('IDTK')->references('ID')->on('TaiKhoan');
+        $table->primary(['ID', 'IDTK', 'NgayHienTai']);
+    });
+
+    // Tạo bảng YeuThichTuVung
+    Schema::create('YeuThichTuVung', function (Blueprint $table) {
+        $table->increments('ID');
+        $table->string('TiengAnh', 400)->nullable();
+        $table->string('PhienAm', 400)->nullable();
+        $table->string('TiengViet', 400)->nullable();
+        $table->string('GhiChu', 400)->nullable();
+        $table->integer('IDTK')->unsigned();
+        $table->foreign('IDTK')->references('ID')->on('TaiKhoan');
+        $table->primary(['ID', 'IDTK']);
+    });
+
+    // Tạo bảng YeuThichVanBan
+    Schema::create('YeuThichVanBan', function (Blueprint $table) {
+        $table->increments('ID');
+        $table->string('TiengAnh', 400)->nullable();
+        $table->string('TiengViet', 400)->nullable();
+        $table->string('GhiChu', 400)->nullable();
+        $table->integer('IDTK')->unsigned();
+        $table->foreign('IDTK')->references('ID')->on('TaiKhoan');
+        $table->primary(['ID', 'IDTK']);
+    });
