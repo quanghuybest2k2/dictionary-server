@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('words', function (Blueprint $table) {
             $table->id();
             $table->string('word_name', 100)->nullable(false)->unique();
-            $table->string('english_transliteration', 100)->nullable(false);
+            $table->string('pronunciations', 100)->nullable(false)->comment('phát âm');
             $table->foreignId('specialization_id')->constrained('specializations');
             $table->string('synonymous', 1000)->nullable();
             $table->string('antonyms', 1000)->nullable();

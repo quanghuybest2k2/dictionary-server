@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('love_vocabularies', function (Blueprint $table) {
             $table->id();
             $table->string('english', 400)->nullable();
-            $table->string('english_transliteration', 100);
+            $table->string('pronunciations', 100);
             $table->string('vietnamese', 400)->nullable();
             $table->string('Note', 400)->nullable();
             $table->foreignId('user_id')->constrained('users');

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('word_lookup_histories', function (Blueprint $table) {
             $table->id();
             $table->string('english', 400)->nullable();
-            $table->string('english_transliteration', 100);
+            $table->string('pronunciations', 100);
             $table->string('vietnamese', 400)->nullable();
             $table->date('current_day')->nullable();
             $table->foreignId('user_id')->constrained('users');
