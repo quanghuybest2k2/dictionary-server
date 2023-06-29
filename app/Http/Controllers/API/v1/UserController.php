@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\UserRequest\RegisterRequest;
 use App\Repositories\UserRepositoryService\IUserRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -68,7 +69,7 @@ class UserController extends Controller
                 'gender' => $user->gender,
                 'token' => $token,
                 'message' => 'Đăng ký thành công.',
-            ]);
+            ], Response::HTTP_OK);
         }
     }
 
@@ -91,7 +92,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'validator_errors' => $validator->messages(),
-            ]);
+            ], Response::HTTP_UNPROCESSABLE_ENTITY); // 422
         } else {
             $user = $this->userRepository->getUserByEmail($request->email);
 
@@ -99,7 +100,7 @@ class UserController extends Controller
                 return response()->json([
                     'status' => 401,
                     'message' => 'Thông tin không hợp lệ!',
-                ]);
+                ], Response::HTTP_UNAUTHORIZED); // 401
             } else {
                 if ($user->role_as == 1) { // admin
                     $role = 'admin';
