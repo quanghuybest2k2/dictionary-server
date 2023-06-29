@@ -20,7 +20,6 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'username' => fake()->userName(),
             'email' => fake()->unique()->safeEmail(),
             'gender' => fake()->randomElement([1, 2, 3]), //1=nam, 2, nữ, 3=khác
             'email_verified_at' => now(),
