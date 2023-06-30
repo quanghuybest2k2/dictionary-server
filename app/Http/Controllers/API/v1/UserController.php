@@ -111,10 +111,12 @@ class UserController extends Controller
                 }
                 return response()->json([
                     'status' => 200,
+                    'userId' => $user->id,
                     'username' => $user->name,
                     'token' => $token,
                     'message' => 'Đăng nhập thành công.',
                     'role' => $role,
+                    'created_at' => $user->created_at,
                 ]);
             }
         }
