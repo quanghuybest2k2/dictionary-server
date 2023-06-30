@@ -3,22 +3,25 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\v1\UserController;
-
+use App\Http\Controllers\API\v1\WordController;
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
 Route::prefix('v1')->group(function () {
+    // ====================================== For Everyone ======================================
     //dang ky
     Route::post('register', [UserController::class, 'register']);
     // dang nhap
     Route::post('login', [UserController::class, 'login']);
-    // user
-    // Route::controller(FrontendController::class)->group(function () {
-    //     Route::get('viewHomePage', 'index');
-    //     Route::get('getCategory', 'category');
-    // });
-    // admin
+
+    // ====================================== For User ======================================
+    // Word
+    Route::controller(WordController::class)->group(function () {
+        Route::get('random-word', 'getRandomWord');
+    });
+
+    // ====================================== For Admin ======================================
     Route::middleware('auth:sanctum', 'isAPIAdmin')->group(function () {
 
         Route::get('/checkingAuthenticated', function () {
