@@ -19,6 +19,7 @@ Route::prefix('v1')->group(function () {
     // Word
     Route::controller(WordController::class)->group(function () {
         Route::get('random-word', 'getRandomWord');
+        Route::get('search-word', 'search');
     });
 
     // ====================================== For Admin ======================================

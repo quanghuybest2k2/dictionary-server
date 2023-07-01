@@ -10,4 +10,8 @@ class WordRepository implements IWordRepository
     {
         return Word::inRandomOrder()->first();
     }
+    public function search($keyword)
+    {
+        return Word::where('word_name', 'like', '%' . $keyword . '%')->first();
+    }
 }
