@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\API\v1;
 
+use App\Models\Word;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Means;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repositories\WordRepositoryService\IWordRepository;
@@ -40,7 +42,7 @@ class SearchController extends Controller
                 'required' => 'Vui lòng nhập :attribute',
             ],
             [
-                'keyword' => 'Từ khóa',
+                'keyword' => 'Từ vựng',
             ]
         );
         if ($validator->fails()) {
@@ -79,6 +81,71 @@ class SearchController extends Controller
                     'error' => 'Không tìm thấy từ vựng!'
                 ], Response::HTTP_NOT_FOUND);
             }
+        }
+    }
+    public function searchBySpecialty(Request $request)
+    {
+        $searched_word = $request->searched_word;
+        $specialization_id = $request->specialization_id;
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'searched_word' => 'required',
+                'specialization_id' => 'required|integer',
+            ],
+            [
+                'required' => 'Vui lòng nhập :attribute',
+                'specialization_id.integer' => 'Id của chuyên ngành phải là số!',
+            ],
+            [
+                'searched_word' => 'Từ vựng cần tìm',
+                'specialization_id' => 'Id của chuyên ngành',
+            ]
+        );
+        if ($validator->fails()) {
+            return response()->json([
+                'validator_errors' => $validator->messages(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } else {
+            $words = Word::with('specialization', 'means')
+                ->where('word_name', 'like', '%' . $searched_word . '%')
+                ->where('specialization_id', $specialization_id)
+                ->get();
+
+            if ($words->isEmpty()) {
+                return response()->json([
+                    'status' => Response::HTTP_NOT_FOUND,
+                    'error' => 'Không tìm thấy từ vựng!'
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            foreach ($words as $word) {
+                $wordName = $word->word_name;
+                $pronunciations = $word->pronunciations;
+                $specializationName = $word->specialization->specialization_name;
+                $means = $word->means->pluck('means')->all();
+                foreach ($word->means as $mean) {
+                    $wordTypeName = $mean->WordType->type_name;
+                }
+                $description = $word->means->pluck('description')->all();
+                $example = $word->means->pluck('example')->all();
+                $synonymous = $word->synonymous;
+                $antonyms = $word->antonyms;
+            }
+
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'word_name' => $wordName,
+                'type_name' => $wordTypeName,
+                'pronunciations' => $pronunciations,
+                'specialization_name' => $specializationName,
+                'means' => $means,
+                'description' => $description,
+                'example' => $example,
+                'synonymous' => $synonymous,
+                'antonyms' => $antonyms,
+            ]);
         }
     }
 }

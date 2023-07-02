@@ -21,7 +21,7 @@ class FrontEndController extends Controller
     public function suggest()
     {
         // chỉ lấy cột word_name của các record thôi
-        $suggestNames = $this->wordRepository->getAll()->pluck('word_name');;
+        $suggestNames = $this->wordRepository->getAll()->pluck('word_name');
         return response()->json([
             'status' => Response::HTTP_OK,
             'suggest_name' => $suggestNames

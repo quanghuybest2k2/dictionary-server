@@ -28,6 +28,7 @@ Route::prefix('v1')->group(function () {
     });
     Route::controller(SearchController::class)->group(function () {
         Route::get('search-word', 'search');
+        Route::get('search-by-specialty', 'searchBySpecialty');
     });
     // chuyên ngành
     Route::controller(SpecializationController::class)->group(function () {
