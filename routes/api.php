@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\v1\SearchController;
+use App\Http\Controllers\API\v1\SpecializationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\v1\UserController;
@@ -19,7 +21,13 @@ Route::prefix('v1')->group(function () {
     // Word
     Route::controller(WordController::class)->group(function () {
         Route::get('random-word', 'getRandomWord');
+    });
+    Route::controller(SearchController::class)->group(function () {
         Route::get('search-word', 'search');
+    });
+    Route::controller(SpecializationController::class)->group(function () {
+        Route::get('get-all-specialization', 'getAll');
+        Route::get('display-by-specialization', 'DisplayBySpecialization');
     });
 
     // ====================================== For Admin ======================================
