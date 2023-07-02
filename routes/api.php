@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\v1\FrontEndController;
 use App\Http\Controllers\API\v1\SearchController;
 use App\Http\Controllers\API\v1\SpecializationController;
 use Illuminate\Http\Request;
@@ -16,15 +17,19 @@ Route::prefix('v1')->group(function () {
     Route::post('register', [UserController::class, 'register']);
     // dang nhap
     Route::post('login', [UserController::class, 'login']);
-
+    // client
+    Route::controller(FrontEndController::class)->group(function () {
+        Route::get('get-suggest', 'suggest');
+    });
     // ====================================== For User ======================================
-    // Word
+    // từ
     Route::controller(WordController::class)->group(function () {
         Route::get('random-word', 'getRandomWord');
     });
     Route::controller(SearchController::class)->group(function () {
         Route::get('search-word', 'search');
     });
+    // chuyên ngành
     Route::controller(SpecializationController::class)->group(function () {
         Route::get('get-all-specialization', 'getAll');
         Route::get('display-by-specialization', 'DisplayBySpecialization');

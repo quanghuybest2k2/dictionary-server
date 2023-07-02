@@ -6,6 +6,10 @@ use App\Models\Word;
 
 class WordRepository implements IWordRepository
 {
+    public function getAll()
+    {
+        return Word::all();
+    }
     public function getRandomWord()
     {
         return Word::inRandomOrder()->first();
