@@ -18,10 +18,28 @@ class FrontEndController extends Controller
         $this->wordRepository = $wordRepository;
     }
     // gợi ý từ
+    public function suggest_all()
+    {
+        // chỉ lấy cột word_name của các record thôi
+        $suggestAll = $this->wordRepository->getAll()->pluck('word_name');
+
+        if ($suggestAll->isEmpty()) {
+            return response()->json([
+                'status' => Response::HTTP_NOT_FOUND,
+                'error' => 'Hiện tại chưa có gợi ý!',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return response()->json([
+            'status' => Response::HTTP_OK,
+            'suggest_all' => $suggestAll
+        ]);
+    }
     public function suggest(Request $request)
     {
         // chỉ lấy cột word_name của các record thôi
         $suggestNames = Word::where('specialization_id', $request->specialization_id)->pluck('word_name');
+
         if ($suggestNames->isEmpty()) {
             return response()->json([
                 'status' => Response::HTTP_NOT_FOUND,

@@ -19,6 +19,7 @@ Route::prefix('v1')->group(function () {
     Route::post('login', [UserController::class, 'login']);
     // client
     Route::controller(FrontEndController::class)->group(function () {
+        Route::get('get-suggest-all', 'suggest_all');
         Route::get('get-suggest', 'suggest');
     });
     // ====================================== For User ======================================
