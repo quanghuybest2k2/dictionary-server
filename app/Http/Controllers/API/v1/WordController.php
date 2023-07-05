@@ -54,28 +54,9 @@ class WordController extends Controller
 
         $randomWord = $this->wordRepository->getRandomWord();
         if ($randomWord) {
-
-            $specializationName = $this->specializationRepository->find($randomWord->specialization_id)->specialization_name;
-
-            $means = $this->meansRepository->findByWordId($randomWord->id);
-
-            $wordTypeName = $this->wordTypeRepository->find($means->word_type_id)->type_name;
-
-            $synonymous = $randomWord->synonymous;
-
-            $antonyms = $randomWord->antonyms;
-
             return response()->json([
                 'status' => Response::HTTP_OK,
-                'word_name' => $randomWord->word_name,
-                'type_name' => $wordTypeName,
-                'pronunciations' => $randomWord->pronunciations,
-                'specialization_name' => $specializationName,
-                'means' => $means->means,
-                'description' => $means->description,
-                'example' => $means->example,
-                'synonymous' => $synonymous,
-                'antonyms' => $antonyms,
+                'randomWord' => $randomWord,
             ]);
         } else {
             return response()->json([

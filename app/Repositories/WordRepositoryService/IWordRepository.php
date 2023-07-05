@@ -6,5 +6,5 @@ interface IWordRepository
 {
     public function getAll();
     public function getRandomWord();
-    public function search($keyword);
+    public function searchByKeyword($keyword);
 }
