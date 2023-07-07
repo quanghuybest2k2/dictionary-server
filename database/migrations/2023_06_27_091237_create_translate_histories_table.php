@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('english', 400)->nullable();
             $table->string('vietnamese', 400)->nullable();
-            $table->date('current_day')->nullable();
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

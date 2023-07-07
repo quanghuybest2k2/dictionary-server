@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\v1\FrontEndController;
+use App\Http\Controllers\API\v1\HistoryController;
 use App\Http\Controllers\API\v1\SearchController;
 use App\Http\Controllers\API\v1\SpecializationController;
 use Illuminate\Http\Request;
@@ -36,7 +37,12 @@ Route::prefix('v1')->group(function () {
         Route::get('get-all-specialization', 'getAll');
         Route::get('display-by-specialization', 'DisplayBySpecialization');
     });
-
+    // lịch sử
+    Route::controller(HistoryController::class)->group(function () {
+        Route::get('check-if-exist', 'checkIfExist');
+        // lưu lịch sử tra từ
+        Route::post('save-word-lookup-history', 'storeWordLookupHistory');
+    });
     // ====================================== For Admin ======================================
     Route::middleware('auth:sanctum', 'isAPIAdmin')->group(function () {
 

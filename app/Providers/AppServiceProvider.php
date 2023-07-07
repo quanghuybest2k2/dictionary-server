@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-
+use App\Repositories\HistoriesRepositoryService\HistoriesRepository;
+use App\Repositories\HistoriesRepositoryService\IHistoriesRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\UserRepositoryService\UserRepository;
 use App\Repositories\WordRepositoryService\WordRepository;
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ISpecializationRepository::class, SpecializationRepository::class);
         $this->app->bind(IMeansRepository::class, MeansRepository::class);
         $this->app->bind(IWordTypeRepository::class, WordTypeRepository::class);
+        $this->app->bind(IHistoriesRepository::class, HistoriesRepository::class);
     }
 
     /**
