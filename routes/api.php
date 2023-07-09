@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\v1\FrontEndController;
 use App\Http\Controllers\API\v1\HistoryController;
+use App\Http\Controllers\API\v1\LoveController;
 use App\Http\Controllers\API\v1\SearchController;
 use App\Http\Controllers\API\v1\SpecializationController;
 use Illuminate\Http\Request;
@@ -42,6 +43,13 @@ Route::prefix('v1')->group(function () {
         Route::get('check-if-exist', 'checkIfExist');
         // lưu lịch sử tra từ
         Route::post('save-word-lookup-history', 'storeWordLookupHistory');
+    });
+    // yêu thích
+    Route::controller(LoveController::class)->group(function () {
+        // lưu từ vựng yêu thích
+        Route::post('save-love_vocabulary', 'saveLoveVocabulary');
+        // xóa từ yêu thích
+        Route::delete('delete-love_vocabulary/{english}/{user_id}', 'destroyLoveVocabulary');
     });
     // ====================================== For Admin ======================================
     Route::middleware('auth:sanctum', 'isAPIAdmin')->group(function () {
