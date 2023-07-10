@@ -41,8 +41,11 @@ Route::prefix('v1')->group(function () {
     // lịch sử
     Route::controller(HistoryController::class)->group(function () {
         Route::get('check-if-exist', 'checkIfExist');
+        Route::get('load-translate-history-by-user', 'loadTranslateHistoryByUser');
         // lưu lịch sử tra từ
         Route::post('save-word-lookup-history', 'storeWordLookupHistory');
+        // lưu lịch sử dịch
+        Route::post('save-translate-history', 'storeTranslateHistory');
     });
     // yêu thích
     Route::controller(LoveController::class)->group(function () {

@@ -2,6 +2,7 @@
 
 namespace App\Repositories\HistoriesRepositoryService;
 
+use App\Models\TranslateHistory;
 use App\Models\WordLookupHistory;
 use App\Repositories\HistoriesRepositoryService\IHistoriesRepository;
 use Illuminate\Database\Eloquent\Model;
@@ -15,5 +16,13 @@ class HistoriesRepository implements IHistoriesRepository
     public function createWordLookupHistory($data)
     {
         return WordLookupHistory::create($data);
+    }
+    public function loadAllTranslateHistory($userId)
+    {
+        return TranslateHistory::where('user_id', $userId)->get();
+    }
+    public function createTranslateHistory($data)
+    {
+        return TranslateHistory::create($data);
     }
 }

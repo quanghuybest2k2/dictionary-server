@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 interface IHistoriesRepository
 {
     public function checkIfExist(Model $model, $english, $userId);
+    public function loadAllTranslateHistory($userId);
     public function createWordLookupHistory($data);
+    public function createTranslateHistory($data);
 }

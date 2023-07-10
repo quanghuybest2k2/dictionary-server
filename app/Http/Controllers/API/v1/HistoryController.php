@@ -96,4 +96,81 @@ class HistoryController extends Controller
             }
         }
     }
+    public function loadTranslateHistoryByUser(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'user_id' => 'required|integer|min:1',
+            ],
+            [
+                'required' => 'Vui lòng nhập :attribute.',
+                'integer' => ':attribute phải là số nguyên.',
+                'min' => ':attribute phải lớn hơn hoặc bằng :min.',
+            ],
+            [
+                'user_id' => 'Id người dùng',
+            ]
+        );
+        if ($validator->fails()) {
+            return response()->json([
+                'validator_errors' => $validator->messages(),
+            ]);
+        } else {
+
+            $translateHistory =  $this->historiesRepository->loadAllTranslateHistory($request->user_id);
+
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'translateHistory' => $translateHistory
+            ]);
+        }
+    }
+    public function storeTranslateHistory(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'english' => 'required|max:400',
+                'vietnamese' => 'required|max:400',
+                'user_id' => 'required|integer|min:1',
+            ],
+            [
+                'required' => 'Vui lòng nhập :attribute.',
+                'max' => ':attribute không được vượt quá :max ký tự.',
+                'integer' => ':attribute phải là số nguyên.',
+                'min' => ':attribute phải lớn hơn hoặc bằng :min.',
+            ],
+            [
+                'english' => 'Tiếng anh',
+                'vietnamese' => 'Tiếng việt',
+                'user_id' => 'Id người dùng',
+            ]
+        );
+        if ($validator->fails()) {
+            return response()->json([
+                'validator_errors' => $validator->messages(),
+            ]);
+        } else {
+
+            $translateHistory = $this->historiesRepository->createTranslateHistory($request->all());
+            // $existingRecord = TranslateHistory::where('english', $request->english)
+            //     ->where('vietnamese', $request->vietnamese)
+            //     ->where('user_id', $request->user_id)
+            //     ->first();
+
+            if ($translateHistory) {
+                return response()->json([
+                    'status' => Response::HTTP_CREATED,
+                    'message' => 'Đã thêm bản dịch này vào lịch sử.',
+                    'wordLookup' => $translateHistory
+                ], Response::HTTP_CREATED);
+            } else {
+                return response()->json([
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'message' => 'Thêm thất bại!'
+                ], Response::HTTP_BAD_REQUEST);
+            }
+        }
+    }
 }
