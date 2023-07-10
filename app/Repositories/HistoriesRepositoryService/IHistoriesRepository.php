@@ -2,10 +2,10 @@
 
 namespace App\Repositories\HistoriesRepositoryService;
 
-use App\Models\WordLookupHistory;
+use Illuminate\Database\Eloquent\Model;
 
 interface IHistoriesRepository
 {
-    public function checkIfExist($keyword, $userId);
+    public function checkIfExist(Model $model, $english, $userId);
     public function createWordLookupHistory($data);
 }

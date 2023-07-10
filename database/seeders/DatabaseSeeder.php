@@ -9,6 +9,7 @@ use Database\Seeders\UserSeeder;
 use Database\Seeders\WordSeeder;
 use Database\Seeders\WordTypeSeeder;
 use Database\Seeders\SpecializationSeeder;
+use Database\Seeders\TranslateHistorySeeder;
 use Database\Seeders\WordLookupHistorySeeder;
 
 class DatabaseSeeder extends Seeder
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
             WordSeeder::class,
             MeanSeeder::class,
             WordLookupHistorySeeder::class,
+            TranslateHistorySeeder::class,
         ]);
     }
 }

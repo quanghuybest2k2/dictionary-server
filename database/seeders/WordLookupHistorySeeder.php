@@ -22,8 +22,8 @@ class WordLookupHistorySeeder extends Seeder
                     'pronunciations' => '/ˈfaɪə.wɔːl/',
                     'vietnamese' => 'Tường lửa',
                     'user_id' => '2',
-                    'created_at' => now(),
-                    'updated_at' => now()
+                    'created_at' => Carbon::now(),
+                    'updated_at' =>  Carbon::now()
                 ],
                 [
                     'english' => 'Download',
