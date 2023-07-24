@@ -25,4 +25,14 @@ class HistoriesRepository implements IHistoriesRepository
     {
         return TranslateHistory::create($data);
     }
+    // public function deleteTranslateHistory($userId, $id)
+    // {
+    //     return TranslateHistory::where('user_id', $userId)
+    //         ->where('id', $id)
+    //         ->first();
+    // }
+    public function deleteAllTranslateHistory($userId)
+    {
+        return TranslateHistory::where('user_id', $userId)->delete();
+    }
 }
