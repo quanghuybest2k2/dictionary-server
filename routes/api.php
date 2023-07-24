@@ -46,7 +46,9 @@ Route::prefix('v1')->group(function () {
         Route::post('save-word-lookup-history', 'storeWordLookupHistory');
         // lưu lịch sử dịch
         Route::post('save-translate-history', 'storeTranslateHistory');
+        // xóa lịch sử
         Route::delete('delete-translate-history/{user_id}', 'destroy');
+        Route::delete('delete-translate-by-id/{user_id}/{id}', 'destroyById');
     });
     // yêu thích
     Route::controller(LoveController::class)->group(function () {

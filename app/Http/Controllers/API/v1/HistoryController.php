@@ -176,17 +176,40 @@ class HistoryController extends Controller
     // delete all record
     public function destroy(Request $request)
     {
-        $isSuccess = $this->historiesRepository->deleteAllTranslateHistory($request->user_id);
-        if ($isSuccess) {
-            return response()->json([
-                'status' => Response::HTTP_OK,
-                'message' => 'Đã xóa toàn bộ bản dịch.'
-            ], Response::HTTP_OK);
-        } else {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'message' => 'Không tìm thấy bản dịch'
-            ], Response::HTTP_NOT_FOUND);
+        try {
+            $isSuccess = $this->historiesRepository->deleteAllTranslateHistory($request->user_id);
+            if ($isSuccess) {
+                return response()->json([
+                    'status' => Response::HTTP_OK,
+                    'message' => 'Đã xóa toàn bộ bản dịch.'
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => Response::HTTP_NOT_FOUND,
+                    'message' => 'Không tìm thấy bản dịch'
+                ], Response::HTTP_NOT_FOUND);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    public function destroyById(Request $request)
+    {
+        try {
+            $isDelete = $this->historiesRepository->deleteByIdTranslateHistory($request->user_id, $request->id);
+            if ($isDelete) {
+                return response()->json([
+                    'status' => Response::HTTP_OK,
+                    'message' => 'Đã xóa bản dịch.'
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => Response::HTTP_NOT_FOUND,
+                    'message' => 'Không tìm thấy bản dịch'
+                ], Response::HTTP_NOT_FOUND);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
         }
     }
 }

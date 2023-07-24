@@ -11,5 +11,5 @@ interface IHistoriesRepository
     public function createWordLookupHistory($data);
     public function createTranslateHistory($data);
     public function deleteAllTranslateHistory($userId);
-    // public function deleteByIdTranslateHistory($userId, $id);
+    public function deleteByIdTranslateHistory($userId, $id);
 }
