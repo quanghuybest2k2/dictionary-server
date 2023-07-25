@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\MeanSeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\WordSeeder;
+use Database\Seeders\LoveTextSeeder;
 use Database\Seeders\WordTypeSeeder;
 use Database\Seeders\SpecializationSeeder;
 use Database\Seeders\TranslateHistorySeeder;
@@ -27,6 +28,7 @@ class DatabaseSeeder extends Seeder
             MeanSeeder::class,
             WordLookupHistorySeeder::class,
             TranslateHistorySeeder::class,
+            LoveTextSeeder::class,
         ]);
     }
 }

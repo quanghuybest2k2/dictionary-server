@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\v1;
 use Illuminate\Http\Request;
 use App\Models\WordLookupHistory;
 use App\Http\Controllers\Controller;
+use App\Models\LoveText;
 use App\Models\TranslateHistory;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,12 +43,12 @@ class HistoryController extends Controller
             ]);
         } else {
             $word = $this->historiesRepository->checkIfExist(new WordLookupHistory(), $request->english, $request->user_id);
-            $translateHistory = $this->historiesRepository->checkIfExist(new TranslateHistory(), $request->english, $request->user_id);
+            $loveText = $this->historiesRepository->checkIfExist(new LoveText(), $request->english, $request->user_id);
 
             return response()->json([
                 'status' => Response::HTTP_OK,
                 'word' => $word,
-                'translateHistory' => $translateHistory
+                'loveText' => $loveText
             ]);
         }
     }

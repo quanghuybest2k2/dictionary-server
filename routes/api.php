@@ -56,6 +56,10 @@ Route::prefix('v1')->group(function () {
         Route::post('save-love_vocabulary', 'saveLoveVocabulary');
         // xóa từ yêu thích
         Route::delete('delete-love_vocabulary/{english}/{user_id}', 'destroyLoveVocabulary');
+        // Thêm văn bản
+        Route::post('save-love_text', 'saveLoveText');
+        // Xóa văn bản
+        Route::delete('delete-love_text', 'destroyLoveText');
     });
     // ====================================== For Admin ======================================
     Route::middleware('auth:sanctum', 'isAPIAdmin')->group(function () {

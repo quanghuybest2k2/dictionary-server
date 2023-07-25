@@ -76,4 +76,63 @@ class LoveController extends Controller
             'message' => 'Đã xóa đánh dấu yêu thích.'
         ], Response::HTTP_ACCEPTED);
     }
+    public function saveLoveText(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'english' => 'required|max:400',
+                'vietnamese' => 'required|max:400',
+                'user_id' => 'required|integer|min:1',
+            ],
+            [
+                'required' => 'Vui lòng nhập :attribute.',
+                'max' => ':attribute không được vượt quá :max ký tự.',
+                'integer' => ':attribute phải là số nguyên.',
+                'min' => ':attribute phải lớn hơn hoặc bằng :min.',
+            ],
+            [
+                'english' => 'Tiếng anh',
+                'vietnamese' => 'Tiếng việt',
+                'user_id' => 'Id người dùng',
+            ]
+        );
+        if ($validator->fails()) {
+            return response()->json([
+                'validator_errors' => $validator->messages(),
+            ]);
+        } else {
+
+            $loveTexts = $this->iLoveRepository->createLoveTexts($request->all());
+
+            if ($loveTexts) {
+                return response()->json([
+                    'status' => Response::HTTP_CREATED,
+                    'message' => 'Đã thêm bản dịch này vào mục yêu thích.',
+                    'loveTexts' => $loveTexts
+                ], Response::HTTP_CREATED);
+            } else {
+                return response()->json([
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'message' => 'Thêm thất bại!'
+                ], Response::HTTP_BAD_REQUEST);
+            }
+        }
+    }
+    public function destroyLoveText(Request $request)
+    {
+        $isDelete = $this->iLoveRepository->deleteLoveText($request->english, $request->user_id);
+
+        if (!$isDelete) {
+            return response()->json([
+                'status' => Response::HTTP_NO_CONTENT,
+                'error' => 'Không thể xóa đánh dấu yêu thích!'
+            ], Response::HTTP_NO_CONTENT);
+        } else {
+            return response()->json([
+                'status' => Response::HTTP_ACCEPTED,
+                'message' => 'Đã xóa đánh dấu yêu thích.'
+            ], Response::HTTP_ACCEPTED);
+        }
+    }
 }
