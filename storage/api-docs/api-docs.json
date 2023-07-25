@@ -1,0 +1,127 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Dictionary App for IT",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/get-suggest-all": {
+            "get": {
+                "tags": [
+                    "Get Suggest"
+                ],
+                "summary": "Lấy tất cả từ gợi ý khi tìm kiếm",
+                "operationId": "8ab4efea9faa557af84fa898027c4d02",
+                "responses": {
+                    "200": {
+                        "description": "Lấy thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "suggest_all": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy từ gợi ý",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Hiện tại chưa có gợi ý!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/get-suggest": {
+            "get": {
+                "tags": [
+                    "Get Suggest"
+                ],
+                "summary": "Lấy danh sách các từ gợi ý theo chuyên ngành cụ thể",
+                "operationId": "b7a78547be9280248854260c7e079b9d",
+                "parameters": [
+                    {
+                        "name": "specialization_id",
+                        "in": "query",
+                        "description": "Nhập id của chuyên ngành",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Danh sách các từ gợi ý theo chuyên ngành",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "suggest_name": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "example": "Ví dụ: 1"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy từ gợi ý",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Lỗi rồi"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

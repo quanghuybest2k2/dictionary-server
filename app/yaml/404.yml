@@ -1,0 +1,12 @@
+# Định nghĩa response 404
+components:
+  responses:
+    NotFound:
+      description: Không tìm thấy tài nguyên
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
