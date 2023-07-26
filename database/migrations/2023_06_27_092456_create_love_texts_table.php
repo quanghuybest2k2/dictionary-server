@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('english', 400)->nullable();
             $table->string('vietnamese', 400)->nullable();
             $table->string('Note', 400)->default("")->nullable();
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('means', function (Blueprint $table) {
             $table->id();
             $table->foreignId('word_id')->constrained('words');
-            $table->foreignId('word_type_id')->constrained('word_types');
+            $table->foreignId('word_type_id')->constrained('word_types')->onDelete('cascade');
             $table->string('means', 200)->nullable(false);
             $table->string('description', 1000)->nullable();
             $table->string('example', 500)->nullable();

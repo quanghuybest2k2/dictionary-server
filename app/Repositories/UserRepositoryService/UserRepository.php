@@ -11,7 +11,10 @@ class UserRepository implements IUserRepository
     {
         return User::create($data);
     }
-
+    public function getUserById(string $id)
+    {
+        return User::where('id', $id)->first();
+    }
     public function getUserByEmail(string $email)
     {
         return User::where('email', $email)->first();
@@ -20,5 +23,9 @@ class UserRepository implements IUserRepository
     public function deleteUserTokens($userId)
     {
         return User::find($userId)->tokens()->delete();
+    }
+    public function deleteUser($userId)
+    {
+        return User::find($userId)->delete();
     }
 }

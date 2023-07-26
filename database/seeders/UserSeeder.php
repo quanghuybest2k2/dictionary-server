@@ -31,6 +31,8 @@ class UserSeeder extends Seeder
                     'email_verified_at' => now(),
                     'password' => Hash::make('12345678'),
                     'role_as' => 1,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ],
                 [
                     'name' => 'Đoàn Quang Huy',
@@ -39,6 +41,8 @@ class UserSeeder extends Seeder
                     'email_verified_at' => now(),
                     'password' => Hash::make('12345678'),
                     'role_as' => 0,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ],
                 [
                     'name' => 'Trần Ngọc Hân',
@@ -47,6 +51,8 @@ class UserSeeder extends Seeder
                     'email_verified_at' => now(),
                     'password' => Hash::make('12345678'),
                     'role_as' => 0,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ],
             ]
         );

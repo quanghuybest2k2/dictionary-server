@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('word_name', 100)->nullable(false)->unique();
             $table->string('pronunciations', 100)->nullable(false)->comment('phát âm');
-            $table->foreignId('specialization_id')->constrained('specializations');
+            $table->foreignId('specialization_id')->constrained('specializations')->onDelete('cascade');
             $table->string('synonymous', 1000)->nullable();
             $table->string('antonyms', 1000)->nullable();
             $table->timestamps();

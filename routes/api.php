@@ -15,10 +15,17 @@ use App\Http\Controllers\API\v1\WordController;
 // });
 Route::prefix('v1')->group(function () {
     // ====================================== For Everyone ======================================
-    //dang ky
-    Route::post('register', [UserController::class, 'register']);
-    // dang nhap
-    Route::post('login', [UserController::class, 'login']);
+    //  User
+    Route::controller(UserController::class)->group(function () {
+        //dang ky
+        Route::post('register', 'register');
+        // dang nhap
+        Route::post('login', 'login');
+        // lấy thông tin người dùng bằng id
+        Route::get('get-user/{id}', 'getUser');
+        // xoa user
+        Route::delete('delete-user/{id}', 'destroyUser');
+    });
     // client
     Route::controller(FrontEndController::class)->group(function () {
         Route::get('get-suggest-all', 'suggest_all');

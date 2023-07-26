@@ -130,4 +130,40 @@ class UserController extends Controller
             'message' => 'Đã đăng xuất.',
         ]);
     }
+    public function getUser($id)
+    {
+        try {
+            $user = $this->userRepository->getUserById($id);
+            return  $user ?
+                response()->json([
+                    'status' => Response::HTTP_OK,
+                    'user' => $user
+                ], Response::HTTP_OK)
+                :
+                response()->json([
+                    'status' => Response::HTTP_NOT_FOUND,
+                    'message' => 'Không tìm thấy người dùng!'
+                ], Response::HTTP_NOT_FOUND);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    public function destroyUser($id)
+    {
+        try {
+            $isDelete = $this->userRepository->deleteUser($id);
+            return  $isDelete ?
+                response()->json([
+                    'status' => Response::HTTP_OK,
+                    'message' => 'Tài khoản của bản đã được xóa vĩnh viễn.'
+                ], Response::HTTP_OK)
+                :
+                response()->json([
+                    'status' => Response::HTTP_NOT_FOUND,
+                    'message' => 'Không tìm thấy người dùng!'
+                ], Response::HTTP_NOT_FOUND);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }
