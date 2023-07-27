@@ -37,9 +37,17 @@ class WordLookupHistorySeeder extends Seeder
                     'english' => 'Queue',
                     'pronunciations' => '/kjuː/',
                     'vietnamese' => 'Hàng đợi',
-                    'user_id' => '2',
+                    'user_id' => '3',
                     'created_at' => now(),
                     'updated_at' => now()
+                ],
+                [
+                    'english' => 'Firewall',
+                    'pronunciations' => '/ˈfaɪə.wɔːl/',
+                    'vietnamese' => 'Tường lửa',
+                    'user_id' => '3',
+                    'created_at' => Carbon::now(),
+                    'updated_at' =>  Carbon::now()
                 ],
             ]
         );

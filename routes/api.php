@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\v1\FrontEndController;
 use App\Http\Controllers\API\v1\HistoryController;
+use App\Http\Controllers\API\v1\HotVocabularyController;
 use App\Http\Controllers\API\v1\LoveController;
 use App\Http\Controllers\API\v1\SearchController;
 use App\Http\Controllers\API\v1\SpecializationController;
@@ -69,6 +70,11 @@ Route::prefix('v1')->group(function () {
         Route::post('save-love_text', 'saveLoveText');
         // Xóa văn bản
         Route::delete('delete-love_text', 'destroyLoveText');
+    });
+    // từ vựng hot
+    Route::controller(HotVocabularyController::class)->group(function () {
+        // lưu từ vựng yêu thích
+        Route::get('get-hot-vocabulary', 'getHotVocabulary');
     });
     // ====================================== For Admin ======================================
     Route::middleware('auth:sanctum', 'isAPIAdmin')->group(function () {
