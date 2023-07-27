@@ -17,6 +17,12 @@ class LoveRepository implements ILoveRepository
             ->where('user_id', $user_id)
             ->delete();
     }
+    public function TotalLoveItemOfUser($user_id): int
+    {
+        $loveVocabulary =   LoveVocabulary::where('user_id', $user_id)->count();
+        $loveText =   LoveText::where('user_id', $user_id)->count();
+        return $loveVocabulary + $loveText;
+    }
     public function createLoveTexts($data)
     {
         return LoveText::create($data);

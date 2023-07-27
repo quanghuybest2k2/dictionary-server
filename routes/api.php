@@ -63,6 +63,8 @@ Route::prefix('v1')->group(function () {
         Route::post('save-love_vocabulary', 'saveLoveVocabulary');
         // xóa từ yêu thích
         Route::delete('delete-love_vocabulary/{english}/{user_id}', 'destroyLoveVocabulary');
+        // lấy tổng mục yêu thích của user
+        Route::get('total-love-item/{user_id}', 'TotalLoveItemOfUser');
         // Thêm văn bản
         Route::post('save-love_text', 'saveLoveText');
         // Xóa văn bản

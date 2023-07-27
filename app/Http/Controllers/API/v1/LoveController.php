@@ -76,6 +76,22 @@ class LoveController extends Controller
             'message' => 'Đã xóa đánh dấu yêu thích.'
         ], Response::HTTP_ACCEPTED);
     }
+    public function TotalLoveItemOfUser($user_id)
+    {
+        $totalLoveItem = $this->iLoveRepository->TotalLoveItemOfUser($user_id);
+
+        if ($totalLoveItem === 0) {
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'totalLoveItem' => 0
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'totalLoveItem' => $totalLoveItem
+            ], Response::HTTP_OK);
+        }
+    }
     public function saveLoveText(Request $request)
     {
         $validator = Validator::make(
