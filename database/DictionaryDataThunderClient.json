@@ -1,0 +1,492 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "dictionaryapp",
+    "dateExported": "2023-07-28T07:08:15.457Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "53fbee89-5c98-4bea-b9c7-7228c11d84d2",
+            "name": "word",
+            "containerId": "",
+            "created": "2023-07-27T13:09:09.282Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "ef8a320d-31ef-499a-80dd-cff1f6105209",
+            "name": "Specialization",
+            "containerId": "",
+            "created": "2023-07-27T13:09:09.283Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "bbbd1e7e-130b-4949-bb4d-4a7a3fe00b0e",
+            "name": "History",
+            "containerId": "",
+            "created": "2023-07-27T13:09:09.284Z",
+            "sortNum": 30000
+        },
+        {
+            "_id": "4ff406a1-066d-403c-9e1f-f0823d5c14b8",
+            "name": "LoveRequest",
+            "containerId": "",
+            "created": "2023-07-27T13:09:09.285Z",
+            "sortNum": 40000
+        },
+        {
+            "_id": "1b2e15f0-5f61-4345-81d3-3aa5675533c3",
+            "name": "User",
+            "containerId": "",
+            "created": "2023-07-27T13:09:09.286Z",
+            "sortNum": 50000
+        },
+        {
+            "_id": "55537d2f-38a0-41a5-9f62-ad40bffeb4af",
+            "name": "HotVocabulary",
+            "containerId": "",
+            "created": "2023-07-27T13:09:09.287Z",
+            "sortNum": 60000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "6f47de30-4ac4-4857-a37c-e60ecea3f0be",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "1b2e15f0-5f61-4345-81d3-3aa5675533c3",
+            "name": "đăng ký",
+            "url": "http://127.0.0.1:8000/api/v1/register",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-07-27T13:09:09.282Z",
+            "modified": "2023-07-27T13:09:09.282Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"Đoàn Quang Huy\",\n  \"email\":\"quanghuybest@gmail.com\",\n  \"gender\":\"1\",\n  \"password\":\"12345678\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e89ad74d-a474-4d92-b193-ff0998469034",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "1b2e15f0-5f61-4345-81d3-3aa5675533c3",
+            "name": "đăng nhập",
+            "url": "http://127.0.0.1:8000/api/v1/login",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-07-27T13:09:09.283Z",
+            "modified": "2023-07-27T13:09:09.283Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\":\"quanghuybest@gmail.com\",\n  \"password\":\"12345678\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d08a0ee9-268f-4cbc-a009-bacb6373150a",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "1b2e15f0-5f61-4345-81d3-3aa5675533c3",
+            "name": "đăng xuất",
+            "url": "http://127.0.0.1:8000/api/v1/logout",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-07-27T13:09:09.284Z",
+            "modified": "2023-07-27T13:09:09.284Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "27|nVgscp0jpft6PO5xfdtyLtr5UYYDqzReJaoTA4B9"
+            },
+            "tests": []
+        },
+        {
+            "_id": "42ba60c5-264b-4586-83fe-75b8994f7389",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "53fbee89-5c98-4bea-b9c7-7228c11d84d2",
+            "name": "random-word",
+            "url": "http://127.0.0.1:8000/api/v1/random-word",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-07-27T13:09:09.286Z",
+            "modified": "2023-07-27T13:09:09.286Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "882e2006-e01b-45e7-95da-18ff82f5fa33",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "53fbee89-5c98-4bea-b9c7-7228c11d84d2",
+            "name": "search",
+            "url": "http://127.0.0.1:8000/api/v1/search-word?keyword=firewall",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2023-07-27T13:09:09.287Z",
+            "modified": "2023-07-27T13:09:09.287Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "keyword",
+                    "value": "firewall",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "0f6944cd-d863-45ac-8036-2b8d5415fdd1",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "ef8a320d-31ef-499a-80dd-cff1f6105209",
+            "name": "get-all-specialization",
+            "url": "http://127.0.0.1:8000/api/v1/get-all-specialization",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-07-27T13:09:09.288Z",
+            "modified": "2023-07-27T13:09:09.288Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "c142c27b-e9b0-443d-88ac-b2850a64b44d",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "ef8a320d-31ef-499a-80dd-cff1f6105209",
+            "name": "display-by-specialization",
+            "url": "http://127.0.0.1:8000/api/v1/display-by-specialization?specialization_id=2",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2023-07-27T13:09:09.289Z",
+            "modified": "2023-07-27T13:09:09.289Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "specialization_id",
+                    "value": "2",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "a63b719c-be25-474d-bd26-c66ad95c1ac3",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "53fbee89-5c98-4bea-b9c7-7228c11d84d2",
+            "name": "get-suggest",
+            "url": "http://127.0.0.1:8000/api/v1/get-suggest?specialization_id=1",
+            "method": "GET",
+            "sortNum": 90000,
+            "created": "2023-07-27T13:09:09.290Z",
+            "modified": "2023-07-27T13:09:09.290Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "specialization_id",
+                    "value": "1",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "2a182b2e-e563-44e5-a8b2-08b9ccfd7900",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "ef8a320d-31ef-499a-80dd-cff1f6105209",
+            "name": "searchBySpecialty",
+            "url": "http://127.0.0.1:8000/api/v1/search-by-specialty?searched_word=f&specialization_id=1",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2023-07-27T13:09:09.291Z",
+            "modified": "2023-07-27T13:09:09.291Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "searched_word",
+                    "value": "f",
+                    "isPath": false
+                },
+                {
+                    "name": "specialization_id",
+                    "value": "1",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "d4d381a5-8824-445f-95fb-7eec61416b94",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "53fbee89-5c98-4bea-b9c7-7228c11d84d2",
+            "name": "get-suggest-all",
+            "url": "http://127.0.0.1:8000/api/v1/get-suggest-all",
+            "method": "GET",
+            "sortNum": 120000,
+            "created": "2023-07-27T13:09:09.292Z",
+            "modified": "2023-07-27T13:09:09.292Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "056bbbbb-73c9-4265-8fc6-2c61e9c9bf17",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "bbbd1e7e-130b-4949-bb4d-4a7a3fe00b0e",
+            "name": "check-if-exist",
+            "url": "http://127.0.0.1:8000/api/v1/check-if-exist?english=My name is David&user_id=2",
+            "method": "GET",
+            "sortNum": 130000,
+            "created": "2023-07-27T13:09:09.293Z",
+            "modified": "2023-07-27T13:09:09.293Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "english",
+                    "value": "My name is David",
+                    "isPath": false
+                },
+                {
+                    "name": "user_id",
+                    "value": "2",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "378c4411-3519-4ba3-9fae-f58926216a6b",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "bbbd1e7e-130b-4949-bb4d-4a7a3fe00b0e",
+            "name": "save-word-lookup-history",
+            "url": "http://127.0.0.1:8000/api/v1/save-word-lookup-history",
+            "method": "POST",
+            "sortNum": 150000,
+            "created": "2023-07-27T13:09:09.294Z",
+            "modified": "2023-07-27T13:09:09.294Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"english\":\"Web hosting\",\n  \"pronunciations\":\"/ˈweb ˌhoʊ.stɪŋ/\",\n  \"vietnamese\":\"Dịch vụ lưu trữ website\",\n  \"user_id\":\"2\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d07ae6fc-5dc2-4f4b-aeaf-74ec857a5c48",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "4ff406a1-066d-403c-9e1f-f0823d5c14b8",
+            "name": "save-love_vocabularies",
+            "url": "http://127.0.0.1:8000/api/v1/save-love_vocabulary",
+            "method": "POST",
+            "sortNum": 160000,
+            "created": "2023-07-27T13:09:09.295Z",
+            "modified": "2023-07-27T13:09:09.295Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"english\":\"Web hosting\",\n  \"pronunciations\":\"/ˈweb ˌhoʊ.stɪŋ/\",\n  \"vietnamese\":\"Dịch vụ lưu trữ website\",\n  \"user_id\":\"2\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "7c3e92a5-538a-4a4a-a356-337e8b78e35e",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "4ff406a1-066d-403c-9e1f-f0823d5c14b8",
+            "name": "delete-love-vocabulary",
+            "url": "http://127.0.0.1:8000/api/v1/delete-love_vocabulary/Variable/2",
+            "method": "DELETE",
+            "sortNum": 170000,
+            "created": "2023-07-27T13:09:09.296Z",
+            "modified": "2023-07-27T13:09:09.296Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "5490a1e9-e05b-416d-a715-03ad7444ff32",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "bbbd1e7e-130b-4949-bb4d-4a7a3fe00b0e",
+            "name": "get-translate-history",
+            "url": "http://127.0.0.1:8000/api/v1/get-translate-history/3",
+            "method": "GET",
+            "sortNum": 190000,
+            "created": "2023-07-27T13:09:09.297Z",
+            "modified": "2023-07-28T03:08:05.698Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "21ae05fc-9aa9-4140-954e-19c94709e6ce",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "bbbd1e7e-130b-4949-bb4d-4a7a3fe00b0e",
+            "name": "save-translate-history",
+            "url": "http://127.0.0.1:8000/api/v1/save-translate-history",
+            "method": "POST",
+            "sortNum": 200000,
+            "created": "2023-07-27T13:09:09.298Z",
+            "modified": "2023-07-27T13:09:09.298Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"english\":\"Free hug\",\n  \"vietnamese\":\"Ôm miễn phí\",\n  \"user_id\":\"2\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "5c4c15b5-1c26-4c7c-96c5-6ea97295caba",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "bbbd1e7e-130b-4949-bb4d-4a7a3fe00b0e",
+            "name": "delete-translate-history",
+            "url": "http://127.0.0.1:8000/api/v1/delete-translate-history/3",
+            "method": "DELETE",
+            "sortNum": 230000,
+            "created": "2023-07-27T13:09:09.299Z",
+            "modified": "2023-07-27T13:09:09.299Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "ab3f1f29-de9f-47ae-b650-6ec4c8787376",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "bbbd1e7e-130b-4949-bb4d-4a7a3fe00b0e",
+            "name": "delete-by-id",
+            "url": "http://127.0.0.1:8000/api/v1/delete-translate-by-id/3/4",
+            "method": "DELETE",
+            "sortNum": 250000,
+            "created": "2023-07-27T13:09:09.300Z",
+            "modified": "2023-07-27T13:09:09.300Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "34792ecd-7d69-4859-b289-20ecf9b2b561",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "4ff406a1-066d-403c-9e1f-f0823d5c14b8",
+            "name": "delete-love_text",
+            "url": "http://127.0.0.1:8000/api/v1/delete-love_text?english=My name is Tom&user_id=3",
+            "method": "DELETE",
+            "sortNum": 260000,
+            "created": "2023-07-27T13:09:09.301Z",
+            "modified": "2023-07-27T13:09:09.301Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "english",
+                    "value": "My name is Tom",
+                    "isPath": false
+                },
+                {
+                    "name": "user_id",
+                    "value": "3",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "36c92b96-89ea-4b01-ab0e-dd7d7c67b8d7",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "4ff406a1-066d-403c-9e1f-f0823d5c14b8",
+            "name": "save-love_text",
+            "url": "http://127.0.0.1:8000/api/v1/save-love_text",
+            "method": "POST",
+            "sortNum": 270000,
+            "created": "2023-07-27T13:09:09.302Z",
+            "modified": "2023-07-27T13:09:09.302Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"english\":\"Web hosting\",\n  \"vietnamese\":\"Dịch vụ lưu trữ website\",\n  \"user_id\":\"2\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "f3b69d04-8637-43ab-b498-dde8bfeeb547",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "1b2e15f0-5f61-4345-81d3-3aa5675533c3",
+            "name": "delete-user",
+            "url": "http://127.0.0.1:8000/api/v1/delete-user/2",
+            "method": "DELETE",
+            "sortNum": 280000,
+            "created": "2023-07-27T13:09:09.303Z",
+            "modified": "2023-07-27T13:09:09.303Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "17fb7ce4-5a23-4199-9bb2-3f9a1e32081b",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "1b2e15f0-5f61-4345-81d3-3aa5675533c3",
+            "name": "get-user",
+            "url": "http://127.0.0.1:8000/api/v1/get-user/2",
+            "method": "GET",
+            "sortNum": 290000,
+            "created": "2023-07-27T13:09:09.304Z",
+            "modified": "2023-07-27T13:09:09.304Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "6b9a70ec-3eb8-4d91-8f6e-5a3b12e7f19c",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "4ff406a1-066d-403c-9e1f-f0823d5c14b8",
+            "name": "total-love-item",
+            "url": "http://127.0.0.1:8000/api/v1/total-love-item/3",
+            "method": "GET",
+            "sortNum": 300000,
+            "created": "2023-07-27T13:09:09.305Z",
+            "modified": "2023-07-27T13:09:09.305Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a5d2d0a6-89de-4157-a723-943a7c564dbb",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "55537d2f-38a0-41a5-9f62-ad40bffeb4af",
+            "name": "get-hot-vocabulary",
+            "url": "http://127.0.0.1:8000/api/v1/get-hot-vocabulary",
+            "method": "GET",
+            "sortNum": 320000,
+            "created": "2023-07-27T13:09:09.306Z",
+            "modified": "2023-07-27T13:09:09.306Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "3d152cde-514f-4497-8e48-e7b09c2edd55",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "bbbd1e7e-130b-4949-bb4d-4a7a3fe00b0e",
+            "name": "get-word-lookup-history",
+            "url": "http://127.0.0.1:8000/api/v1/get-word-lookup-history/2",
+            "method": "GET",
+            "sortNum": 330000,
+            "created": "2023-07-28T02:54:53.180Z",
+            "modified": "2023-07-28T03:07:52.489Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        }
+    ]
+}

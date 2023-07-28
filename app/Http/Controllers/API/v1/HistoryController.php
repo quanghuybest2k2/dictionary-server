@@ -52,6 +52,7 @@ class HistoryController extends Controller
             ]);
         }
     }
+    // ====================== WordLookupHistory ============================
     public function storeWordLookupHistory(Request $request)
     {
         $validator = Validator::make(
@@ -97,34 +98,44 @@ class HistoryController extends Controller
             }
         }
     }
-    public function loadTranslateHistoryByUser(Request $request)
+    public function getWordLookupHistory($user_id)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'user_id' => 'required|integer|min:1',
-            ],
-            [
-                'required' => 'Vui lòng nhập :attribute.',
-                'integer' => ':attribute phải là số nguyên.',
-                'min' => ':attribute phải lớn hơn hoặc bằng :min.',
-            ],
-            [
-                'user_id' => 'Id người dùng',
-            ]
-        );
-        if ($validator->fails()) {
-            return response()->json([
-                'validator_errors' => $validator->messages(),
-            ]);
-        } else {
+        try {
+            $WordLookupHistory = $this->historiesRepository->getWordLookupHistory($user_id);
+            if ($WordLookupHistory) {
+                return response()->json([
+                    'status' => Response::HTTP_OK,
+                    'WordLookupHistory' => $WordLookupHistory,
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'error' => 'Lấy thất bại!'
+                ], Response::HTTP_BAD_REQUEST);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    // ====================== TranslateHistory =============================
+    public function loadTranslateHistoryByUser($user_id)
+    {
+        try {
+            $translateHistory =  $this->historiesRepository->loadAllTranslateHistory($user_id);
 
-            $translateHistory =  $this->historiesRepository->loadAllTranslateHistory($request->user_id);
-
-            return response()->json([
-                'status' => Response::HTTP_OK,
-                'translateHistory' => $translateHistory
-            ]);
+            if ($translateHistory) {
+                return response()->json([
+                    'status' => Response::HTTP_OK,
+                    'translateHistory' => $translateHistory
+                ]);
+            } else {
+                return response()->json([
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'error' => 'Lấy thất bại!'
+                ], Response::HTTP_BAD_REQUEST);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
         }
     }
     public function storeTranslateHistory(Request $request)

@@ -49,9 +49,12 @@ Route::prefix('v1')->group(function () {
     // lịch sử
     Route::controller(HistoryController::class)->group(function () {
         Route::get('check-if-exist', 'checkIfExist');
-        Route::get('load-translate-history-by-user', 'loadTranslateHistoryByUser');
+        // lấy lịch sử tra từ của user cụ thể
+        Route::get('get-word-lookup-history/{user_id}', 'getWordLookupHistory');
         // lưu lịch sử tra từ
         Route::post('save-word-lookup-history', 'storeWordLookupHistory');
+        // hiển thị lịch sử tra từ của user cụ thể
+        Route::get('get-translate-history/{user_id}', 'loadTranslateHistoryByUser');
         // lưu lịch sử dịch
         Route::post('save-translate-history', 'storeTranslateHistory');
         // xóa lịch sử

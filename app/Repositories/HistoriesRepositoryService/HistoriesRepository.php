@@ -13,11 +13,17 @@ class HistoriesRepository implements IHistoriesRepository
     {
         return $model::where('english', $english)->where('user_id', $userId)->count();
     }
+    // ====================== WordLookupHistory ============================
     public function createWordLookupHistory($data)
     {
         return WordLookupHistory::create($data);
     }
-    public function loadAllTranslateHistory($userId)
+    public function getWordLookupHistory($user_id)
+    {
+        return WordLookupHistory::where('user_id', $user_id)->get();
+    }
+    // ====================== TranslateHistory =============================
+    public function loadAllTranslateHistory($userId) // nó là getTranslateHistory đó :))
     {
         return TranslateHistory::where('user_id', $userId)->get();
     }
