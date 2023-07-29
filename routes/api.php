@@ -24,6 +24,8 @@ Route::prefix('v1')->group(function () {
         Route::post('login', 'login');
         // lấy thông tin người dùng bằng id
         Route::get('get-user/{id}', 'getUser');
+        // cập nhật thông tin
+        Route::put('update-user/{id}', 'update');
         // xoa user
         Route::delete('delete-user/{id}', 'destroyUser');
     });

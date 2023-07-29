@@ -4,13 +4,14 @@ namespace App\Http\Controllers\API\v1;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\UserRequest\RegisterRequest;
 use App\Repositories\UserRepositoryService\IUserRepository;
-use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -146,6 +147,49 @@ class UserController extends Controller
                 ], Response::HTTP_NOT_FOUND);
         } catch (\Throwable $th) {
             throw $th;
+        }
+    }
+    public function update($id, Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|max:255',
+                'email' => [
+                    'required',
+                    'email',
+                    'max:255',
+                    Rule::unique('users')->ignore($id),
+                ],
+                'gender' => 'in:1,2,3',
+            ],
+            [
+                'required' => 'Vui lòng nhập :attribute',
+                'max' => ':attribute không được vượt quá :max ký tự.',
+                'email.email' => 'Địa chỉ :attribute không hợp lệ.',
+                'gender.in' => ':attribute không hợp lệ.',
+                'email.unique' => 'Email đã tồn tại trong cơ sở dữ liệu.',
+            ],
+            [
+                'name' => 'Họ và tên',
+                'email' => 'Email',
+                'gender' => 'Giới tính',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'validator_errors' => $validator->messages(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } else {
+
+            $user = $this->userRepository->UpdateUser($id, $request->all());
+
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'message' => 'Cập nhật thông tin thành công.',
+                'user' => $user,
+            ], Response::HTTP_OK);
         }
     }
     public function destroyUser($id)

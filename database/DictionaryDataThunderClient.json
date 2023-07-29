@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "dictionaryapp",
-    "dateExported": "2023-07-28T07:08:15.457Z",
+    "dateExported": "2023-07-29T05:45:45.668Z",
     "version": "1.1",
     "folders": [
         {
@@ -486,6 +486,25 @@
             "modified": "2023-07-28T03:07:52.489Z",
             "headers": [],
             "params": [],
+            "tests": []
+        },
+        {
+            "_id": "2869b992-f178-4bef-aad5-a93983458285",
+            "colId": "2879b541-0ccc-4bd7-bebe-e95d6b714f3a",
+            "containerId": "1b2e15f0-5f61-4345-81d3-3aa5675533c3",
+            "name": "update-user",
+            "url": "http://127.0.0.1:8000/api/v1/update-user/3",
+            "method": "PUT",
+            "sortNum": 340000,
+            "created": "2023-07-29T04:03:48.276Z",
+            "modified": "2023-07-29T05:15:59.512Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"Nguyễn Ngọc Mai\",\n  \"email\":\"mainguyen@gmail.com\",\n  \"gender\":\"2\"\n}",
+                "form": []
+            },
             "tests": []
         }
     ]

@@ -19,7 +19,12 @@ class UserRepository implements IUserRepository
     {
         return User::where('email', $email)->first();
     }
-
+    public function UpdateUser($userId, array $data)
+    {
+        $user = $this->getUserById($userId);
+        $user->update($data);
+        return $user;
+    }
     public function deleteUserTokens($userId)
     {
         return User::find($userId)->tokens()->delete();
