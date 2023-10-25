@@ -2,56 +2,100 @@
 
 namespace App\Http\Controllers\API\v1;
 
+use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use App\Models\WordLookupHistory;
 use App\Http\Controllers\Controller;
 use App\Models\LoveText;
 use App\Models\TranslateHistory;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repositories\HistoriesRepositoryService\IHistoriesRepository;
 
 class HistoryController extends Controller
 {
+    use ResponseTrait;
+
     private $historiesRepository;
+
     public function __construct(
         IHistoriesRepository $historiesRepository,
-    ) {
+    )
+    {
         $this->historiesRepository = $historiesRepository;
     }
+
+    /**
+     * @OA\Get(
+     *      path="/api/v1/check-if-exist",
+     *      tags={"History"},
+     *      summary="Check if a word or love text exists in history",
+     *      description="Check if a word or love text exists in the user's history by English keyword and user ID",
+     *     @OA\Parameter(
+     *          name="english",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(type="string"),
+     *          description="English"
+     *      ),
+     *       @OA\Parameter(
+     *          name="user_id",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(type="integer"),
+     *          description="User Id"
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="status", type="integer", example=200)
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Validation error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="validator_errors", type="object", example={"english": {"Vui lòng nhập Từ khóa tiếng anh"}, "user_id": {"Id người dùng phải là số nguyên dương."}})
+     *          )
+     *      ),
+     * )
+     */
     public function checkIfExist(Request $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'english' => 'required|max:400',
-                'user_id' => 'required|integer|min:1',
-            ],
-            [
-                'required' => 'Vui lòng nhập :attribute.',
-                'max' => ':attribute không được vượt quá :max ký tự.',
-                'user_id.integer' => ':attribute phải là số nguyên dương.',
-            ],
-            [
-                'english' => 'Từ khóa tiếng anh',
-                'user_id' => 'Id người dùng',
-            ]
-        );
-        if ($validator->fails()) {
-            return response()->json([
-                'validator_errors' => $validator->messages(),
-            ]);
-        } else {
-            $word = $this->historiesRepository->checkIfExist(new WordLookupHistory(), $request->english, $request->user_id);
-            $loveText = $this->historiesRepository->checkIfExist(new LoveText(), $request->english, $request->user_id);
+        try {
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'english' => 'required|max:400',
+                    'user_id' => 'required|integer|min:1',
+                ],
+                [
+                    'required' => 'Vui lòng nhập :attribute.',
+                    'max' => ':attribute không được vượt quá :max ký tự.',
+                    'user_id.integer' => ':attribute phải là số nguyên dương.',
+                ],
+                [
+                    'english' => 'Từ khóa tiếng anh',
+                    'user_id' => 'Id người dùng',
+                ]
+            );
+            if ($validator->fails()) {
+                return response()->json([
+                    'validator_errors' => $validator->messages(),
+                ]);
+            } else {
+                $word = $this->historiesRepository->checkIfExist(new WordLookupHistory(), $request->english, $request->user_id);
+                $loveText = $this->historiesRepository->checkIfExist(new LoveText(), $request->english, $request->user_id);
 
-            return response()->json([
-                'status' => Response::HTTP_OK,
-                'word' => $word,
-                'loveText' => $loveText
-            ]);
+                return $this->responseSuccess(['word' => $word, 'loveText' => $loveText], "Kiểm tra thành công.");
+            }
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
     // ====================== WordLookupHistory ============================
     public function storeWordLookupHistory(Request $request)
     {
@@ -98,6 +142,7 @@ class HistoryController extends Controller
             }
         }
     }
+
     public function getWordLookupHistory($user_id)
     {
         try {
@@ -117,11 +162,12 @@ class HistoryController extends Controller
             throw $th;
         }
     }
+
     // ====================== TranslateHistory =============================
     public function loadTranslateHistoryByUser($user_id)
     {
         try {
-            $translateHistory =  $this->historiesRepository->loadAllTranslateHistory($user_id);
+            $translateHistory = $this->historiesRepository->loadAllTranslateHistory($user_id);
 
             if ($translateHistory) {
                 return response()->json([
@@ -138,6 +184,7 @@ class HistoryController extends Controller
             throw $th;
         }
     }
+
     public function storeTranslateHistory(Request $request)
     {
         $validator = Validator::make(
@@ -185,6 +232,7 @@ class HistoryController extends Controller
             }
         }
     }
+
     // delete all record
     public function destroy(Request $request)
     {
@@ -205,6 +253,7 @@ class HistoryController extends Controller
             throw $th;
         }
     }
+
     public function destroyById(Request $request)
     {
         try {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1;
 
 use App\Models\User;
+use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
@@ -15,12 +16,15 @@ use App\Repositories\UserRepositoryService\IUserRepository;
 
 class UserController extends Controller
 {
+    use ResponseTrait;
+
     private $userRepository;
 
     public function __construct(IUserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
+
     public function register(Request $request)
     {
         $validator = Validator::make(
@@ -83,7 +87,7 @@ class UserController extends Controller
                 'password' => 'required',
             ],
             [
-                'required'  => 'Bạn phải điền :attribute',
+                'required' => 'Bạn phải điền :attribute',
             ],
             [
                 'password' => 'Mật khẩu',
@@ -122,6 +126,7 @@ class UserController extends Controller
             }
         }
     }
+
     public function logout()
     {
         $this->userRepository->deleteUserTokens(auth()->user()->id);
@@ -131,24 +136,66 @@ class UserController extends Controller
             'message' => 'Đã đăng xuất.',
         ]);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/v1/get-user/{id}",
+     *     summary="Lấy người dùng theo id",
+     *     tags={"Users"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Nhập id của người dùng",
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lấy thành công thông tin người dùng.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="status",
+     *                 type="integer",
+     *                 example=200
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Không tìm thấy người dùng!",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="status",
+     *                 type="integer",
+     *                 example=404
+     *             ),
+     *             @OA\Property(
+     *                 property="error",
+     *                 type="string",
+     *                 example="Lỗi rồi"
+     *             )
+     *         )
+     *     )
+     * )
+     */
     public function getUser($id)
     {
         try {
             $user = $this->userRepository->getUserById($id);
-            return  $user ?
-                response()->json([
-                    'status' => Response::HTTP_OK,
-                    'user' => $user
-                ], Response::HTTP_OK)
+            return $user ?
+                $this->responseSuccess($user, 'Lấy thành công user!')
                 :
-                response()->json([
-                    'status' => Response::HTTP_NOT_FOUND,
-                    'message' => 'Không tìm thấy người dùng!'
-                ], Response::HTTP_NOT_FOUND);
-        } catch (\Throwable $th) {
-            throw $th;
+                $this->responseError(null, 'Không tìm thấy user!', Response::HTTP_NOT_FOUND);
+
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
     public function update($id, Request $request)
     {
         $validator = Validator::make(
@@ -192,11 +239,12 @@ class UserController extends Controller
             ], Response::HTTP_OK);
         }
     }
+
     public function destroyUser($id)
     {
         try {
             $isDelete = $this->userRepository->deleteUser($id);
-            return  $isDelete ?
+            return $isDelete ?
                 response()->json([
                     'status' => Response::HTTP_OK,
                     'message' => 'Tài khoản của bản đã được xóa vĩnh viễn.'

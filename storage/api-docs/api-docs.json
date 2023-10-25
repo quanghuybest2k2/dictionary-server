@@ -130,6 +130,444 @@
                     }
                 }
             }
+        },
+        "/api/v1/check-if-exist": {
+            "get": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Check if a word or love text exists in history",
+                "description": "Check if a word or love text exists in the user's history by English keyword and user ID",
+                "operationId": "9ab755f32174547070f22e6f2ba4bd94",
+                "parameters": [
+                    {
+                        "name": "english",
+                        "in": "query",
+                        "description": "English",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "User Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "validator_errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "english": [
+                                                    "Vui lòng nhập Từ khóa tiếng anh"
+                                                ],
+                                                "user_id": [
+                                                    "Id người dùng phải là số nguyên dương."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/search-word": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Search for a word",
+                "description": "Search for a word by keyword",
+                "operationId": "37cbf4534c2f80cb61dcd12766b6f42b",
+                "parameters": [
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Word not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Không tìm thấy từ này!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "validator_errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "keyword": [
+                                                    "Vui lòng nhập Từ vựng"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/search-by-specialty": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Search words by specialty",
+                "description": "Search for words by a specific specialty and searched word",
+                "operationId": "6177d83559d4657550e67a616257380a",
+                "parameters": [
+                    {
+                        "name": "searched_word",
+                        "in": "query",
+                        "description": "The word to search for",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "specialization_id",
+                        "in": "query",
+                        "description": "ID of the specialization to filter by",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Word not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Không tìm thấy danh sách từ vựng!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "validator_errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "searched_word": [
+                                                    "Vui lòng nhập Từ vựng"
+                                                ],
+                                                "specialization_id": [
+                                                    "Id của chuyên ngành phải là số!"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/get-all-specialization": {
+            "get": {
+                "tags": [
+                    "Specialization"
+                ],
+                "summary": "Get all specializations",
+                "description": "Retrieve a list of all specializations",
+                "operationId": "0af15fc5abb385a62032af0cb78ecb96",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/display-by-specialization": {
+            "get": {
+                "tags": [
+                    "Specialization"
+                ],
+                "summary": "Get words by specialization ID",
+                "description": "Retrieve words belonging to a specific specialization by ID",
+                "operationId": "ba000023827311d43c66cf3e57e165f4",
+                "parameters": [
+                    {
+                        "name": "specialization_id",
+                        "in": "query",
+                        "description": "ID of the specialization",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Specializations not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Không có từ vựng thuộc về chuyên ngành!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/get-user/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Lấy người dùng theo id",
+                "operationId": "1f4331e4276bfecec91a4772dcbc865d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Nhập id của người dùng",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lấy thành công thông tin người dùng.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy người dùng!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Lỗi rồi"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/random-word": {
+            "get": {
+                "tags": [
+                    "Words"
+                ],
+                "summary": "Lấy từ vựng ngẫu nhiên",
+                "operationId": "ab71e39ada6e1fdef60730b7c2448934",
+                "responses": {
+                    "200": {
+                        "description": "Lấy thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm từ vựng",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Hiện tại chưa có từ vựng!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

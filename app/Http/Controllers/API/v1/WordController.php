@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\v1;
 use App\Models\Word;
 use App\Models\Means;
 use App\Models\WordType;
+use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use App\Models\Specialization;
 use App\Http\Controllers\Controller;
@@ -17,17 +18,20 @@ use App\Repositories\SpecializationRepositoryService\ISpecializationRepository;
 
 class WordController extends Controller
 {
+    use ResponseTrait;
+
     private $wordRepository;
     private $specializationRepository;
     private $meansRepository;
     private $wordTypeRepository;
 
     public function __construct(
-        IWordRepository $wordRepository,
+        IWordRepository           $wordRepository,
         ISpecializationRepository $specializationRepository,
-        IMeansRepository $meansRepository,
-        IWordTypeRepository $wordTypeRepository
-    ) {
+        IMeansRepository          $meansRepository,
+        IWordTypeRepository       $wordTypeRepository
+    )
+    {
         $this->wordRepository = $wordRepository;
         $this->specializationRepository = $specializationRepository;
         $this->meansRepository = $meansRepository;
@@ -45,24 +49,42 @@ class WordController extends Controller
      * synonymous
      * antonyms
      */
+    /**
+     * @OA\Get(
+     *     path="/api/v1/random-word",
+     *     summary="Lấy từ vựng ngẫu nhiên",
+     *     tags={"Words"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lấy thành công",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="integer", example=200),
+     *             @OA\Property(property="data", type="array", @OA\Items(type="string"))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Không tìm từ vựng",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="integer", example=404),
+     *             @OA\Property(property="error", type="string", example="Hiện tại chưa có từ vựng!")
+     *         )
+     *     )
+     * )
+     */
     public function getRandomWord()
     {
-        // $randomWord = Word::inRandomOrder()->first();
-        // $specializationName = $randomWord->specialization->specialization_name;
-        // $means = $randomWord->means->first();
-        // $wordTypeName = $means->wordType->type_name;
+        try {
+            $randomWord = $this->wordRepository->getRandomWord();
+            return $randomWord ?
+                $this->responseSuccess($randomWord, 'Lấy thành công từ ngẫu nhiên!')
+                :
+                $this->responseError(null, 'Không tìm thấy từ vựng!', Response::HTTP_NOT_FOUND);
 
-        $randomWord = $this->wordRepository->getRandomWord();
-        if ($randomWord) {
-            return response()->json([
-                'status' => Response::HTTP_OK,
-                'randomWord' => $randomWord,
-            ]);
-        } else {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'error' => 'Không tìm thấy từ vựng!'
-            ], Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
