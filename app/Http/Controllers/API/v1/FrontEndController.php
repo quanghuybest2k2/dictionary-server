@@ -9,12 +9,6 @@ use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repositories\WordRepositoryService\IWordRepository;
 
-/**
- * @OA\Info(
- *     version="1.0.0",
- *     title="Dictionary App for IT",
- * )
- */
 class FrontEndController extends Controller
 {
     use ResponseTrait;
@@ -59,7 +53,7 @@ class FrontEndController extends Controller
         try {
             $data = $this->wordRepository->getAll()->pluck('word_name');
             if ($data->isEmpty()) {
-            return $this->responseError(null, 'Hiện tại chưa có gợi ý!', Response::HTTP_NOT_FOUND);
+                return $this->responseError(null, 'Hiện tại chưa có gợi ý!', Response::HTTP_NOT_FOUND);
             }
             return $this->responseSuccess($data, 'Lấy từ tất cả từ vưng thành công !');
         } catch (\Exception $e) {
