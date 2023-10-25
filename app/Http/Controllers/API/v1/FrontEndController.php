@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1;
 
 use App\Models\Word;
+use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,11 +17,14 @@ use App\Repositories\WordRepositoryService\IWordRepository;
  */
 class FrontEndController extends Controller
 {
+    use ResponseTrait;
+
     private $wordRepository;
 
     public function __construct(
         IWordRepository $wordRepository,
-    ) {
+    )
+    {
         $this->wordRepository = $wordRepository;
     }
     /**
@@ -52,20 +56,17 @@ class FrontEndController extends Controller
     public function suggest_all()
     {
         // chỉ lấy cột word_name của các record thôi
-        $suggestAll = $this->wordRepository->getAll()->pluck('word_name');
-
-        if ($suggestAll->isEmpty()) {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'error' => 'Hiện tại chưa có gợi ý!',
-            ], Response::HTTP_NOT_FOUND);
+        try {
+            $data = $this->wordRepository->getAll()->pluck('word_name');
+            if ($data->isEmpty()) {
+            return $this->responseError(null, 'Hiện tại chưa có gợi ý!', Response::HTTP_NOT_FOUND);
+            }
+            return $this->responseSuccess($data, 'Lấy từ tất cả từ vưng thành công !');
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'suggest_all' => $suggestAll
-        ]);
     }
+
     /**
      * @OA\Get(
      *     path="/api/v1/get-suggest",
@@ -119,21 +120,17 @@ class FrontEndController extends Controller
      *     )
      * )
      */
+    // gợi ý theo từ vựng theo chuyên ngành
     public function suggest(Request $request)
     {
-        // chỉ lấy cột word_name của các record thôi
-        $suggestNames = Word::where('specialization_id', $request->specialization_id)->pluck('word_name');
-
-        if ($suggestNames->isEmpty()) {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'error' => 'Hiện tại chưa có gợi ý!',
-            ], Response::HTTP_NOT_FOUND);
+        try {
+            $data = Word::where('specialization_id', $request->specialization_id)->pluck('word_name');
+            if ($data->isEmpty()) {
+                return $this->responseError(null, 'Hiện tại chưa có gợi ý!', Response::HTTP_NOT_FOUND);
+            }
+            return $this->responseSuccess($data, 'Lấy từ tất cả từ vưng thành công !');
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'suggest_name' => $suggestNames
-        ]);
     }
 }
