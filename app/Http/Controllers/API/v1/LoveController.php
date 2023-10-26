@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\v1;
 
+use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -10,12 +11,17 @@ use App\Repositories\LoveRepositoryService\ILoveRepository;
 
 class LoveController extends Controller
 {
+    use ResponseTrait;
+
     private $iLoveRepository;
+
     public function __construct(
         ILoveRepository $iLoveRepository,
-    ) {
+    )
+    {
         $this->iLoveRepository = $iLoveRepository;
     }
+
     public function saveLoveVocabulary(Request $request)
     {
         $validator = Validator::make(
@@ -61,6 +67,7 @@ class LoveController extends Controller
             }
         }
     }
+
     public function destroyLoveVocabulary($english, $user_id)
     {
         $isDelete = $this->iLoveRepository->delete($english, $user_id);
@@ -76,22 +83,67 @@ class LoveController extends Controller
             'message' => 'Đã xóa đánh dấu yêu thích.'
         ], Response::HTTP_ACCEPTED);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/v1/total-love-item/{user_id}",
+     *     summary="Lấy tổng số mục yêu thích của người dùng",
+     *     tags={"Favorite"},
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         required=true,
+     *         description="Nhập id của người dùng",
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lấy thành công tổng số mục yêu thích.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="status",
+     *                 type="integer",
+     *                 example=200
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Không tìm thấy người id dùng!",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="status",
+     *                 type="integer",
+     *                 example=404
+     *             ),
+     *             @OA\Property(
+     *                 property="error",
+     *                 type="string",
+     *                 example="Lỗi rồi"
+     *             )
+     *         )
+     *     )
+     * )
+     */
     public function TotalLoveItemOfUser($user_id)
     {
-        $totalLoveItem = $this->iLoveRepository->TotalLoveItemOfUser($user_id);
+        try {
+            $totalLoveItem = $this->iLoveRepository->TotalLoveItemOfUser($user_id);
 
-        if ($totalLoveItem === 0) {
-            return response()->json([
-                'status' => Response::HTTP_OK,
-                'totalLoveItem' => 0
-            ], Response::HTTP_OK);
-        } else {
-            return response()->json([
-                'status' => Response::HTTP_OK,
-                'totalLoveItem' => $totalLoveItem
-            ], Response::HTTP_OK);
+            return $totalLoveItem > 0
+                ?
+                $this->responseSuccess($totalLoveItem, "Lấy thành công.")
+                :
+                $this->responseSuccess(0, "Lấy thành công.");
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
     public function saveLoveText(Request $request)
     {
         $validator = Validator::make(
@@ -135,6 +187,7 @@ class LoveController extends Controller
             }
         }
     }
+
     public function destroyLoveText(Request $request)
     {
         $isDelete = $this->iLoveRepository->deleteLoveText($request->english, $request->user_id);

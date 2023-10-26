@@ -75,7 +75,8 @@
                         <div class="col-7">
                             <ul class="feature-list">
                                 <li>check if exist</li>
-                                <li>get word lookup history</li>
+                                <li>get word lookup history by user</li>
+                                <li>get translate history by user</li>
                             </ul>
                         </div>
                     </div>
@@ -119,13 +120,38 @@
                         </div>
                     </div>
                 </div>
+                <div class="card card-body m-2">
+                    <div class="row">
+                        <div class="col-5">
+                            <h4>Favorite Module</h4>
+                        </div>
+                        <div class="col-7">
+                            <ul class="feature-list">
+                                <li>total love item</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-body m-2">
+                    <div class="row">
+                        <div class="col-5">
+                            <h4>Hot Vocabulary Module</h4>
+                        </div>
+                        <div class="col-7">
+                            <ul class="feature-list">
+                                <li>get-hot-vocabulary</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
                 <p class="text-center">
                     <a href="{{ route('l5-swagger.default.api') }}" class="btn btn-primary">
                         <i class="fa fa-book"></i>API Documentation
                     </a>
                     <a href="https://github.com/quanghuybest2k2/dictionary-server" target="_blank" class="btn btn-info">
-                        <i class="fab fa-github"></i> Github
+                        <i class="fab fa-github"></i> GitHub
                     </a>
                 </p>
             </div>

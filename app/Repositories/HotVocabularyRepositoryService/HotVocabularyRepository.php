@@ -8,7 +8,7 @@ class HotVocabularyRepository implements IHotVocabularyRepository
 {
     public function getHotVocabulary()
     {
-        return  WordLookupHistory::select(
+        return WordLookupHistory::select(
             'english',
             'pronunciations',
             'vietnamese'

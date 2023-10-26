@@ -265,6 +265,180 @@
                 }
             }
         },
+        "/api/v1/get-translate-history/{user_id}": {
+            "get": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Lấy bản dịch trong lịch sử dịch theo id người dùng",
+                "operationId": "5ddbbf544a0d45ac8b8c5a90d4a4a456",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Nhập id của người dùng",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lấy thành công bản dịch trong lịch sử tra từ.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy người id dùng!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Lỗi rồi"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/get-hot-vocabulary": {
+            "get": {
+                "tags": [
+                    "Hot Vocabulary"
+                ],
+                "summary": "Lấy tất cả từ vựng hot",
+                "operationId": "344a8d75a94052183884d26a15b98a35",
+                "responses": {
+                    "200": {
+                        "description": "Lấy thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Lấy từ vưng hot thành công!"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "example": "Firewall"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy từ vựng hot",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Hiện tại chưa có từ vựng hot!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/total-love-item/{user_id}": {
+            "get": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "Lấy tổng số mục yêu thích của người dùng",
+                "operationId": "3a1c5e5a7fb13e71e15a5993c53a26f2",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Nhập id của người dùng",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lấy thành công tổng số mục yêu thích.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy người id dùng!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Lỗi rồi"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/search-word": {
             "get": {
                 "tags": [

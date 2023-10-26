@@ -41,11 +41,13 @@ class SpecializationController extends Controller
      */
     public function getAll()
     {
-        $specialization = $this->specializationRepository->getAll();
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'specialization' => $specialization
-        ]);
+        try {
+            $specialization = $this->specializationRepository->getAll();
+            return $this->responseSuccess($specialization, "Lấy thành công tất cả chuyên ngành.");
+
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
