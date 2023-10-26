@@ -31,8 +31,16 @@ class FrontEndController extends Controller
      *         description="Lấy thành công",
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="status", type="integer", example=200),
-     *             @OA\Property(property="suggest_all", type="array", @OA\Items(type="string"))
+     *             @OA\Property(property="status", type="bool", example=true),
+     *             @OA\Property(property="message", type="string", example="Lấy từ tất cả từ vưng thành công !"),
+     *            @OA\Property(
+     *          property="data",
+     *          type="array",
+     *          @OA\Items(
+     *              type="string",
+     *              example="Firewall"
+     *              )
+     *          )
      *         )
      *     ),
      *     @OA\Response(

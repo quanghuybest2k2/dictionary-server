@@ -75,6 +75,7 @@
                         <div class="col-7">
                             <ul class="feature-list">
                                 <li>check if exist</li>
+                                <li>get word lookup history</li>
                             </ul>
                         </div>
                     </div>

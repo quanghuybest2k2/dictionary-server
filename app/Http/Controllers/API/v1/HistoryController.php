@@ -143,23 +143,61 @@ class HistoryController extends Controller
         }
     }
 
+    //   path="/api/v1/get-word-lookup-history/{user_id}",
+
+    /**
+     * @OA\Get(
+     *     path="/api/v1/get-word-lookup-history/{user_id}",
+     *     summary="Lấy từ vựng trong lịch sử tra từ theo id người dùng",
+     *     tags={"History"},
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         required=true,
+     *         description="Nhập id của người dùng",
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lấy thành công từ vựng trong lịch sử tra từ.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="status",
+     *                 type="integer",
+     *                 example=200
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Không tìm thấy người id dùng!",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="status",
+     *                 type="integer",
+     *                 example=404
+     *             ),
+     *             @OA\Property(
+     *                 property="error",
+     *                 type="string",
+     *                 example="Lỗi rồi"
+     *             )
+     *         )
+     *     )
+     * )
+     */
     public function getWordLookupHistory($user_id)
     {
         try {
             $WordLookupHistory = $this->historiesRepository->getWordLookupHistory($user_id);
-            if ($WordLookupHistory) {
-                return response()->json([
-                    'status' => Response::HTTP_OK,
-                    'WordLookupHistory' => $WordLookupHistory,
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'status' => Response::HTTP_BAD_REQUEST,
-                    'error' => 'Lấy thất bại!'
-                ], Response::HTTP_BAD_REQUEST);
-            }
-        } catch (\Throwable $th) {
-            throw $th;
+
+            return $WordLookupHistory ? $this->responseSuccess($WordLookupHistory, "Lấy thành công.") : $this->responseError("Đã có lỗi xảy ra", "Lấy thất bại!");
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 

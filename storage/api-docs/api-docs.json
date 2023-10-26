@@ -28,13 +28,18 @@
                                 "schema": {
                                     "properties": {
                                         "status": {
-                                            "type": "integer",
-                                            "example": 200
+                                            "type": "boolean",
+                                            "example": true
                                         },
-                                        "suggest_all": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Lấy từ tất cả từ vưng thành công !"
+                                        },
+                                        "data": {
                                             "type": "array",
                                             "items": {
-                                                "type": "string"
+                                                "type": "string",
+                                                "example": "Firewall"
                                             }
                                         }
                                     },
@@ -192,6 +197,64 @@
                                                     "Id người dùng phải là số nguyên dương."
                                                 ]
                                             }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/get-word-lookup-history/{user_id}": {
+            "get": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Lấy từ vựng trong lịch sử tra từ theo id người dùng",
+                "operationId": "d5360c1b4713a3777141804018287acd",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Nhập id của người dùng",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lấy thành công từ vựng trong lịch sử tra từ.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy người id dùng!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Lỗi rồi"
                                         }
                                     },
                                     "type": "object"
