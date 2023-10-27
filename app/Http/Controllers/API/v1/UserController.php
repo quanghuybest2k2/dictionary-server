@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\v1;
 
+use App\Http\Requests\UserRequest\LoginRequest;
 use App\Http\Requests\UserRequest\RegisterRequest;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\JsonResponse;
@@ -25,24 +26,51 @@ class UserController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/v1/register",
+     *     summary="Đăng ký người dùng mới",
+     *     description="Đăng ký một người dùng mới bằng thông tin được gửi qua request.",
      *     tags={"Users"},
-     *     summary="Register User",
-     *     description="Register New User",
      *     @OA\RequestBody(
-     *          @OA\JsonContent(
-     *              type="object",
-     *              @OA\Property(property="name", type="string", example="Đoàn Quang Huy"),
-     *              @OA\Property(property="email", type="string", example="quanghuybest@gmail.com"),
-     *              @OA\Property(property="gender", type="integer", example=1),
-     *              @OA\Property(property="password", type="string", example="12345678")
-     *          ),
-     *      ),
-     *      @OA\Response(response=200, description="Register New User Data" ),
-     *      @OA\Response(response=400, description="Bad request"),
-     *      @OA\Response(response=404, description="Resource Not Found")
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "email", "gender", "password"},
+     *             @OA\Property(property="name", type="string", example="Đoàn Quang Huy", description="Họ và tên của người dùng."),
+     *             @OA\Property(property="email", type="string", format="email", example="quanghuybest@gmail.com", description="Địa chỉ email của người dùng."),
+     *             @OA\Property(property="gender", type="integer", example=1, description="Giới tính của người dùng."),
+     *             @OA\Property(property="password", type="string", format="password", example="12345678", description="Mật khẩu của người dùng."),
+     *         ),
+     *     ),
+     *      @OA\Response(
+     *           response=200,
+     *           description="Successful register",
+     *           @OA\JsonContent(
+     *               @OA\Property(property="name", type="string", example="Đoàn Quang Huy"),
+     *               @OA\Property(property="email", type="string", example="quanghuybest@gmail.com"),
+     *               @OA\Property(property="gender", type="integer", example=1),
+     *               @OA\Property(property="updated_at", type="string", format="date-time", example="2023-10-27T04:58:55.000000Z"),
+     *               @OA\Property(property="created_at", type="string", format="date-time", example="2023-10-27T04:58:55.000000Z"),
+     *               @OA\Property(property="id", type="integer", example=1),
+     *               @OA\Property(property="token", type="string", format="bearer", example="1|6kvnXxRVLzaZW59DMbemHEPJVqal1cVpawyqSbTU"),
+     *           )
+     *       ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Lỗi trong quá trình xử lý request.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Không thành công!"),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Lỗi server trong quá trình xử lý.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Lỗi server nội bộ."),
+     *         ),
+     *     ),
      * )
+     * @param \App\Http\Requests\UserRequest\RegisterRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function register(RegisterRequest $request): JsonResponse
     {
@@ -60,34 +88,60 @@ class UserController extends Controller
         }
     }
 
-    public function login(Request $request)
+    /**
+     * @OA\Post(
+     *      path="/api/v1/login",
+     *      operationId="loginUser",
+     *      tags={"Users"},
+     *      summary="User login",
+     *      description="Logs the user into the application and returns an authentication token.",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          description="Login credentials",
+     *          @OA\JsonContent(
+     *              required={"email", "password"},
+     *              @OA\Property(property="email", type="string", format="email", example="quanghuybest@gmail.com"),
+     *              @OA\Property(property="password", type="string", format="password", example="12345678")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful login",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="userId", type="integer", example=1),
+     *              @OA\Property(property="username", type="string", example="Đoàn Quang Huy"),
+     *              @OA\Property(property="token", type="string", format="bearer", example="1|6kvnXxRVLzaZW59DMbemHEPJVqal1cVpawyqSbTU"),
+     *              @OA\Property(property="role", type="string", example="admin"),
+     *              @OA\Property(property="created_at", type="string", format="date-time", example="2023-10-27T04:58:55.000000Z")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Invalid credentials",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="Thông tin không hợp lệ!")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Internal server error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="Internal server error message.")
+     *          )
+     *      ),
+     *      security={
+     *          {"bearer": {}}
+     *      }
+     * )
+     */
+    public function login(LoginRequest $request): JsonResponse
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'email' => 'required|max:191',
-                'password' => 'required',
-            ],
-            [
-                'required' => 'Bạn phải điền :attribute',
-            ],
-            [
-                'password' => 'Mật khẩu',
-            ]
-        );
-
-        if ($validator->fails()) {
-            return response()->json([
-                'validator_errors' => $validator->messages(),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY); // 422
-        } else {
+        try {
             $user = $this->userRepository->getUserByEmail($request->email);
 
             if (!$user || !Hash::check($request->password, $user->password)) {
-                return response()->json([
-                    'status' => 401,
-                    'message' => 'Thông tin không hợp lệ!',
-                ], Response::HTTP_UNAUTHORIZED); // 401
+                //401
+                return $this->responseError(null, 'Thông tin không hợp lệ!', Response::HTTP_UNAUTHORIZED);
             } else {
                 if ($user->role_as == 1) { // admin
                     $role = 'admin';
@@ -96,27 +150,56 @@ class UserController extends Controller
                     $role = '';
                     $token = $user->createToken($user->email . '_Token', [''])->plainTextToken;
                 }
-                return response()->json([
-                    'status' => 200,
+
+                $data = [
                     'userId' => $user->id,
                     'username' => $user->name,
                     'token' => $token,
-                    'message' => 'Đăng nhập thành công.',
                     'role' => $role,
                     'created_at' => $user->created_at,
-                ]);
+                ];
+                return $this->responseSuccess($data, 'Đăng nhập thành công.');
             }
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function logout()
+    /**
+     * @OA\Post(
+     *     path="/api/v1/logout",
+     *     summary="Đăng xuất người dùng",
+     *     description="Đăng xuất người dùng hiện tại và hủy các token xác thực.",
+     *     tags={"Users"},
+     *     security={{"bearer":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Người dùng đã đăng xuất thành công.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="null", example="null", description="Dữ liệu trả về, không có giá trị."),
+     *             @OA\Property(property="message", type="string", example="Đã đăng xuất."),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Lỗi server trong quá trình xử lý.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Lỗi server nội bộ."),
+     *         ),
+     *     ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout(): JsonResponse
     {
-        $this->userRepository->deleteUserTokens(auth()->user()->id);
+        try {
+            $data = $this->userRepository->deleteUserTokens(auth()->user()->id);
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'Đã đăng xuất.',
-        ]);
+            return $this->responseSuccess($data, "Đã đăng xuất.");
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**

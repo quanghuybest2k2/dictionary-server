@@ -700,28 +700,41 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "Register User",
-                "description": "Register New User",
+                "summary": "Đăng ký người dùng mới",
+                "description": "Đăng ký một người dùng mới bằng thông tin được gửi qua request.",
                 "operationId": "bf5c8e058fdfb7598d5e3041a876a5fa",
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "gender",
+                                    "password"
+                                ],
                                 "properties": {
                                     "name": {
+                                        "description": "Họ và tên của người dùng.",
                                         "type": "string",
                                         "example": "Đoàn Quang Huy"
                                     },
                                     "email": {
+                                        "description": "Địa chỉ email của người dùng.",
                                         "type": "string",
+                                        "format": "email",
                                         "example": "quanghuybest@gmail.com"
                                     },
                                     "gender": {
+                                        "description": "Giới tính của người dùng.",
                                         "type": "integer",
                                         "example": 1
                                     },
                                     "password": {
+                                        "description": "Mật khẩu của người dùng.",
                                         "type": "string",
+                                        "format": "password",
                                         "example": "12345678"
                                     }
                                 },
@@ -732,15 +745,245 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Register New User Data"
+                        "description": "Successful register",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Đoàn Quang Huy"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "quanghuybest@gmail.com"
+                                        },
+                                        "gender": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-10-27T04:58:55.000000Z"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-10-27T04:58:55.000000Z"
+                                        },
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "format": "bearer",
+                                            "example": "1|6kvnXxRVLzaZW59DMbemHEPJVqal1cVpawyqSbTU"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Bad request"
+                        "description": "Lỗi trong quá trình xử lý request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Không thành công!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
-                    "404": {
-                        "description": "Resource Not Found"
+                    "500": {
+                        "description": "Lỗi server trong quá trình xử lý.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Lỗi server nội bộ."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
+            }
+        },
+        "/api/v1/login": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "User login",
+                "description": "Logs the user into the application and returns an authentication token.",
+                "operationId": "loginUser",
+                "requestBody": {
+                    "description": "Login credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "quanghuybest@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "12345678"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "userId": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "username": {
+                                            "type": "string",
+                                            "example": "Đoàn Quang Huy"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "format": "bearer",
+                                            "example": "1|6kvnXxRVLzaZW59DMbemHEPJVqal1cVpawyqSbTU"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "example": "admin"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-10-27T04:58:55.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Thông tin không hợp lệ!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal server error message."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/logout": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Đăng xuất người dùng",
+                "description": "Đăng xuất người dùng hiện tại và hủy các token xác thực.",
+                "operationId": "3fa2c4a9b8570755988d7c55fb702f29",
+                "responses": {
+                    "200": {
+                        "description": "Người dùng đã đăng xuất thành công.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "description": "Dữ liệu trả về, không có giá trị.",
+                                            "type": "null",
+                                            "example": "null"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Đã đăng xuất."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Lỗi server trong quá trình xử lý.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Lỗi server nội bộ."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         },
         "/api/v1/get-user/{id}": {
