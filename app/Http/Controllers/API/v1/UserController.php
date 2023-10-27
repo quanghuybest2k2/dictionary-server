@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\API\v1;
 
-use App\Models\User;
+use App\Http\Requests\UserRequest\RegisterRequest;
 use App\Traits\ResponseTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
-use App\Http\Requests\UserRequest\RegisterRequest;
 use App\Repositories\UserRepositoryService\IUserRepository;
 
 class UserController extends Controller
@@ -25,56 +24,39 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function register(Request $request)
+    /**
+     * @OA\POST(
+     *     path="/api/v1/register",
+     *     tags={"Users"},
+     *     summary="Register User",
+     *     description="Register New User",
+     *     @OA\RequestBody(
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="name", type="string", example="Đoàn Quang Huy"),
+     *              @OA\Property(property="email", type="string", example="quanghuybest@gmail.com"),
+     *              @OA\Property(property="gender", type="integer", example=1),
+     *              @OA\Property(property="password", type="string", example="12345678")
+     *          ),
+     *      ),
+     *      @OA\Response(response=200, description="Register New User Data" ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=404, description="Resource Not Found")
+     * )
+     */
+    public function register(RegisterRequest $request): JsonResponse
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required|max:191',
-                'email' => 'required|email|max:191|unique:users,email',
-                'gender' => 'in:1,2,3',
-                'password' => 'required|min:8',
-            ],
-            [
-                'name.required' => 'Vui lòng nhập :attribute',
-                'name.max' => ':attribute không được vượt quá :max ký tự.',
-                'email.required' => 'Vui lòng nhập địa chỉ :attribute.',
-                'email.email' => 'Địa chỉ :attribute không hợp lệ.',
-                'email.max' => 'Địa chỉ :attribute không được vượt quá :max ký tự.',
-                'email.unique' => 'Địa chỉ :attribute đã được sử dụng.',
-                'gender.in' => ':attribute không hợp lệ.',
-                'password.required' => 'Vui lòng nhập :attribute.',
-                'password.min' => ':attribute phải chứa ít nhất :min ký tự.',
-            ],
-            [
-                'name' => 'Họ và tên',
-                'gender' => 'Giới tính',
-                'password' => 'Mật khẩu',
-            ]
-        );
+        try {
+            $requestData = $request->only('name', 'email', 'gender', 'password');
+            $user = $this->userRepository->createUser($requestData);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'validator_errors' => $validator->messages(),
-            ]);
-        } else {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'gender' => $request->gender,
-                'password' => Hash::make($request->password),
-            ]);
+            if (!$user) {
+                return $this->responseError(null, "Không thành công!");
+            }
 
-            $token = $user->createToken($user->email . '_Token')->plainTextToken;
-
-            return response()->json([
-                'status' => 200,
-                'name' => $user->name,
-                'email' => $user->email,
-                'gender' => $user->gender,
-                'token' => $token,
-                'message' => 'Đăng ký thành công.',
-            ], Response::HTTP_OK);
+            return $this->responseSuccess($user, 'Đăng ký thành công.', Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 

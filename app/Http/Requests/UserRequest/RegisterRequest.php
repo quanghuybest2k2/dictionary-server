@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests\UserRequest;
 
-use Illuminate\Foundation\Http\FormRequest;
+
+use App\Http\Requests\FormRequest;
 
 class RegisterRequest extends FormRequest
 {
@@ -30,6 +31,7 @@ class RegisterRequest extends FormRequest
             'password' => 'required|min:8',
         ];
     }
+
     public function messages(): array
     {
         return [
@@ -44,7 +46,8 @@ class RegisterRequest extends FormRequest
             'password.min' => ':attribute phải chứa ít nhất :min ký tự.',
         ];
     }
-    public function attributes()
+
+    public function attributes(): array
     {
         return [
             'name' => 'Họ và tên',

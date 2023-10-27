@@ -695,6 +695,54 @@
                 }
             }
         },
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Register User",
+                "description": "Register New User",
+                "operationId": "bf5c8e058fdfb7598d5e3041a876a5fa",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Đoàn Quang Huy"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "quanghuybest@gmail.com"
+                                    },
+                                    "gender": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "12345678"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Register New User Data"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
         "/api/v1/get-user/{id}": {
             "get": {
                 "tags": [
@@ -806,5 +854,27 @@
                 }
             }
         }
-    }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer": {
+                "type": "apiKey",
+                "description": "Bearer token, Ex: Bearer <token>",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearer": {
+                "type": "apiKey",
+                "description": "Bearer token, Ex: Bearer <token>",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    ]
 }
