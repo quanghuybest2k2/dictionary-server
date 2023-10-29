@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\API\v1;
 
-use App\Http\Requests\UserRequest\LoginRequest;
-use App\Http\Requests\UserRequest\RegisterRequest;
-use App\Traits\ResponseTrait;
-use Illuminate\Http\JsonResponse;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use App\Traits\ResponseTrait;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\UserRequest\UserRequest;
+use App\Http\Requests\UserRequest\LoginRequest;
+use App\Http\Requests\UserRequest\UpdateRequest;
+use App\Http\Requests\UserRequest\RegisterRequest;
 use App\Repositories\UserRepositoryService\IUserRepository;
 
 class UserController extends Controller
@@ -135,6 +136,9 @@ class UserController extends Controller
     {
         try {
             $user = $this->userRepository->getUserByEmail($request->email);
+            if (!$user instanceof User) { // này ảo nè :))
+                return $user;
+            }
 
             if (!$user || !Hash::check($request->password, $user->password)) {
                 //401
@@ -193,9 +197,14 @@ class UserController extends Controller
     public function logout(): JsonResponse
     {
         try {
-            $data = $this->userRepository->deleteUserTokens(auth()->user()->id);
+            $isLoggedOut = $this->userRepository->deleteUserTokens(auth()->user()->id);
 
-            return $this->responseSuccess($data, "Đã đăng xuất.");
+            if ($isLoggedOut) {
+                // trả về true hoặc false
+                return $this->responseSuccess($isLoggedOut, "Đã đăng xuất.");
+            } else {
+                return $this->responseError(null, 'Đăng xuất thất bại.', Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
         } catch (\Exception $e) {
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -249,79 +258,43 @@ class UserController extends Controller
      *      }
      * )
      */
-    public function getUser($id)
+    public function getUser($id): JsonResponse
     {
         try {
-            $user = $this->userRepository->getUserById($id);
-            return $user ?
-                $this->responseSuccess($user, 'Lấy thành công user!')
-                :
-                $this->responseError(null, 'Không tìm thấy user!', Response::HTTP_NOT_FOUND);
+            $user =  $this->userRepository->getUserById($id);
+            if (!$user) {
+                return $this->responseError(null, "Không tìm thấy người dùng này!", Response::HTTP_NOT_FOUND);
+            }
+            return $this->responseSuccess($user, "Lấy thành công người dùng bằng id");
         } catch (\Exception $e) {
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function update($id, Request $request)
+    public function update($id, UpdateRequest $request): JsonResponse
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required|max:255',
-                'email' => [
-                    'required',
-                    'email',
-                    'max:255',
-                    Rule::unique('users')->ignore($id),
-                ],
-                'gender' => 'in:1,2,3',
-            ],
-            [
-                'required' => 'Vui lòng nhập :attribute',
-                'max' => ':attribute không được vượt quá :max ký tự.',
-                'email.email' => 'Địa chỉ :attribute không hợp lệ.',
-                'gender.in' => ':attribute không hợp lệ.',
-                'email.unique' => 'Email đã tồn tại trong cơ sở dữ liệu.',
-            ],
-            [
-                'name' => 'Họ và tên',
-                'email' => 'Email',
-                'gender' => 'Giới tính',
-            ]
-        );
-
-        if ($validator->fails()) {
-            return response()->json([
-                'validator_errors' => $validator->messages(),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        } else {
+        try {
 
             $user = $this->userRepository->UpdateUser($id, $request->all());
 
-            return response()->json([
-                'status' => Response::HTTP_OK,
-                'message' => 'Cập nhật thông tin thành công.',
-                'user' => $user,
-            ], Response::HTTP_OK);
+            return $this->responseSuccess($user, 'Cập nhật thành công');
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage(), 'Lỗi khi cập nhật người dùng');
         }
     }
 
-    public function destroyUser($id)
+    public function destroyUser($id): JsonResponse
     {
         try {
-            $isDelete = $this->userRepository->deleteUser($id);
-            return $isDelete ?
-                response()->json([
-                    'status' => Response::HTTP_OK,
-                    'message' => 'Tài khoản của bản đã được xóa vĩnh viễn.'
-                ], Response::HTTP_OK)
-                :
-                response()->json([
-                    'status' => Response::HTTP_NOT_FOUND,
-                    'message' => 'Không tìm thấy người dùng!'
-                ], Response::HTTP_NOT_FOUND);
-        } catch (\Throwable $th) {
-            throw $th;
+            $isDeleted = $this->userRepository->deleteUser($id);
+
+            if ($isDeleted) {
+                return $this->responseSuccess($isDeleted, 'Tài khoản của bạn đã được xóa vĩnh viễn.');
+            } else {
+                return $this->responseError('500 Internal Server Error', 'Xóa người dùng thất bại!', Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        } catch (\Exception $e) {
+            return $this->responseError('500 Internal Server Error', $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
