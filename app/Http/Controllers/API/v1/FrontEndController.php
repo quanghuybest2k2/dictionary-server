@@ -17,8 +17,7 @@ class FrontEndController extends Controller
 
     public function __construct(
         IWordRepository $wordRepository,
-    )
-    {
+    ) {
         $this->wordRepository = $wordRepository;
     }
     /**
@@ -59,7 +58,7 @@ class FrontEndController extends Controller
     {
         // chỉ lấy cột word_name của các record thôi
         try {
-            $data = $this->wordRepository->getAll()->pluck('word_name');
+            $data = $this->wordRepository->getAll(); //->pluck('word_name')
             if ($data->isEmpty()) {
                 return $this->responseError(null, 'Hiện tại chưa có gợi ý!', Response::HTTP_NOT_FOUND);
             }
@@ -126,7 +125,7 @@ class FrontEndController extends Controller
     public function suggest(Request $request)
     {
         try {
-            $data = Word::where('specialization_id', $request->specialization_id)->pluck('word_name');
+            $data = Word::where('specialization_id', $request->specialization_id)->get(); //->pluck('word_name')
             if ($data->isEmpty()) {
                 return $this->responseError(null, 'Hiện tại chưa có gợi ý!', Response::HTTP_NOT_FOUND);
             }

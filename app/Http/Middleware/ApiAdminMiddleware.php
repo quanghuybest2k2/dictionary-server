@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Traits\ResponseTrait;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiAdminMiddleware
 {
+    use ResponseTrait;
     /**
      * Handle an incoming request.
      *
@@ -20,15 +22,10 @@ class ApiAdminMiddleware
             if (auth()->user()->tokenCan('server:admin')) {
                 return $next($request);
             } else {
-                return response()->json([
-                    'message' => 'Bạn không có quyền truy cập!'
-                ], 403);
+                return $this->responseError('403 Forbidden', 'Bạn không có quyền truy cập!', Response::HTTP_FORBIDDEN);
             }
         } else {
-            return response()->json([
-                'status' => 401,
-                'message' => 'Vui lòng đăng nhập!'
-            ]);
+            return $this->responseError('401 unauthorized', 'Vui lòng đăng nhập!', Response::HTTP_NOT_FOUND);
         }
     }
 }

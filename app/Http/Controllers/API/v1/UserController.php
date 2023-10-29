@@ -129,9 +129,6 @@ class UserController extends Controller
      *              @OA\Property(property="error", type="string", example="Internal server error message.")
      *          )
      *      ),
-     *      security={
-     *          {"bearer": {}}
-     *      }
      * )
      */
     public function login(LoginRequest $request): JsonResponse
@@ -187,8 +184,10 @@ class UserController extends Controller
      *             @OA\Property(property="error", type="string", example="Lỗi server nội bộ."),
      *         ),
      *     ),
+     *     security={
+     *          {"bearer": {}}
+     *      }
      * )
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function logout(): JsonResponse
@@ -244,7 +243,10 @@ class UserController extends Controller
      *                 example="Lỗi rồi"
      *             )
      *         )
-     *     )
+     *     ),
+     *     security={
+     *          {"bearer": {}}
+     *      }
      * )
      */
     public function getUser($id)
@@ -255,7 +257,6 @@ class UserController extends Controller
                 $this->responseSuccess($user, 'Lấy thành công user!')
                 :
                 $this->responseError(null, 'Không tìm thấy user!', Response::HTTP_NOT_FOUND);
-
         } catch (\Exception $e) {
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
