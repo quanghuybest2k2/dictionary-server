@@ -44,6 +44,8 @@ Route::prefix('v1')->group(function () {
     Route::controller(SearchController::class)->group(function () {
         Route::get('search-word', 'search')->name('searchWord');
         Route::get('search-by-specialty', 'searchBySpecialty')->name('searchBySpecialty');
+        // tìm kiếm từ vựng trong lịch sử
+        Route::get('search-word-lookup-history', 'searchWordLookupHistory')->name('searchWordLookupHistory');
     });
 
     // chuyên ngành
@@ -63,7 +65,7 @@ Route::prefix('v1')->group(function () {
         Route::get('get-translate-history/{user_id}', 'loadTranslateHistoryByUser')->name('getTranslateHistory');
         // lưu lịch sử dịch
         Route::post('save-translate-history', 'storeTranslateHistory')->name('saveTranslateHistory');
-        // xóa lịch sử
+        // xóa lịch sử 
         Route::delete('delete-translate-history/{user_id}', 'destroy')->name('deleteTranslateHistory');
         Route::delete('delete-translate-by-id/{user_id}/{id}', 'destroyById')->name('deleteTranslateById');
     });

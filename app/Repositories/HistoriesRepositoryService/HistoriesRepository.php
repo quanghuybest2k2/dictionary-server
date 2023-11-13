@@ -22,6 +22,12 @@ class HistoriesRepository implements IHistoriesRepository
     {
         return WordLookupHistory::where('user_id', $user_id)->get();
     }
+    public function searchWordLookupHistory($english, $user_id)
+    {
+        return WordLookupHistory::where('english', $english)
+            ->where('user_id', $user_id)
+            ->get();
+    }
     // ====================== TranslateHistory =============================
     public function loadAllTranslateHistory($userId) // nó là getTranslateHistory đó :))
     {

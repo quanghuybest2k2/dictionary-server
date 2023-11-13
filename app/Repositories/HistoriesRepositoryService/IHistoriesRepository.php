@@ -10,6 +10,8 @@ interface IHistoriesRepository
     // ====================== WordLookupHistory ============================
     public function createWordLookupHistory($data);
     public function getWordLookupHistory($user_id);
+    public function searchWordLookupHistory($english, $user_id);
+
     // ====================== TranslateHistory =============================
     public function loadAllTranslateHistory($userId);
     public function createTranslateHistory($data);

@@ -608,6 +608,97 @@
                 }
             }
         },
+        "/api/v1/search-word-lookup-history": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Search Word Lookup History",
+                "description": "Search for words by a user id and english",
+                "operationId": "1a6a7f8ad0a1ec12701e889935893318",
+                "parameters": [
+                    {
+                        "name": "english",
+                        "in": "query",
+                        "description": "English",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Word not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Không tìm thấy danh sách từ vựng!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "validator_errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "searched_word": [
+                                                    "Vui lòng nhập Từ vựng"
+                                                ],
+                                                "specialization_id": [
+                                                    "Id của chuyên ngành phải là số!"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/get-all-specialization": {
             "get": {
                 "tags": [

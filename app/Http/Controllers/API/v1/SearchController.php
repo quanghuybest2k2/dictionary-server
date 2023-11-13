@@ -4,15 +4,20 @@ namespace App\Http\Controllers\API\v1;
 
 use App\Models\Word;
 use App\Models\Means;
-use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use App\Traits\ResponseTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\SearchRequest\SearchRequest;
+use App\Http\Requests\SearchRequest\SearchHistoryRequest;
 use App\Repositories\WordRepositoryService\IWordRepository;
+use App\Http\Requests\SearchRequest\SearchBySpecialtyRequest;
 use App\Repositories\MeansRepositoryService\IMeansRepository;
 use App\Repositories\WordTypeRepositoryService\IWordTypeRepository;
+use App\Repositories\HistoriesRepositoryService\IHistoriesRepository;
 use App\Repositories\SpecializationRepositoryService\ISpecializationRepository;
 
 class SearchController extends Controller
@@ -23,18 +28,20 @@ class SearchController extends Controller
     private $specializationRepository;
     private $meansRepository;
     private $wordTypeRepository;
+    private $iHistoriesRepository;
 
     public function __construct(
         IWordRepository           $wordRepository,
         ISpecializationRepository $specializationRepository,
         IMeansRepository          $meansRepository,
-        IWordTypeRepository       $wordTypeRepository
-    )
-    {
+        IWordTypeRepository       $wordTypeRepository,
+        IHistoriesRepository      $iHistoriesRepository
+    ) {
         $this->wordRepository = $wordRepository;
         $this->specializationRepository = $specializationRepository;
         $this->meansRepository = $meansRepository;
         $this->wordTypeRepository = $wordTypeRepository;
+        $this->iHistoriesRepository = $iHistoriesRepository;
     }
 
     /**
@@ -73,32 +80,14 @@ class SearchController extends Controller
      *      ),
      * )
      */
-    public function search(Request $request)
+    public function search(SearchRequest $request): JsonResponse
     {
         try {
-            $validator = Validator::make(
-                $request->all(),
-                [
-                    'keyword' => 'required',
-                ],
-                [
-                    'required' => 'Vui lòng nhập :attribute',
-                ],
-                [
-                    'keyword' => 'Từ vựng',
-                ]
-            );
-            if ($validator->fails()) {
-                return response()->json([
-                    'validator_errors' => $validator->messages(),
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
-            } else {
-                $word = $this->wordRepository->searchByKeyword($request->keyword);
-                if ($word->isEmpty()) {
-                    return $this->responseError(null, 'Không tìm thấy từ này!', Response::HTTP_NOT_FOUND);
-                }
-                return $this->responseSuccess($word, "Lấy thành công từ vựng.");
+            $word = $this->wordRepository->searchByKeyword($request->keyword);
+            if ($word->isEmpty()) {
+                return $this->responseError(null, 'Không tìm thấy từ này!', Response::HTTP_NOT_FOUND);
             }
+            return $this->responseSuccess($word, "Lấy thành công từ vựng.");
         } catch (\Exception $e) {
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -148,38 +137,74 @@ class SearchController extends Controller
      *      ),
      * )
      */
-    public function searchBySpecialty(Request $request)
+    public function searchBySpecialty(SearchBySpecialtyRequest $request): JsonResponse
     {
         try {
             $searched_word = $request->searched_word;
             $specialization_id = $request->specialization_id;
 
-            $validator = Validator::make(
-                $request->all(),
-                [
-                    'searched_word' => 'required',
-                    'specialization_id' => 'required|integer',
-                ],
-                [
-                    'required' => 'Vui lòng nhập :attribute',
-                    'specialization_id.integer' => 'Id của chuyên ngành phải là số!',
-                ],
-                [
-                    'searched_word' => 'Từ vựng cần tìm',
-                    'specialization_id' => 'Id của chuyên ngành',
-                ]
-            );
-            if ($validator->fails()) {
-                return response()->json([
-                    'validator_errors' => $validator->messages(),
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
-            } else {
-                $word_by_specialty = $this->specializationRepository->findBySpecialty($searched_word, $specialization_id);
-                if ($word_by_specialty->isEmpty()) {
-                    return $this->responseError(null, 'Không tìm thấy từ vựng!', Response::HTTP_NOT_FOUND);
-                }
-                return $this->responseSuccess($word_by_specialty, "Lấy thành công từ vựng theo chuyên ngành.");
+            $word_by_specialty = $this->specializationRepository->findBySpecialty($searched_word, $specialization_id);
+            if ($word_by_specialty->isEmpty()) {
+                return $this->responseError(null, 'Không tìm thấy từ vựng!', Response::HTTP_NOT_FOUND);
             }
+            return $this->responseSuccess($word_by_specialty, "Lấy thành công từ vựng theo chuyên ngành.");
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    /**
+     * @OA\Get(
+     *      path="/api/v1/search-word-lookup-history",
+     *      tags={"Search"},
+     *      summary="Search Word Lookup History",
+     *      description="Search for words by a user id and english",
+     *      @OA\Parameter(
+     *          name="english",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(type="string"),
+     *          description="English"
+     *      ),
+     *      @OA\Parameter(
+     *          name="user_id",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(type="integer"),
+     *          description="User id"
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="status", type="integer", example=200)
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Word not found",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="status", type="integer", example=404),
+     *              @OA\Property(property="error", type="string", example="Không tìm thấy danh sách từ vựng!")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Validation error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="validator_errors", type="object", example={"searched_word": {"Vui lòng nhập Từ vựng"}, "specialization_id": {"Id của chuyên ngành phải là số!"}})
+     *          )
+     *      ),
+     * )
+     */
+    public function searchWordLookupHistory(SearchHistoryRequest $request): JsonResponse
+    {
+        try {
+            $result = $this->iHistoriesRepository->searchWordLookupHistory($request->english, $request->user_id);
+
+            if (!$result) {
+                return $this->responseError(null, "Lấy không thành công!");
+            }
+            return $this->responseSuccess($result, 'Lấy thành công', Response::HTTP_OK);
         } catch (\Exception $e) {
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
