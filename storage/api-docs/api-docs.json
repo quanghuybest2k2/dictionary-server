@@ -265,6 +265,188 @@
                 }
             }
         },
+        "/api/v1/display-by-time-word-lookup-history": {
+            "get": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Display by Time Word Lookup History",
+                "description": "Search for word lookup by a user id and english",
+                "operationId": "dc4a47a1727c01bb258f4b98656a403f",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "time",
+                        "in": "query",
+                        "description": "Time",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Không tìm thấy tài nguyên!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "validator_errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "time": [
+                                                    "Vui lòng nhập ngày giờ"
+                                                ],
+                                                "user_id": [
+                                                    "User id phải là số!"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/display-by-time-translate-history": {
+            "get": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Display by Time Translate History",
+                "description": "Search for translate by a user id and english",
+                "operationId": "f014ab3600585c1f04c8858133d155f4",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "time",
+                        "in": "query",
+                        "description": "Time",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Không tìm thấy tài nguyên!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "validator_errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "time": [
+                                                    "Vui lòng nhập ngày giờ"
+                                                ],
+                                                "user_id": [
+                                                    "User id phải là số!"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/get-translate-history/{user_id}": {
             "get": {
                 "tags": [
@@ -684,6 +866,97 @@
                                             "example": {
                                                 "searched_word": [
                                                     "Vui lòng nhập Từ vựng"
+                                                ],
+                                                "specialization_id": [
+                                                    "Id của chuyên ngành phải là số!"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/search-translate-history": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Search Translate History",
+                "description": "Search for translate by a user id and english",
+                "operationId": "cb65ee3a3e6d74ac475c275b5cb500ab",
+                "parameters": [
+                    {
+                        "name": "english",
+                        "in": "query",
+                        "description": "English",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Word not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Không tìm thấy bản dịch!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "validator_errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "searched_word": [
+                                                    "Vui lòng nhập bản dịch"
                                                 ],
                                                 "specialization_id": [
                                                     "Id của chuyên ngành phải là số!"

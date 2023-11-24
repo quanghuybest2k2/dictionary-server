@@ -36,7 +36,8 @@ class SearchController extends Controller
         IMeansRepository          $meansRepository,
         IWordTypeRepository       $wordTypeRepository,
         IHistoriesRepository      $iHistoriesRepository
-    ) {
+    )
+    {
         $this->wordRepository = $wordRepository;
         $this->specializationRepository = $specializationRepository;
         $this->meansRepository = $meansRepository;
@@ -152,6 +153,7 @@ class SearchController extends Controller
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
     /**
      * @OA\Get(
      *      path="/api/v1/search-word-lookup-history",
@@ -200,6 +202,64 @@ class SearchController extends Controller
     {
         try {
             $result = $this->iHistoriesRepository->searchWordLookupHistory($request->english, $request->user_id);
+
+            if (!$result) {
+                return $this->responseError(null, "Lấy không thành công!");
+            }
+            return $this->responseSuccess($result, 'Lấy thành công', Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *      path="/api/v1/search-translate-history",
+     *      tags={"Search"},
+     *      summary="Search Translate History",
+     *      description="Search for translate by a user id and english",
+     *      @OA\Parameter(
+     *          name="english",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(type="string"),
+     *          description="English"
+     *      ),
+     *      @OA\Parameter(
+     *          name="user_id",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(type="integer"),
+     *          description="User id"
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="status", type="integer", example=200)
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Word not found",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="status", type="integer", example=404),
+     *              @OA\Property(property="error", type="string", example="Không tìm thấy bản dịch!")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Validation error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="validator_errors", type="object", example={"searched_word": {"Vui lòng nhập bản dịch"}, "specialization_id": {"Id của chuyên ngành phải là số!"}})
+     *          )
+     *      ),
+     * )
+     */
+    public function searchTranslateHistory(SearchHistoryRequest $request): JsonResponse
+    {
+        try {
+            $result = $this->iHistoriesRepository->searchTranslateHistory($request->english, $request->user_id);
 
             if (!$result) {
                 return $this->responseError(null, "Lấy không thành công!");

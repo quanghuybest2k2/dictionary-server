@@ -46,6 +46,8 @@ Route::prefix('v1')->group(function () {
         Route::get('search-by-specialty', 'searchBySpecialty')->name('searchBySpecialty');
         // tìm kiếm từ vựng trong lịch sử
         Route::get('search-word-lookup-history', 'searchWordLookupHistory')->name('searchWordLookupHistory');
+        // tìm kiếm bản dịch trong lịch sử
+        Route::get('search-translate-history', 'searchTranslateHistory')->name('searchTranslateHistory');
     });
 
     // chuyên ngành
@@ -57,17 +59,31 @@ Route::prefix('v1')->group(function () {
     // lịch sử
     Route::controller(HistoryController::class)->group(function () {
         Route::get('check-if-exist', 'checkIfExist')->name('checkIfExist');
+        //  ------------------ từ ------------------------------------
         // lấy lịch sử tra từ của user cụ thể
         Route::get('get-word-lookup-history/{user_id}', 'getWordLookupHistory')->name('getWordLookupHistory');
         // lưu lịch sử tra từ
         Route::post('save-word-lookup-history', 'storeWordLookupHistory')->name('saveWordLookupHistory');
-        // hiển thị lịch sử tra từ của user cụ thể
-        Route::get('get-translate-history/{user_id}', 'loadTranslateHistoryByUser')->name('getTranslateHistory');
+        // hiển thị theo thời gian của từ vựng
+        Route::get('display-by-time-word-lookup-history', 'displayByTimeWordLookupHistory')->name('displayByTimeWordLookupHistory');
+        //  xóa từng từ vựng trong lịch sử
+        Route::delete('delete-by-id-word-lookup-history/{user_id}/{id}', 'deleteByIdWordLookupHistory')->name('deleteByIdWordLookupHistory');
+        // xóa tất cả từ vựng trong lịch sử
+        Route::delete('delete-word-lookup-history/{user_id}', 'deleteAllWordLookupHistory')->name('deleteAllWordLookupHistory');
+
+        //  ------------------ dịch ------------------------------------
         // lưu lịch sử dịch
         Route::post('save-translate-history', 'storeTranslateHistory')->name('saveTranslateHistory');
-        // xóa lịch sử 
-        Route::delete('delete-translate-history/{user_id}', 'destroy')->name('deleteTranslateHistory');
-        Route::delete('delete-translate-by-id/{user_id}/{id}', 'destroyById')->name('deleteTranslateById');
+        // hiển thị lịch sử tra từ của user cụ thể
+        Route::get('get-translate-history/{user_id}', 'loadTranslateHistoryByUser')->name('getTranslateHistory');
+        // hiển thị theo thời gian của bản dịch
+        Route::get('display-by-time-translate-history', 'displayByTimeTranslateHistory')->name('displayByTimeTranslateHistory');
+        // xóa từng bản dịch trong lịch sử
+        Route::delete('delete-translate-by-id/{user_id}/{id}', 'deleteByIdTranslateHistory')->name('deleteByIdTranslateHistory');
+        // xóa lịch sử dịch theo user id
+        Route::delete('delete-translate-history/{user_id}', 'deleteAllTranslateHistory')->name('deleteAllTranslateHistory');
+        // delete all
+        Route::delete('delete-all-history/{user_id}', 'deleteAllHistory')->name('deleteAllHistory');
     });
     // yêu thích
     Route::controller(LoveController::class)->group(function () {
@@ -92,10 +108,10 @@ Route::prefix('v1')->group(function () {
         // Nếu xác thực admin thì đã đăng nhập
         Route::get('/checkingAuthenticated', function () {
             return response()->json([
-                'status'  => true,
+                'status' => true,
                 'message' => 'Bạn đã đăng nhập',
-                'errors'  => null,
-                'data'    => null,
+                'errors' => null,
+                'data' => null,
 
             ], 200)->name('checkAuthenticated');
         });

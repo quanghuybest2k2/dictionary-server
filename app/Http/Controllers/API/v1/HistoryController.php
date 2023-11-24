@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1;
 
 use App\Traits\ResponseTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\WordLookupHistory;
 use App\Http\Controllers\Controller;
@@ -21,8 +22,7 @@ class HistoryController extends Controller
 
     public function __construct(
         IHistoriesRepository $historiesRepository,
-    )
-    {
+    ) {
         $this->historiesRepository = $historiesRepository;
     }
 
@@ -203,6 +203,149 @@ class HistoryController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/api/v1/display-by-time-word-lookup-history",
+     *      tags={"History"},
+     *      summary="Display by Time Word Lookup History",
+     *      description="Search for word lookup by a user id and english",
+     *     @OA\Parameter(
+     *           name="user_id",
+     *           in="query",
+     *           required=true,
+     *           @OA\Schema(type="integer"),
+     *           description="User id"
+     *       ),
+     *      @OA\Parameter(
+     *          name="time",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(type="string"),
+     *          description="Time"
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="status", type="integer", example=200)
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Not found",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="status", type="integer", example=404),
+     *              @OA\Property(property="error", type="string", example="Không tìm thấy tài nguyên!")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Validation error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="validator_errors", type="object", example={"time": {"Vui lòng nhập ngày giờ"}, "user_id": {"User id phải là số!"}})
+     *          )
+     *      ),
+     * )
+     */
+    public function displayByTimeWordLookupHistory(Request $request): JsonResponse
+    {
+        try {
+            $data = $this->historiesRepository->displayByTimeWordLookupHistory($request->user_id, $request->time);
+            if ($data) {
+                return $this->responseSuccess($data, 'Thành công');
+            } else {
+                return $this->responseError(null, 'Không tìm thấy tài nguyên!', Response::HTTP_BAD_REQUEST);
+            }
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    /**
+     * @OA\Get(
+     *      path="/api/v1/display-by-time-translate-history",
+     *      tags={"History"},
+     *      summary="Display by Time Translate History",
+     *      description="Search for translate by a user id and english",
+     *     @OA\Parameter(
+     *           name="user_id",
+     *           in="query",
+     *           required=true,
+     *           @OA\Schema(type="integer"),
+     *           description="User id"
+     *       ),
+     *      @OA\Parameter(
+     *          name="time",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(type="string"),
+     *          description="Time"
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="status", type="integer", example=200)
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Not found",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="status", type="integer", example=404),
+     *              @OA\Property(property="error", type="string", example="Không tìm thấy tài nguyên!")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Validation error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="validator_errors", type="object", example={"time": {"Vui lòng nhập ngày giờ"}, "user_id": {"User id phải là số!"}})
+     *          )
+     *      ),
+     * )
+     */
+    public function displayByTimeTranslateHistory(Request $request): JsonResponse
+    {
+        try {
+            $data = $this->historiesRepository->displayByTimeTranslateHistory($request->user_id, $request->time);
+            if ($data) {
+                return $this->responseSuccess($data, 'Thành công');
+            } else {
+                return $this->responseError(null, 'Không tìm thấy tài nguyên!', Response::HTTP_BAD_REQUEST);
+            }
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function deleteByIdWordLookupHistory(Request $request)
+    {
+        try {
+            $data = $this->historiesRepository->deleteByIdWordLookupHistory($request->user_id, $request->id);
+            if ($data) {
+                return $this->responseSuccess($data, 'Đã xóa từ vựng này trong lịch sử.');
+            } else {
+                return $this->responseError(null, 'Không tìm thấy tài nguyên!', Response::HTTP_BAD_REQUEST);
+            }
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    // delete Word Lookup History
+    public function deleteAllWordLookupHistory(Request $request)
+    {
+        try {
+            $data = $this->historiesRepository->deleteAllWordLookupHistory($request->user_id);
+            if ($data) {
+                return $this->responseSuccess($data, 'Đã xóa toàn bộ bản dịch của người này trong lịch sử.');
+            } else {
+                return $this->responseError(null, 'Không tìm thấy tài nguyên!', Response::HTTP_BAD_REQUEST);
+            }
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // ====================== TranslateHistory =============================
 
     /**
@@ -313,44 +456,46 @@ class HistoryController extends Controller
         }
     }
 
-    // delete all record
-    public function destroy(Request $request)
+    // delete All Translate History
+    public function deleteAllTranslateHistory(Request $request)
     {
         try {
-            $isSuccess = $this->historiesRepository->deleteAllTranslateHistory($request->user_id);
-            if ($isSuccess) {
-                return response()->json([
-                    'status' => Response::HTTP_OK,
-                    'message' => 'Đã xóa toàn bộ bản dịch.'
-                ], Response::HTTP_OK);
+            $data = $this->historiesRepository->deleteAllTranslateHistory($request->user_id);
+            if ($data) {
+                return $this->responseSuccess($data, 'Đã xóa toàn bộ bản dịch của người dùng này trong lịch sử.');
             } else {
-                return response()->json([
-                    'status' => Response::HTTP_NOT_FOUND,
-                    'message' => 'Không tìm thấy bản dịch'
-                ], Response::HTTP_NOT_FOUND);
+                return $this->responseError(null, 'Không tìm thấy tài nguyên!', Response::HTTP_BAD_REQUEST);
             }
-        } catch (\Throwable $th) {
-            throw $th;
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function destroyById(Request $request)
+    public function deleteByIdTranslateHistory(Request $request)
     {
         try {
-            $isDelete = $this->historiesRepository->deleteByIdTranslateHistory($request->user_id, $request->id);
-            if ($isDelete) {
-                return response()->json([
-                    'status' => Response::HTTP_OK,
-                    'message' => 'Đã xóa bản dịch.'
-                ], Response::HTTP_OK);
+            $data = $this->historiesRepository->deleteByIdTranslateHistory($request->user_id, $request->id);
+            if ($data) {
+                return $this->responseSuccess($data, 'Đã xóa bản dịch này trong lịch sử.');
             } else {
-                return response()->json([
-                    'status' => Response::HTTP_NOT_FOUND,
-                    'message' => 'Không tìm thấy bản dịch'
-                ], Response::HTTP_NOT_FOUND);
+                return $this->responseError(null, 'Không tìm thấy tài nguyên!', Response::HTTP_BAD_REQUEST);
             }
-        } catch (\Throwable $th) {
-            throw $th;
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function deleteAllHistory(Request $request)
+    {
+        try {
+            $data = $this->historiesRepository->deleteAllHistory($request->user_id);
+            if ($data) {
+                return $this->responseSuccess($data, 'Đã xóa tất cả lịch sử của người dùng này.');
+            } else {
+                return $this->responseError(null, 'Không tìm thấy tài nguyên!', Response::HTTP_BAD_REQUEST);
+            }
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

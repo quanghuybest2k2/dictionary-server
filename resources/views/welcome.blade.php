@@ -75,6 +75,13 @@
                                     <li>check if exist</li>
                                     <li>get word lookup history by user</li>
                                     <li>get translate history by user</li>
+                                    <li>display By Time Word Lookup History</li>
+                                    <li>display By Time Translate History</li>
+                                    <li>delete-by-id-word-lookup-history</li>
+                                    <li>delete-word-lookup-history</li>
+                                    <li>delete-translate-by-id</li>
+                                    <li>delete-translate-history</li>
+                                    <li>delete-all-history</li>
                                 </ul>
                             </div>
                         </div>
@@ -89,6 +96,7 @@
                                     <li>search word</li>
                                     <li>search by specialty</li>
                                     <li>search word lookup history</li>
+                                    <li>search translate history</li>
                                 </ul>
                             </div>
                         </div>
