@@ -94,7 +94,6 @@ class HistoriesRepository implements IHistoriesRepository
 
     public function deleteAllHistory($id)
     {
-        $this->deleteAllWordLookupHistory($id);
-        $this->deleteAllTranslateHistory($id);
+        return $this->deleteAllWordLookupHistory($id) + $this->deleteAllTranslateHistory($id);
     }
 }

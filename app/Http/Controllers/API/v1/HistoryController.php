@@ -317,7 +317,43 @@ class HistoryController extends Controller
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
+    /**
+     * @OA\Delete(
+     *     path="/api/v1/delete-by-id-word-lookup-history/{user_id}/{id}",
+     *     tags={"History"},
+     *     security={{"bearer":{}}},
+     *     summary="Delete By Id Word Lookup History",
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         description="User id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Word id to delete",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied",
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Không tìm thấy tài nguyên",
+     *     ),
+     *     security={
+     *          {"bearer": {}}
+     *      }
+     * )
+     */
     public function deleteByIdWordLookupHistory(Request $request)
     {
         try {
@@ -332,6 +368,34 @@ class HistoryController extends Controller
         }
     }
     // delete Word Lookup History
+    /**
+     * @OA\Delete(
+     *     path="/api/v1/delete-word-lookup-history/{user_id}",
+     *     tags={"History"},
+     *     security={{"bearer":{}}},
+     *     summary="Delete All Word Lookup History",
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         description="User id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied",
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Không tìm thấy tài nguyên",
+     *     ),
+     *     security={
+     *          {"bearer": {}}
+     *      }
+     * )
+     */
     public function deleteAllWordLookupHistory(Request $request)
     {
         try {
@@ -457,6 +521,34 @@ class HistoryController extends Controller
     }
 
     // delete All Translate History
+    /**
+     * @OA\Delete(
+     *     path="/api/v1/delete-translate-history/{user_id}",
+     *     tags={"History"},
+     *     security={{"bearer":{}}},
+     *     summary="Delete All Translate History",
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         description="User id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied",
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Không tìm thấy tài nguyên",
+     *     ),
+     *     security={
+     *          {"bearer": {}}
+     *      }
+     * )
+     */
     public function deleteAllTranslateHistory(Request $request)
     {
         try {
@@ -470,7 +562,43 @@ class HistoryController extends Controller
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
+    /**
+     * @OA\Delete(
+     *     path="/api/v1/delete-translate-by-id/{user_id}/{id}",
+     *     tags={"History"},
+     *     security={{"bearer":{}}},
+     *     summary="Delete By Id Translate History",
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         description="User id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Translate id to delete",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied",
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Không tìm thấy tài nguyên",
+     *     ),
+     *     security={
+     *          {"bearer": {}}
+     *      }
+     * )
+     */
     public function deleteByIdTranslateHistory(Request $request)
     {
         try {
@@ -484,7 +612,34 @@ class HistoryController extends Controller
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
+    /**
+     * @OA\Delete(
+     *     path="/api/v1/delete-all-history/{user_id}",
+     *     tags={"History"},
+     *     security={{"bearer":{}}},
+     *     summary="Delete All History",
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         description="User id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied",
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Không tìm thấy tài nguyên",
+     *     ),
+     *     security={
+     *          {"bearer": {}}
+     *      }
+     * )
+     */
     public function deleteAllHistory(Request $request)
     {
         try {

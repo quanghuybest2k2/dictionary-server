@@ -447,6 +447,81 @@
                 }
             }
         },
+        "/api/v1/delete-by-id-word-lookup-history/{user_id}/{id}": {
+            "delete": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Delete By Id Word Lookup History",
+                "operationId": "c02d3d59a4517199be2c207513579828",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Word id to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Không tìm thấy tài nguyên"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/delete-word-lookup-history/{user_id}": {
+            "delete": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Delete All Word Lookup History",
+                "operationId": "a3f471f1a39630df059c641cac1abfcb",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Không tìm thấy tài nguyên"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/api/v1/get-translate-history/{user_id}": {
             "get": {
                 "tags": [
@@ -503,6 +578,114 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/v1/delete-translate-history/{user_id}": {
+            "delete": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Delete All Translate History",
+                "operationId": "5200a138d128e0955f1b493ed679aa77",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Không tìm thấy tài nguyên"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/delete-translate-by-id/{user_id}/{id}": {
+            "delete": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Delete By Id Translate History",
+                "operationId": "e6d04febfcfc5c88a0b645d0223c2d5c",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Translate id to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Không tìm thấy tài nguyên"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/delete-all-history/{user_id}": {
+            "delete": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Delete All History",
+                "operationId": "b4b90267bc58b770ad50c3978d8502e7",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Không tìm thấy tài nguyên"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         },
         "/api/v1/get-hot-vocabulary": {
