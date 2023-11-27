@@ -123,6 +123,7 @@
                             <div class="col-7">
                                 <ul class="feature-list">
                                     <li>random word</li>
+                                    <li>store word</li>
                                 </ul>
                             </div>
                         </div>

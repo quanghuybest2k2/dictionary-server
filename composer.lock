@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8254cca9d285d2142324ab691b0acdff",
+    "content-hash": "6032adb8f047fd7fa6581571c29681c9",
     "packages": [
         {
             "name": "brick/math",
@@ -3043,6 +3043,59 @@
                 "source": "https://github.com/bobthecow/psysh/tree/v0.11.19"
             },
             "time": "2023-07-15T19:42:19+00:00"
+        },
+        {
+            "name": "quanghuybest2k2/phonetic",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/quanghuybest2k2/phonetic.git",
+                "reference": "6403900cf5af478bd88845417a9f7ed3851ae5e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/quanghuybest2k2/phonetic/zipball/6403900cf5af478bd88845417a9f7ed3851ae5e9",
+                "reference": "6403900cf5af478bd88845417a9f7ed3851ae5e9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "10.5.x-dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Phonetic\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Đoàn Quang Huy",
+                    "email": "quanghuybest@gmail.com"
+                }
+            ],
+            "description": "Convert english to ipa",
+            "keywords": [
+                "Algorithm",
+                "english grammar",
+                "ipa",
+                "language",
+                "metaphone",
+                "nysiis",
+                "phonetic",
+                "soundex"
+            ],
+            "support": {
+                "issues": "https://github.com/quanghuybest2k2/phonetic/issues",
+                "source": "https://github.com/quanghuybest2k2/phonetic/tree/v1.0.0"
+            },
+            "time": "2023-11-27T06:07:14+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

@@ -40,6 +40,7 @@ Route::prefix('v1')->group(function () {
     // từ
     Route::controller(WordController::class)->group(function () {
         Route::get('random-word', 'getRandomWord')->name('getRandomWord');
+        Route::post('store-word', 'storeWord')->name('storeWord');
     });
     Route::controller(SearchController::class)->group(function () {
         Route::get('search-word', 'search')->name('searchWord');

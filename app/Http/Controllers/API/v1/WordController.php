@@ -5,12 +5,14 @@ namespace App\Http\Controllers\API\v1;
 use App\Models\Word;
 use App\Models\Means;
 use App\Models\WordType;
-use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use App\Traits\ResponseTrait;
 use App\Models\Specialization;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\WordRequest\StoreWordRequest;
 use App\Repositories\WordRepositoryService\IWordRepository;
 use App\Repositories\MeansRepositoryService\IMeansRepository;
 use App\Repositories\WordTypeRepositoryService\IWordTypeRepository;
@@ -30,8 +32,7 @@ class WordController extends Controller
         ISpecializationRepository $specializationRepository,
         IMeansRepository          $meansRepository,
         IWordTypeRepository       $wordTypeRepository
-    )
-    {
+    ) {
         $this->wordRepository = $wordRepository;
         $this->specializationRepository = $specializationRepository;
         $this->meansRepository = $meansRepository;
@@ -82,7 +83,58 @@ class WordController extends Controller
                 $this->responseSuccess($randomWord, 'Lấy thành công từ ngẫu nhiên!')
                 :
                 $this->responseError(null, 'Không tìm thấy từ vựng!', Response::HTTP_NOT_FOUND);
-
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    /**
+     * @OA\Post(
+     *     path="/api/v1/store-word",
+     *     summary="Thêm từ vựng mới",
+     *     description="Thêm một từ mới khi người dùng nhập vào các input.",
+     *     tags={"Words"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"word_name", "specialization_id", "synonymous", "antonyms"},
+     *             @OA\Property(property="word_name", type="string", example="Constant", description="Tên từ vựng"),
+     *             @OA\Property(property="specialization_id", type="integer", example=2, description="Id chuyên ngành."),
+     *             @OA\Property(property="synonymous", type="string", example="abc", description="Từ đồng nghĩa (có thể trống)."),
+     *             @OA\Property(property="antonyms", type="string", example="xyz", description="Từ trái nghĩa (có thể trống)."),
+     *         ),
+     *     ),
+     *      @OA\Response(
+     *           response=200,
+     *           description="Thêm từ thành công.",
+     *           @OA\JsonContent(
+     *               @OA\Property(property="word_name", type="string", example="Constant"),
+     *               @OA\Property(property="specialization_id", type="integer", example=2),
+     *               @OA\Property(property="synonymous", type="string", example="abc"),
+     *               @OA\Property(property="antonyms", type="string", example="xyz"),
+     *               @OA\Property(property="updated_at", type="string", format="date-time", example="2023-10-27T04:58:55.000000Z"),
+     *               @OA\Property(property="created_at", type="string", format="date-time", example="2023-10-27T04:58:55.000000Z"),
+     *               @OA\Property(property="id", type="integer", example=1)
+     *           )
+     *       ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Lỗi trong quá trình xử lý request.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Không thành công!"),
+     *         ),
+     *     ),
+     * )
+     * @param \App\Http\Requests\WordRequest\StoreWordRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storeWord(StoreWordRequest $request): JsonResponse
+    {
+        try {
+            $data = $this->wordRepository->createWord($request->all());
+            return $data ?
+                $this->responseSuccess($data, 'Thêm từ thành công!')
+                :
+                $this->responseError(null, 'Lỗi rồi!', Response::HTTP_NOT_FOUND);
         } catch (\Exception $e) {
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

@@ -1643,6 +1643,114 @@
                     }
                 }
             }
+        },
+        "/api/v1/store-word": {
+            "post": {
+                "tags": [
+                    "Words"
+                ],
+                "summary": "Thêm từ vựng mới",
+                "description": "Thêm một từ mới khi người dùng nhập vào các input.",
+                "operationId": "fb5a2dc96446512c21bb54cdf9380e58",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "word_name",
+                                    "specialization_id",
+                                    "synonymous",
+                                    "antonyms"
+                                ],
+                                "properties": {
+                                    "word_name": {
+                                        "description": "Tên từ vựng",
+                                        "type": "string",
+                                        "example": "Constant"
+                                    },
+                                    "specialization_id": {
+                                        "description": "Id chuyên ngành.",
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "synonymous": {
+                                        "description": "Từ đồng nghĩa (có thể trống).",
+                                        "type": "string",
+                                        "example": "abc"
+                                    },
+                                    "antonyms": {
+                                        "description": "Từ trái nghĩa (có thể trống).",
+                                        "type": "string",
+                                        "example": "xyz"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Thêm từ thành công.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "word_name": {
+                                            "type": "string",
+                                            "example": "Constant"
+                                        },
+                                        "specialization_id": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "synonymous": {
+                                            "type": "string",
+                                            "example": "abc"
+                                        },
+                                        "antonyms": {
+                                            "type": "string",
+                                            "example": "xyz"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-10-27T04:58:55.000000Z"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-10-27T04:58:55.000000Z"
+                                        },
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Lỗi trong quá trình xử lý request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Không thành công!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
