@@ -35,8 +35,10 @@ class HistoriesRepository implements IHistoriesRepository
     public function displayByTimeWordLookupHistory($user_id, $time)
     {
         //SELECT * from word_lookup_histories WHERE user_id = 2 and created_at LIKE '%2023-11-13%';
+        // user input 13/11/2023
+        $formattedDate = \DateTime::createFromFormat('d/m/Y', $time)->format('Y-m-d');
         return WordLookupHistory::where('user_id', $user_id)
-            ->where('created_at', 'LIKE', '%' . $time . '%')
+            ->where('created_at', 'LIKE', '%' . $formattedDate . '%')
             ->get();
     }
     public function deleteByIdWordLookupHistory($userId, $id)
@@ -75,8 +77,10 @@ class HistoriesRepository implements IHistoriesRepository
 
     public function displayByTimeTranslateHistory($user_id, $time)
     {
+        $formattedDate = \DateTime::createFromFormat('d/m/Y', $time)->format('Y-m-d');
+
         return TranslateHistory::where('user_id', $user_id)
-            ->where('created_at', 'LIKE', '%' . $time . '%')
+            ->where('created_at', 'LIKE', '%' . $formattedDate . '%')
             ->get();
     }
 

@@ -270,8 +270,8 @@
                 "tags": [
                     "History"
                 ],
-                "summary": "Display by Time Word Lookup History",
-                "description": "Search for word lookup by a user id and english",
+                "summary": "Display by Time Word Lookup",
+                "description": "Search for word lookup by user id and english",
                 "operationId": "dc4a47a1727c01bb258f4b98656a403f",
                 "parameters": [
                     {
@@ -286,11 +286,12 @@
                     {
                         "name": "time",
                         "in": "query",
-                        "description": "Time",
+                        "description": "day/month/year",
                         "required": true,
                         "schema": {
                             "type": "string"
-                        }
+                        },
+                        "example": "18/12/2023"
                     }
                 ],
                 "responses": {
@@ -377,11 +378,12 @@
                     {
                         "name": "time",
                         "in": "query",
-                        "description": "Time",
+                        "description": "day/month/year",
                         "required": true,
                         "schema": {
                             "type": "string"
-                        }
+                        },
+                        "example": "18/12/2023"
                     }
                 ],
                 "responses": {

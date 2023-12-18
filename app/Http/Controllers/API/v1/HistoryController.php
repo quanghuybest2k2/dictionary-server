@@ -207,44 +207,13 @@ class HistoryController extends Controller
      * @OA\Get(
      *      path="/api/v1/display-by-time-word-lookup-history",
      *      tags={"History"},
-     *      summary="Display by Time Word Lookup History",
-     *      description="Search for word lookup by a user id and english",
-     *     @OA\Parameter(
-     *           name="user_id",
-     *           in="query",
-     *           required=true,
-     *           @OA\Schema(type="integer"),
-     *           description="User id"
-     *       ),
-     *      @OA\Parameter(
-     *          name="time",
-     *          in="query",
-     *          required=true,
-     *          @OA\Schema(type="string"),
-     *          description="Time"
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="status", type="integer", example=200)
-     *          ),
-     *      ),
-     *      @OA\Response(
-     *          response=404,
-     *          description="Not found",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="status", type="integer", example=404),
-     *              @OA\Property(property="error", type="string", example="Không tìm thấy tài nguyên!")
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=422,
-     *          description="Validation error",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="validator_errors", type="object", example={"time": {"Vui lòng nhập ngày giờ"}, "user_id": {"User id phải là số!"}})
-     *          )
-     *      ),
+     *      summary="Display by Time Word Lookup",
+     *      description="Search for word lookup by user id and english",
+     *      @OA\Parameter(name="user_id", in="query", required=true, @OA\Schema(type="integer"), description="User id"),
+     *      @OA\Parameter(name="time", in="query", required=true, @OA\Schema(type="string"), description="day/month/year", example="18/12/2023"),
+     *      @OA\Response(response=200, description="Successful operation", @OA\JsonContent(@OA\Property(property="status", type="integer", example=200))),
+     *      @OA\Response(response=404, description="Not found", @OA\JsonContent(@OA\Property(property="status", type="integer", example=404), @OA\Property(property="error", type="string", example="Không tìm thấy tài nguyên!"))),
+     *      @OA\Response(response=422, description="Validation error", @OA\JsonContent(@OA\Property(property="validator_errors", type="object", example={"time": {"Vui lòng nhập ngày giờ"}, "user_id": {"User id phải là số!"}})))
      * )
      */
     public function displayByTimeWordLookupHistory(Request $request): JsonResponse
@@ -260,48 +229,18 @@ class HistoryController extends Controller
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
     /**
      * @OA\Get(
      *      path="/api/v1/display-by-time-translate-history",
      *      tags={"History"},
      *      summary="Display by Time Translate History",
      *      description="Search for translate by a user id and english",
-     *     @OA\Parameter(
-     *           name="user_id",
-     *           in="query",
-     *           required=true,
-     *           @OA\Schema(type="integer"),
-     *           description="User id"
-     *       ),
-     *      @OA\Parameter(
-     *          name="time",
-     *          in="query",
-     *          required=true,
-     *          @OA\Schema(type="string"),
-     *          description="Time"
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="status", type="integer", example=200)
-     *          ),
-     *      ),
-     *      @OA\Response(
-     *          response=404,
-     *          description="Not found",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="status", type="integer", example=404),
-     *              @OA\Property(property="error", type="string", example="Không tìm thấy tài nguyên!")
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=422,
-     *          description="Validation error",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="validator_errors", type="object", example={"time": {"Vui lòng nhập ngày giờ"}, "user_id": {"User id phải là số!"}})
-     *          )
-     *      ),
+     *      @OA\Parameter(name="user_id", in="query", required=true, @OA\Schema(type="integer"), description="User id"),
+     *      @OA\Parameter(name="time", in="query", required=true, @OA\Schema(type="string"), description="day/month/year", example="18/12/2023"),
+     *      @OA\Response(response=200, description="Successful operation", @OA\JsonContent(@OA\Property(property="status", type="integer", example=200))),
+     *      @OA\Response(response=404, description="Not found", @OA\JsonContent(@OA\Property(property="status", type="integer", example=404), @OA\Property(property="error", type="string", example="Không tìm thấy tài nguyên!"))),
+     *      @OA\Response(response=422, description="Validation error", @OA\JsonContent(@OA\Property(property="validator_errors", type="object", example={"time": {"Vui lòng nhập ngày giờ"}, "user_id": {"User id phải là số!"}})))
      * )
      */
     public function displayByTimeTranslateHistory(Request $request): JsonResponse
