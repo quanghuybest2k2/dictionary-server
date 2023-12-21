@@ -753,7 +753,7 @@
                 "tags": [
                     "Favorite"
                 ],
-                "summary": "Lấy tổng số mục yêu thích của người dùng",
+                "summary": "Tổng sô từ vựng của 2 loại",
                 "operationId": "3a1c5e5a7fb13e71e15a5993c53a26f2",
                 "parameters": [
                     {
@@ -768,7 +768,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Lấy thành công tổng số mục yêu thích.",
+                        "description": "Lấy thành công.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -784,7 +784,7 @@
                         }
                     },
                     "404": {
-                        "description": "Không tìm thấy người id dùng!",
+                        "description": "Không tìm thấy id người dùng!",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -804,6 +804,489 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/v1/delete-all-favorite/{user_id}": {
+            "delete": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "Xóa toàn bộ mục yêu thích trong tài khoản cụ thể",
+                "operationId": "23f8fb2a74f8d8c86996b2ff00659efd",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Đã xóa toàn bộ mục yêu thích tài khoản này."
+                    },
+                    "204": {
+                        "description": "Không thể xóa đánh dấu yêu thích!"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/show-love-vocabulary/{user_id}": {
+            "get": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "Hiển thị từ vựng yêu thích",
+                "operationId": "321da76cfa2fe0d491950e07a9030498",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Nhập id của người dùng",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lấy thành công.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy id người dùng!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Lỗi rồi"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/delete-love-vocabulary/{english}/{user_id}": {
+            "delete": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "Xóa từ vựng yêu thích",
+                "operationId": "dd136dcf1812bdfc83b82f422b0ea745",
+                "parameters": [
+                    {
+                        "name": "english",
+                        "in": "path",
+                        "description": "Tiếng anh",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Không tìm thấy tài nguyên"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/sort-by-favorite-word-lookup/{user_id}": {
+            "get": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "Sắp xếp từ vựng yêu thích",
+                "operationId": "af2cd5ce1b7221a5dc4d9c0279bda03b",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Nhập id của người dùng",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sắp xếp thành công.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Đã có lỗi xảy ra!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Đã có lỗi xảy ra!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/update-favorite-vocabulary/{id}/{user_id}": {
+            "put": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "Cập nhật ghi chú",
+                "description": "Cập nhật ghi chú từ vựng",
+                "operationId": "934b1810de2459368425b337465d94e0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id vd: 1",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "user_id vd: 2",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "Note": {
+                                        "type": "string",
+                                        "example": "Tường lửa là một hệ thống bảo mật"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cập nhật ghi chú từ vựng thành công."
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Không tìm thấy tài nguyên!"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/show-love-text/{user_id}": {
+            "get": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "Hiển thị bản dịch yêu thích",
+                "operationId": "f512c27a257dc3f3feeedc4c289d6409",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Nhập id của người dùng",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lấy thành công.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy id người dùng!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Lỗi rồi"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/delete-love-text": {
+            "delete": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "Xóa đánh dấu yêu thích",
+                "description": "Xóa đánh dấu yêu thích cho một từ vựng",
+                "operationId": "destroyLoveText",
+                "requestBody": {
+                    "description": "Thông tin cần thiết để xóa đánh dấu yêu thích",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "english",
+                                    "user_id"
+                                ],
+                                "properties": {
+                                    "english": {
+                                        "description": "Tiếng Anh của từ vựng",
+                                        "type": "string"
+                                    },
+                                    "user_id": {
+                                        "description": "ID của người dùng",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Xóa đánh dấu yêu thích thành công"
+                    },
+                    "400": {
+                        "description": "Dữ liệu không hợp lệ"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Không tìm thấy tài nguyên"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/sort-by-favorite-text/{user_id}": {
+            "get": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "Sắp xếp bản dịch yêu thích",
+                "operationId": "84038dcf326e9cd294ede4bcf377e474",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "Nhập id của người dùng",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sắp xếp thành công.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Đã có lỗi xảy ra!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Đã có lỗi xảy ra!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/update-favorite-text/{id}/{user_id}": {
+            "put": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "Cập nhật ghi chú",
+                "description": "Cập nhật ghi chú bản dịch",
+                "operationId": "37d936d56e05629db9eb86122eda6243",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id vd: 2",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "user_id vd: 3",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "Note": {
+                                        "type": "string",
+                                        "example": "Tom là anh của David"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cập nhật ghi chú bản dịch thành công."
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Không tìm thấy tài nguyên!"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         },
         "/api/v1/search-word": {
@@ -1147,6 +1630,150 @@
                                                     "Id của chuyên ngành phải là số!"
                                                 ]
                                             }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/search-love-vocabulary-by-word": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Tìm kiếm từ vựng yêu thích",
+                "description": "Tìm kiếm từ vựng yêu thích bằng từ và user id",
+                "operationId": "d67958480a5ba6b62fdd087521c92a92",
+                "parameters": [
+                    {
+                        "name": "english",
+                        "in": "query",
+                        "description": "English",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lấy thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/search-love-text-by-word": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Tìm kiếm văn bản yêu thích",
+                "description": "Tìm kiếm văn bản yêu thích bằng từ và user id",
+                "operationId": "856158f72cf3c2494e32566302e1d41d",
+                "parameters": [
+                    {
+                        "name": "english",
+                        "in": "query",
+                        "description": "English",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lấy thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/find-love-by-word-and-english": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Tìm kiếm tổng số mục yêu thích",
+                "description": "Tìm kiếm tổng số mục yêu thích bằng từ vựng và bản dịch",
+                "operationId": "bb87832699e597fae0610a8447b9fa51",
+                "parameters": [
+                    {
+                        "name": "english",
+                        "in": "query",
+                        "description": "English",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lấy thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"

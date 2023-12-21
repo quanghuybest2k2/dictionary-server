@@ -42,6 +42,7 @@ Route::prefix('v1')->group(function () {
         Route::get('random-word', 'getRandomWord')->name('getRandomWord');
         Route::post('store-word', 'storeWord')->name('storeWord');
     });
+    // tìm kiếm
     Route::controller(SearchController::class)->group(function () {
         Route::get('search-word', 'search')->name('searchWord');
         Route::get('search-by-specialty', 'searchBySpecialty')->name('searchBySpecialty');
@@ -49,6 +50,12 @@ Route::prefix('v1')->group(function () {
         Route::get('search-word-lookup-history', 'searchWordLookupHistory')->name('searchWordLookupHistory');
         // tìm kiếm bản dịch trong lịch sử
         Route::get('search-translate-history', 'searchTranslateHistory')->name('searchTranslateHistory');
+        // tìm kiếm từ vựng yêu thích
+        Route::get('search-love-vocabulary-by-word', 'searchLoveVocabularyByWord')->name('searchLoveVocabularyByWord');
+        // tìm kiếm văn bản yêu thích
+        Route::get('search-love-text-by-word', 'searchLoveTextByWord')->name('searchLoveTextByWord');
+        // tìm kiếm tổng số mục yêu thích bằng từ vựng và bản dịch
+        Route::get('find-love-by-word-and-english', 'searchLoveByWordAndEnglish')->name('searchLoveByWordAndEnglish');
     });
 
     // chuyên ngành
@@ -88,16 +95,32 @@ Route::prefix('v1')->group(function () {
     });
     // yêu thích
     Route::controller(LoveController::class)->group(function () {
-        // lưu từ vựng yêu thích
-        Route::post('save-love_vocabulary', 'saveLoveVocabulary')->name('saveLoveVocabulary');
-        // xóa từ yêu thích
-        Route::delete('delete-love_vocabulary/{english}/{user_id}', 'destroyLoveVocabulary')->name('deleteLoveVocabulary');
         // lấy tổng mục yêu thích của user
         Route::get('total-love-item/{user_id}', 'TotalLoveItemOfUser')->name('totalLoveItem');
+        // Xóa hết record trong 2 bảng
+        Route::delete('delete-all-favorite/{user_id}', 'destroyAllFavorite')->name('destroyAllFavorite');
+        //  ------------------ từ ------------------------------------
+        // hiển thị từ vựng yêu thích
+        Route::get('show-love-vocabulary/{user_id}', 'showLoveVocabulary')->name('showLoveVocabulary');
+        // lưu từ vựng yêu thích
+        Route::post('save-love-vocabulary', 'saveLoveVocabulary')->name('saveLoveVocabulary');
+        // xóa từ yêu thích
+        Route::delete('delete-love-vocabulary/{english}/{user_id}', 'destroyLoveVocabulary')->name('destroyLoveVocabulary');
+        // sắp xếp từ vựng yêu thích
+        Route::get('sort-by-favorite-word-lookup/{user_id}', 'sortByFavoriteWordLookup')->name('sortByFavoriteWordLookup');
+        // cập nhật ghi chú của từ vựng        
+        Route::put('update-favorite-vocabulary/{id}/{user_id}', 'updateFavoriteVocabulary')->name('updateFavoriteVocabulary');
+        //  ------------------ dịch ------------------------------------
+        // hiển thị bản dịch yêu thích
+        Route::get('show-love-text/{user_id}', 'showLoveText')->name('showLoveText');
         // Thêm văn bản
-        Route::post('save-love_text', 'saveLoveText')->name('saveLoveText');
+        Route::post('save-love-text', 'saveLoveText')->name('saveLoveText');
         // Xóa văn bản
-        Route::delete('delete-love_text', 'destroyLoveText')->name('deleteLoveText');
+        Route::delete('delete-love-text', 'destroyLoveText')->name('destroyLoveText');
+        // sắp xếp bản dịch yêu thích
+        Route::get('sort-by-favorite-text/{user_id}', 'sortByFavoriteText')->name('sortByFavoriteText');
+        // cập nhật ghi chú của bản dịch        
+        Route::put('update-favorite-text/{id}/{user_id}', 'updateFavoriteText')->name('updateFavoriteText');
     });
     // từ vựng hot
     Route::controller(HotVocabularyController::class)->group(function () {

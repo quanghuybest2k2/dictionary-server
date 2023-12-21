@@ -97,6 +97,9 @@
                                     <li>search by specialty</li>
                                     <li>search word lookup history</li>
                                     <li>search translate history</li>
+                                    <li>search love vocabulary by word</li>
+                                    <li>search love text by word</li>
+                                    <li>find love by word and english</li>
                                 </ul>
                             </div>
                         </div>
@@ -136,6 +139,15 @@
                             <div class="col-7">
                                 <ul class="feature-list">
                                     <li>total love item</li>
+                                    <li>show love vocabulary</li>
+                                    <li>delete love vocabulary</li>
+                                    <li>show love text</li>
+                                    <li>delete love text</li>
+                                    <li>delete all favorite</li>
+                                    <li>sort by favorite word lookup</li>
+                                    <li>sort by favorite text</li>
+                                    <li>update vocabulary</li>
+                                    <li>update text</li>
                                 </ul>
                             </div>
                         </div>

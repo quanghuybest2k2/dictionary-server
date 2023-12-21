@@ -9,10 +9,12 @@ use App\Traits\ResponseTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SearchRequest\LoveRequest;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\SearchRequest\SearchRequest;
 use App\Http\Requests\SearchRequest\SearchHistoryRequest;
+use App\Repositories\LoveRepositoryService\ILoveRepository;
 use App\Repositories\WordRepositoryService\IWordRepository;
 use App\Http\Requests\SearchRequest\SearchBySpecialtyRequest;
 use App\Repositories\MeansRepositoryService\IMeansRepository;
@@ -29,20 +31,22 @@ class SearchController extends Controller
     private $meansRepository;
     private $wordTypeRepository;
     private $iHistoriesRepository;
+    private $iLoveRepository;
 
     public function __construct(
         IWordRepository           $wordRepository,
         ISpecializationRepository $specializationRepository,
         IMeansRepository          $meansRepository,
         IWordTypeRepository       $wordTypeRepository,
-        IHistoriesRepository      $iHistoriesRepository
-    )
-    {
+        IHistoriesRepository      $iHistoriesRepository,
+        ILoveRepository $iLoveRepository
+    ) {
         $this->wordRepository = $wordRepository;
         $this->specializationRepository = $specializationRepository;
         $this->meansRepository = $meansRepository;
         $this->wordTypeRepository = $wordTypeRepository;
         $this->iHistoriesRepository = $iHistoriesRepository;
+        $this->iLoveRepository = $iLoveRepository;
     }
 
     /**
@@ -260,6 +264,132 @@ class SearchController extends Controller
     {
         try {
             $result = $this->iHistoriesRepository->searchTranslateHistory($request->english, $request->user_id);
+
+            if (!$result) {
+                return $this->responseError(null, "Lấy không thành công!");
+            }
+            return $this->responseSuccess($result, 'Lấy thành công', Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    /**
+     * @OA\Get(
+     *      path="/api/v1/search-love-vocabulary-by-word",
+     *      tags={"Search"},
+     *      summary="Tìm kiếm từ vựng yêu thích",
+     *      description="Tìm kiếm từ vựng yêu thích bằng từ và user id",
+     *      @OA\Parameter(
+     *          name="english",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(type="string"),
+     *          description="English"
+     *      ),
+     *      @OA\Parameter(
+     *          name="user_id",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(type="integer"),
+     *          description="User id"
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Lấy thành công",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="status", type="integer", example=200)
+     *          ),
+     *      )
+     * )
+     */
+    public function searchLoveVocabularyByWord(LoveRequest $request): JsonResponse
+    {
+        try {
+            $result = $this->iLoveRepository->displayLoveVocabularyByWord($request->english, $request->user_id);
+
+            if (!$result) {
+                return $this->responseError(null, "Lấy không thành công!");
+            }
+            return $this->responseSuccess($result, 'Lấy thành công', Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    /**
+     * @OA\Get(
+     *      path="/api/v1/search-love-text-by-word",
+     *      tags={"Search"},
+     *      summary="Tìm kiếm văn bản yêu thích",
+     *      description="Tìm kiếm văn bản yêu thích bằng từ và user id",
+     *      @OA\Parameter(
+     *          name="english",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(type="string"),
+     *          description="English"
+     *      ),
+     *      @OA\Parameter(
+     *          name="user_id",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(type="integer"),
+     *          description="User id"
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Lấy thành công",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="status", type="integer", example=200)
+     *          ),
+     *      )
+     * )
+     */
+    public function searchLoveTextByWord(LoveRequest $request): JsonResponse
+    {
+        try {
+            $result = $this->iLoveRepository->displayLoveTextByWord($request->english, $request->user_id);
+
+            if (!$result) {
+                return $this->responseError(null, "Lấy không thành công!");
+            }
+            return $this->responseSuccess($result, 'Lấy thành công', Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    /**
+     * @OA\Get(
+     *      path="/api/v1/find-love-by-word-and-english",
+     *      tags={"Search"},
+     *      summary="Tìm kiếm tổng số mục yêu thích",
+     *      description="Tìm kiếm tổng số mục yêu thích bằng từ vựng và bản dịch",
+     *      @OA\Parameter(
+     *          name="english",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(type="string"),
+     *          description="English"
+     *      ),
+     *      @OA\Parameter(
+     *          name="user_id",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(type="integer"),
+     *          description="User id"
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Lấy thành công",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="status", type="integer", example=200)
+     *          ),
+     *      )
+     * )
+     */
+    public function searchLoveByWordAndEnglish(LoveRequest $request): JsonResponse
+    {
+        try {
+            $result = $this->iLoveRepository->FindLoveByWordAndEnglish($request->english, $request->user_id);
 
             if (!$result) {
                 return $this->responseError(null, "Lấy không thành công!");
