@@ -897,6 +897,59 @@
                 }
             }
         },
+        "/api/v1/save-love-vocabulary": {
+            "post": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "Thêm mục yêu thích",
+                "description": "Thêm vào mục yêu thích",
+                "operationId": "8b0ba3ee0b70978f704592c09736e509",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "english": {
+                                        "type": "string",
+                                        "example": "ISP"
+                                    },
+                                    "pronunciations": {
+                                        "type": "string",
+                                        "example": "/ˌaɪ.esˈpiː/"
+                                    },
+                                    "vietnamese": {
+                                        "type": "string",
+                                        "example": "Nhà phân phối dịch vụ internet"
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Đã thêm từ này vào mục yêu thích."
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/api/v1/delete-love-vocabulary/{english}/{user_id}": {
             "delete": {
                 "tags": [
@@ -1114,6 +1167,55 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/v1/save-love-text": {
+            "post": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "Thêm mục yêu thích",
+                "description": "Thêm vào mục yêu thích",
+                "operationId": "4b4576b4e38346e1c023f5ea2d9fb803",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "english": {
+                                        "type": "string",
+                                        "example": "Good morning!"
+                                    },
+                                    "vietnamese": {
+                                        "type": "string",
+                                        "example": "Chào buổi sáng"
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Đã thêm bản dịch này vào mục yêu thích."
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         },
         "/api/v1/delete-love-text": {

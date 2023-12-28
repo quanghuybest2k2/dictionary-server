@@ -7,8 +7,9 @@ use App\Traits\ResponseTrait;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoveRequest\UpdateRequest;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\LoveRequest\StoreRequest;
+use App\Http\Requests\LoveRequest\UpdateRequest;
 use App\Repositories\LoveRepositoryService\ILoveRepository;
 
 class LoveController extends Controller
@@ -139,49 +140,41 @@ class LoveController extends Controller
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-    public function saveLoveVocabulary(Request $request): JsonResponse
+    /**
+     * @OA\POST(
+     *     path="/api/v1/save-love-vocabulary",
+     *     tags={"Favorite"},
+     *     summary="Thêm mục yêu thích",
+     *     description="Thêm vào mục yêu thích",
+     *     @OA\RequestBody(
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="english", type="string", example="ISP"),
+     *              @OA\Property(property="pronunciations", type="string", example="/ˌaɪ.esˈpiː/"),
+     *              @OA\Property(property="vietnamese", type="string", example="Nhà phân phối dịch vụ internet"),
+     *              @OA\Property(property="user_id", type="integer", example=2)
+     *          ),
+     *      ),
+     *      security={{"bearer":{}}},
+     *      @OA\Response(response=200, description="Đã thêm từ này vào mục yêu thích." ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=404, description="Resource Not Found"),
+     * )
+     */
+    public function saveLoveVocabulary(StoreRequest $request): JsonResponse
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'english' => 'required|max:400',
-                'pronunciations' => 'required|max:100',
-                'vietnamese' => 'required|max:400',
-                'user_id' => 'required|integer|min:1',
-            ],
-            [
-                'required' => 'Vui lòng nhập :attribute.',
-                'max' => ':attribute không được vượt quá :max ký tự.',
-                'integer' => ':attribute phải là số nguyên.',
-                'min' => ':attribute phải lớn hơn hoặc bằng :min.',
-            ],
-            [
-                'english' => 'Tiếng anh',
-                'pronunciations' => 'Phiên âm',
-                'vietnamese' => 'Tiếng việt',
-                'user_id' => 'Id người dùng',
-            ]
-        );
-        if ($validator->fails()) {
-            return response()->json([
-                'validator_errors' => $validator->messages(),
-            ]);
-        } else {
-
-            $loveVocabularies = $this->iLoveRepository->createLoveVocabulary($request->all());
+        $request->setRequestType('loveVocabulary');
+        try {
+            $requestData = $request->only('english', 'pronunciations', 'vietnamese', 'user_id');
+            $loveVocabularies = $this->iLoveRepository->createLoveVocabulary($requestData);
 
             if ($loveVocabularies) {
-                return response()->json([
-                    'status' => Response::HTTP_CREATED,
-                    'message' => 'Đã thêm từ này vào mục yêu thích.',
-                    'loveVocabularies' => $loveVocabularies
-                ], Response::HTTP_CREATED);
+                return $this->responseSuccess($loveVocabularies, 'Đã thêm từ này vào mục yêu thích.', Response::HTTP_CREATED);
             } else {
-                return response()->json([
-                    'status' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Thêm thất bại!'
-                ], Response::HTTP_BAD_REQUEST);
+                return $this->responseError('Bad Request', 'Thêm thất bại');
             }
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
     /**
@@ -339,47 +332,40 @@ class LoveController extends Controller
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-    public function saveLoveText(Request $request): JsonResponse
+    /**
+     * @OA\POST(
+     *     path="/api/v1/save-love-text",
+     *     tags={"Favorite"},
+     *     summary="Thêm mục yêu thích",
+     *     description="Thêm vào mục yêu thích",
+     *     @OA\RequestBody(
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="english", type="string", example="Good morning!"),
+     *              @OA\Property(property="vietnamese", type="string", example="Chào buổi sáng"),
+     *              @OA\Property(property="user_id", type="integer", example=2)
+     *          ),
+     *      ),
+     *      security={{"bearer":{}}},
+     *      @OA\Response(response=200, description="Đã thêm bản dịch này vào mục yêu thích." ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=404, description="Resource Not Found"),
+     * )
+     */
+    public function saveLoveText(StoreRequest $request): JsonResponse
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'english' => 'required|max:400',
-                'vietnamese' => 'required|max:400',
-                'user_id' => 'required|integer|min:1',
-            ],
-            [
-                'required' => 'Vui lòng nhập :attribute.',
-                'max' => ':attribute không được vượt quá :max ký tự.',
-                'integer' => ':attribute phải là số nguyên.',
-                'min' => ':attribute phải lớn hơn hoặc bằng :min.',
-            ],
-            [
-                'english' => 'Tiếng anh',
-                'vietnamese' => 'Tiếng việt',
-                'user_id' => 'Id người dùng',
-            ]
-        );
-        if ($validator->fails()) {
-            return response()->json([
-                'validator_errors' => $validator->messages(),
-            ]);
-        } else {
+        $request->setRequestType('loveText');
+        try {
+            $requestData = $request->only('english', 'vietnamese', 'user_id');
+            $loveText = $this->iLoveRepository->createLoveTexts($requestData);
 
-            $loveTexts = $this->iLoveRepository->createLoveTexts($request->all());
-
-            if ($loveTexts) {
-                return response()->json([
-                    'status' => Response::HTTP_CREATED,
-                    'message' => 'Đã thêm bản dịch này vào mục yêu thích.',
-                    'loveTexts' => $loveTexts
-                ], Response::HTTP_CREATED);
+            if ($loveText) {
+                return $this->responseSuccess($loveText, 'Đã thêm bản dịch này vào mục yêu thích.', Response::HTTP_CREATED);
             } else {
-                return response()->json([
-                    'status' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Thêm thất bại!'
-                ], Response::HTTP_BAD_REQUEST);
+                return $this->responseError('Bad Request', 'Thêm thất bại');
             }
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
     /**

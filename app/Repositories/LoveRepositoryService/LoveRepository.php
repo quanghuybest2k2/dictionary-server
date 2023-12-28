@@ -167,12 +167,23 @@ class LoveRepository implements ILoveRepository
     /**
      * Tạo mới một từ vựng yêu thích.
      *
-     * @param array $data Dữ liệu từ vựng yêu thích mới
-     * @return array Thông tin về từ vựng yêu thích mới
+     * @param array $data Dữ liệu gửi về server
+     * @return void
      */
-    public function createLoveVocabulary($data): array
+    public function createLoveVocabulary(array $data)
     {
-        return LoveVocabulary::create($data);
+        $exist = $this->checkIfExist(LoveVocabulary::class, $data['english'], $data['user_id']);
+        if ($exist) {
+            throw new \Exception('Đã tồn tại từ vựng yêu thích này!');
+        } else {
+            $LoveVocabulary = LoveVocabulary::create([
+                'english' => $data['english'],
+                'pronunciations' => $data['pronunciations'],
+                'vietnamese' => $data['vietnamese'],
+                'user_id' => $data['user_id'],
+            ]);
+            return $LoveVocabulary;
+        }
     }
     /**
      * Xóa một từ vựng yêu thích của người dùng.
@@ -273,14 +284,24 @@ class LoveRepository implements ILoveRepository
         // }
     }
     /**
-     * Tạo mới một văn bản yêu thích.
+     * Tạo mới một bản dịch yêu thích.
      *
-     * @param array $data Dữ liệu văn bản yêu thích mới
-     * @return array Thông tin về văn bản yêu thích mới
+     * @param array $data Dữ liệu gửi về server
+     * @return void
      */
-    public function createLoveTexts($data): array
+    public function createLoveTexts(array $data)
     {
-        return LoveText::create($data);
+        $exist = $this->checkIfExist(LoveText::class, $data['english'], $data['user_id']);
+        if ($exist) {
+            throw new \Exception('Đã tồn tại bản dịch yêu thích này!');
+        } else {
+            $LoveText = LoveText::create([
+                'english' => $data['english'],
+                'vietnamese' => $data['vietnamese'],
+                'user_id' => $data['user_id'],
+            ]);
+            return $LoveText;
+        }
     }
     /**
      * Xóa một văn bản yêu thích của người dùng.
