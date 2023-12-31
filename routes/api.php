@@ -10,6 +10,7 @@ use App\Http\Controllers\API\v1\HistoryController;
 use App\Http\Controllers\API\v1\FrontEndController;
 use App\Http\Controllers\API\v1\DashboardController;
 use App\Http\Controllers\API\v1\HotVocabularyController;
+use App\Http\Controllers\API\v1\MiniGameController;
 use App\Http\Controllers\API\v1\SpecializationController;
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -126,6 +127,15 @@ Route::prefix('v1')->group(function () {
     Route::controller(HotVocabularyController::class)->group(function () {
         // lưu từ vựng yêu thích
         Route::get('get-hot-vocabulary', 'getHotVocabulary')->name('getHotVocabulary');
+    });
+    // mini game
+    Route::controller(MiniGameController::class)->group(function () {
+        // lấy ngẫu nhiên câu hỏi
+        Route::get('get-questions/{limit}/{user_id}', 'getQuestions')->name('getQuestions');
+        // bổ sung câu hỏi nếu chưa đủ 10
+        Route::get('get-more-questions-mini-game/{limit}', 'getMoreQuestionsMiniGame')->name('getMoreQuestionsMiniGame');
+        // lấy ngẫu nhiên đáp án sai
+        Route::get('get-random-wrong-answers/{english}/{limit}', 'getRandomWrongAnswers')->name('getRandomWrongAnswers');
     });
     // ====================================== For Admin ======================================
     Route::middleware('auth:sanctum', 'isAPIAdmin')->group(function () {

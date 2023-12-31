@@ -12,6 +12,7 @@
         "laravel/sanctum": "^3.2",
         "laravel/telescope": "^4.15",
         "laravel/tinker": "^2.8",
+        "orangehill/iseed": "^3.0",
         "quanghuybest2k2/phonetic": "^1.0",
         "spatie/laravel-responsecache": "^7.4"
     },

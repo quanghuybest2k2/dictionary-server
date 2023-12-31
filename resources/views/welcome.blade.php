@@ -166,6 +166,21 @@
                         </div>
                     </div>
 
+                    <div class="card card-body m-2">
+                        <div class="row">
+                            <div class="col-5">
+                                <h4>Mini Game Module</h4>
+                            </div>
+                            <div class="col-7">
+                                <ul class="feature-list">
+                                    <li>get-questions</li>
+                                    <li>get-more-questions-mini-game</li>
+                                    <li>get-random-wrong-answers</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
                     <p class="text-center">
                         <a href="{{ route('l5-swagger.default.api') }}" class="btn btn-primary">
                             <i class="fa fa-book"></i>API Documentation
