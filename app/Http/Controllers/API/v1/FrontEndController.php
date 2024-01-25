@@ -125,7 +125,7 @@ class FrontEndController extends Controller
     public function suggest(Request $request)
     {
         try {
-            $data = Word::where('specialization_id', $request->specialization_id)->get(); //->pluck('word_name')
+            $data = $this->wordRepository->getSuggest($request->specialization_id);
             if ($data->isEmpty()) {
                 return $this->responseError(null, 'Hiện tại chưa có gợi ý!', Response::HTTP_NOT_FOUND);
             }

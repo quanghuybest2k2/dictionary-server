@@ -1,26 +1,33 @@
 # Server Dictionary App For IT
 
-### Xây dựng api cho từ điển tiếng anh chuyên ngành công nghệ thông tin
+## Xây dựng api cho từ điển tiếng anh chuyên ngành công nghệ thông tin
 
 [Front end (winform) link](https://github.com/quanghuybest2k2/DictionaryAppForIT)
 
-### PHP Docblock
+## Hướng dẫn cài đặt
 
-```php
-<?php
-// example
-/**
-     * Tính tổng số lượng bản ghi của cả hai loại.
-     *
-     * @param int $user_id ID người dùng
-     * @return int Tổng số lượng bản ghi
-     */
-    public function TotalLoveItemOfUser($user_id): int
-    {
-        $loveVocabulary = $this->countLoveVocabulary($user_id);
-        $loveText = $this->countLoveTexts($user_id);
+### Cài đặt Database
 
-        return $loveVocabulary + $loveText;
-    }
-?>
-```
+#### Mở Laragon nhấn `chạy`
+
+#### truy cập url `http://localhost/phpmyadmin/` và tạo database mới đặt tên là `englishdictionary`
+
+### Cài đặt dictionary-server
+
+#### Gõ các lệnh:
+
+### `cp .env.example .env`
+
+### vào `.env` vừa tạo sửa `DB_DATABASE=englishdictionary`
+
+### Gõ lệnh `composer install` nếu không được thì gõ `composer update`
+
+### Gõ lệnh `php artisan key:generate`
+
+### Gõ lệnh `php artisan migrate:fresh --seed`
+
+### Để chạy dự án `php artisan serve`
+
+### Docs API
+
+`http://127.0.0.1:8000/api/docs`

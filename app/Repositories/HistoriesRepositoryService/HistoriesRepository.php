@@ -5,15 +5,9 @@ namespace App\Repositories\HistoriesRepositoryService;
 use App\Models\TranslateHistory;
 use App\Models\WordLookupHistory;
 use App\Repositories\HistoriesRepositoryService\IHistoriesRepository;
-use Illuminate\Database\Eloquent\Model;
 
 class HistoriesRepository implements IHistoriesRepository
 {
-    public function checkIfExist(Model $model, $english, $userId)
-    {
-        return $model::where('english', $english)->where('user_id', $userId)->count();
-    }
-
     // ====================== WordLookupHistory ============================
     public function createWordLookupHistory($data)
     {

@@ -5,13 +5,24 @@ namespace App\Repositories\LoveRepositoryService;
 use Exception;
 use App\Models\LoveText;
 use App\Models\LoveVocabulary;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 
 // https://github.com/quanghuybest2k2/DictionaryAppForIT/blob/main/rest-api/DictionaryAppForIT/UserControls/YeuThich/UC_YeuThich.cs
 
 class LoveRepository implements ILoveRepository
 {
+    /**
+     * Kiểm tra tồn tại yêu thích từ vựng hoặc văn bản
+     *
+     * @param Model $model
+     * @param string $english
+     * @param int $userId
+     * @return mixed
+     */
+    public function checkIfExistByType(Model $model, $english, $userId)
+    {
+        return $model::where('english', $english)->where('user_id', $userId)->count();
+    }
     /**
      * Kiểm tra tồn tại
      *
@@ -20,6 +31,7 @@ class LoveRepository implements ILoveRepository
      * @param int $user_id
      * @return void
      */
+    //select COUNT(ID) from YeuThichTuVung where TiengAnh = 'firewall' and IDTK = 2
     private function checkIfExist($model, $english, $user_id)
     {
         return $model::where('english', $english)

@@ -2,8 +2,12 @@
 
 namespace App\Repositories\LoveRepositoryService;
 
+use Illuminate\Database\Eloquent\Model;
+
 interface ILoveRepository
 {
+    public function checkIfExistByType(Model $model, $english, $userId);
+    // =======================================================================
     public function FindLoveByWordAndEnglish($english, $user_id);
     public function deleteAllFavorite($user_id);
     public function TotalLoveItemOfUser($user_id): int;

@@ -135,32 +135,11 @@ class UserController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         try {
-            $user = $this->userRepository->getUserByEmail($request->email);
-            if (!$user instanceof User) { // này ảo nè :))
-                return $user;
-            }
-
-            if (!$user || !Hash::check($request->password, $user->password)) {
-                //401
-                return $this->responseError(null, 'Thông tin không hợp lệ!', Response::HTTP_UNAUTHORIZED);
-            } else {
-                if ($user->role_as == 1) { // admin
-                    $role = 'admin';
-                    $token = $user->createToken($user->email . '_AdminToken', ['server:admin'])->plainTextToken;
-                } else {
-                    $role = '';
-                    $token = $user->createToken($user->email . '_Token', [''])->plainTextToken;
-                }
-
-                $data = [
-                    'userId' => $user->id,
-                    'username' => $user->name,
-                    'token' => $token,
-                    'role' => $role,
-                    'created_at' => $user->created_at,
-                ];
-                return $this->responseSuccess($data, 'Đăng nhập thành công.');
-            }
+            $data = $this->userRepository->login($request->all());
+            return $data ?
+                $this->responseSuccess($data, 'Đăng nhập thành công.')
+                :
+                $this->responseError(null, 'Đã có lỗi xảy ra!');
         } catch (\Exception $e) {
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

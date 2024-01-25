@@ -3,14 +3,10 @@
 namespace App\Repositories\UserRepositoryService;
 
 use App\Models\User;
-use App\Traits\ResponseTrait;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements IUserRepository
 {
-    use ResponseTrait;
     public function createUser(array $data): array
     {
         $user = User::create([
@@ -23,9 +19,24 @@ class UserRepository implements IUserRepository
         // Tạo token cho người dùng
         $token = $user->createToken($user->email . '_Token')->plainTextToken;
 
-        return ['user' => $user, 'token' => $token];
+        return array_merge($user->toArray(), ['token' => $token]);
     }
+    public function login(array $data): array
+    {
+        $user = $this->getUserByEmail($data['email']);
 
+        if (!$user || !Hash::check($data['password'], $user->password)) {
+            throw new \Exception("Thông tin không hợp lệ!");
+        }
+        if ($user->role_as == 1) { // admin
+            $role = 'admin';
+            $token = $user->createToken($user->email . '_AdminToken', ['server:admin'])->plainTextToken;
+        } else {
+            $role = '';
+            $token = $user->createToken($user->email . '_Token', [''])->plainTextToken;
+        }
+        return array_merge($user->toArray(), ['token' => $token, 'role' => $role]);
+    }
     public function getUserById(string $id): User|null
     {
         return User::where('id', $id)->first();

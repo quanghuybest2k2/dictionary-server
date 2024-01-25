@@ -11,6 +11,8 @@ use App\Repositories\UserRepositoryService\IUserRepository;
 use App\Repositories\WordRepositoryService\IWordRepository;
 use App\Repositories\MeansRepositoryService\MeansRepository;
 use App\Repositories\MeansRepositoryService\IMeansRepository;
+use App\Repositories\ReviewsRepositoryService\ReviewsRepository;
+use App\Repositories\ReviewsRepositoryService\IReviewsRepository;
 use App\Repositories\MiniGameRepositoryService\MiniGameRepository;
 use App\Repositories\WordTypeRepositoryService\WordTypeRepository;
 use App\Repositories\MiniGameRepositoryService\IMiniGameRepository;
@@ -38,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ILoveRepository::class, LoveRepository::class);
         $this->app->bind(IHotVocabularyRepository::class, HotVocabularyRepository::class);
         $this->app->bind(IMiniGameRepository::class, MiniGameRepository::class);
+        $this->app->bind(IReviewsRepository::class, ReviewsRepository::class);
     }
 
     /**

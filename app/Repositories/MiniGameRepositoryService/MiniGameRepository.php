@@ -60,6 +60,7 @@ class MiniGameRepository implements IMiniGameRepository
             ->distinct()
             ->join('means as m', 'w.id', '=', 'm.word_id')
             ->join('word_types as wt', 'm.word_type_id', '=', 'wt.id')
+            ->where('w.status', 1)
             ->inRandomOrder()
             ->limit($limit)
             ->get();

@@ -8,7 +8,9 @@
     <title>Dictionary API</title>
 
     <!-- Font-Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+        integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+        crossorigin="anonymous" />
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -126,11 +128,40 @@
                             <div class="col-7">
                                 <ul class="feature-list">
                                     <li>random word</li>
+                                    <li>get-all-word</li>
+                                    <li>get-unapproved</li>
                                     <li>store word</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
+
+                    <div class="card card-body m-2">
+                        <div class="row">
+                            <div class="col-5">
+                                <h4>Word Type Module</h4>
+                            </div>
+                            <div class="col-7">
+                                <ul class="feature-list">
+                                    <li>get-all-word-type</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-body m-2">
+                        <div class="row">
+                            <div class="col-5">
+                                <h4>Means Module</h4>
+                            </div>
+                            <div class="col-7">
+                                <ul class="feature-list">
+                                    <li>store mean</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card card-body m-2">
                         <div class="row">
                             <div class="col-5">
@@ -169,6 +200,19 @@
                     <div class="card card-body m-2">
                         <div class="row">
                             <div class="col-5">
+                                <h4>Reviews Module</h4>
+                            </div>
+                            <div class="col-7">
+                                <ul class="feature-list">
+                                    <li>reviews</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-body m-2">
+                        <div class="row">
+                            <div class="col-5">
                                 <h4>Mini Game Module</h4>
                             </div>
                             <div class="col-7">
@@ -185,7 +229,8 @@
                         <a href="{{ route('l5-swagger.default.api') }}" class="btn btn-primary">
                             <i class="fa fa-book"></i>API Documentation
                         </a>
-                        <a href="https://github.com/quanghuybest2k2/dictionary-server" target="_blank" class="btn btn-info">
+                        <a href="https://github.com/quanghuybest2k2/dictionary-server" target="_blank"
+                            class="btn btn-info">
                             <i class="fab fa-github"></i> GitHub
                         </a>
                     </p>

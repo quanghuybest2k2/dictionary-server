@@ -19,8 +19,7 @@ class SpecializationController extends Controller
 
     public function __construct(
         ISpecializationRepository $specializationRepository,
-    )
-    {
+    ) {
         $this->specializationRepository = $specializationRepository;
     }
 
@@ -39,12 +38,11 @@ class SpecializationController extends Controller
      *      ),
      * )
      */
-    public function getAll()
+    public function getAllSpecialization()
     {
         try {
             $specialization = $this->specializationRepository->getAll();
             return $this->responseSuccess($specialization, "Lấy thành công tất cả chuyên ngành.");
-
         } catch (\Exception $e) {
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -95,7 +93,6 @@ class SpecializationController extends Controller
             // }
 
             return $this->responseSuccess($specializations, 'Lấy thành công từ vựng theo chuyên ngành!');
-
         } catch (\Exception $e) {
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

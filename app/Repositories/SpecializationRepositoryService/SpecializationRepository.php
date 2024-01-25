@@ -23,6 +23,7 @@ class SpecializationRepository implements ISpecializationRepository
             ->join('word_types', 'means.word_type_id', '=', 'word_types.id')
             ->join('specializations', 'words.specialization_id', '=', 'specializations.id')
             ->where('words.specialization_id', '=', $specializationId)
+            ->where('words.status', 1)
             ->select(
                 'words.word_name',
                 'word_types.type_name',
@@ -45,6 +46,7 @@ class SpecializationRepository implements ISpecializationRepository
             ->join('specializations', 'words.specialization_id', '=', 'specializations.id')
             ->where('word_name', 'like', '%' . $searched_word . '%')
             ->where('words.specialization_id', '=', $specialization_id)
+            ->where('words.status', 1)
             ->select(
                 'words.word_name',
                 'word_types.type_name',

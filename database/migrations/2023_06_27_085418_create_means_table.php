@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('means', 200)->nullable(false);
             $table->string('description', 1000)->nullable();
             $table->string('example', 500)->nullable();
+            $table->integer('status')->default(0)->nullable()->comment('0 = chưa duyệt, 1= duyệt');
             $table->timestamps();
         });
     }

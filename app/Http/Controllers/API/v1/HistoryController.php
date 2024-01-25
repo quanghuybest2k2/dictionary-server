@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers\API\v1;
 
-use App\Traits\ResponseTrait;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Models\WordLookupHistory;
-use App\Http\Controllers\Controller;
-use App\Models\LoveText;
-use App\Models\TranslateHistory;
-use Illuminate\Support\Facades\Validator;
+use App\Traits\ResponseTrait;
 use OpenApi\Annotations as OA;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\HistoryRequest\storeTranslateRequest;
 use App\Repositories\HistoriesRepositoryService\IHistoriesRepository;
 
 class HistoryController extends Controller
@@ -25,77 +23,6 @@ class HistoryController extends Controller
     ) {
         $this->historiesRepository = $historiesRepository;
     }
-
-    /**
-     * @OA\Get(
-     *      path="/api/v1/check-if-exist",
-     *      tags={"History"},
-     *      summary="Check if a word or love text exists in history",
-     *      description="Check if a word or love text exists in the user's history by English keyword and user ID",
-     *     @OA\Parameter(
-     *          name="english",
-     *          in="query",
-     *          required=true,
-     *          @OA\Schema(type="string"),
-     *          description="English"
-     *      ),
-     *       @OA\Parameter(
-     *          name="user_id",
-     *          in="query",
-     *          required=true,
-     *          @OA\Schema(type="integer"),
-     *          description="User Id"
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="status", type="integer", example=200)
-     *          ),
-     *      ),
-     *      @OA\Response(
-     *          response=422,
-     *          description="Validation error",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="validator_errors", type="object", example={"english": {"Vui lòng nhập Từ khóa tiếng anh"}, "user_id": {"Id người dùng phải là số nguyên dương."}})
-     *          )
-     *      ),
-     * )
-     */
-    public function checkIfExist(Request $request)
-    {
-        try {
-            $validator = Validator::make(
-                $request->all(),
-                [
-                    'english' => 'required|max:400',
-                    'user_id' => 'required|integer|min:1',
-                ],
-                [
-                    'required' => 'Vui lòng nhập :attribute.',
-                    'max' => ':attribute không được vượt quá :max ký tự.',
-                    'user_id.integer' => ':attribute phải là số nguyên dương.',
-                ],
-                [
-                    'english' => 'Từ khóa tiếng anh',
-                    'user_id' => 'Id người dùng',
-                ]
-            );
-            if ($validator->fails()) {
-                return response()->json([
-                    'validator_errors' => $validator->messages(),
-                ]);
-            } else {
-                $word = $this->historiesRepository->checkIfExist(new WordLookupHistory(), $request->english, $request->user_id);
-                $loveText = $this->historiesRepository->checkIfExist(new LoveText(), $request->english, $request->user_id);
-
-                return $this->responseSuccess(['word' => $word, 'loveText' => $loveText], "Kiểm tra thành công.");
-            }
-        } catch (\Exception $e) {
-            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
     // ====================== WordLookupHistory ============================
     public function storeWordLookupHistory(Request $request)
     {
@@ -411,51 +338,21 @@ class HistoryController extends Controller
         }
     }
 
-    public function storeTranslateHistory(Request $request)
+    public function storeTranslateHistory(storeTranslateRequest $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'english' => 'required|max:400',
-                'vietnamese' => 'required|max:400',
-                'user_id' => 'required|integer|min:1',
-            ],
-            [
-                'required' => 'Vui lòng nhập :attribute.',
-                'max' => ':attribute không được vượt quá :max ký tự.',
-                'integer' => ':attribute phải là số nguyên.',
-                'min' => ':attribute phải lớn hơn hoặc bằng :min.',
-            ],
-            [
-                'english' => 'Tiếng anh',
-                'vietnamese' => 'Tiếng việt',
-                'user_id' => 'Id người dùng',
-            ]
-        );
-        if ($validator->fails()) {
-            return response()->json([
-                'validator_errors' => $validator->messages(),
-            ]);
-        } else {
-
+        try {
             $translateHistory = $this->historiesRepository->createTranslateHistory($request->all());
             // $existingRecord = TranslateHistory::where('english', $request->english)
             //     ->where('vietnamese', $request->vietnamese)
             //     ->where('user_id', $request->user_id)
             //     ->first();
-
-            if ($translateHistory) {
-                return response()->json([
-                    'status' => Response::HTTP_CREATED,
-                    'message' => 'Đã thêm bản dịch này vào lịch sử.',
-                    'wordLookup' => $translateHistory
-                ], Response::HTTP_CREATED);
-            } else {
-                return response()->json([
-                    'status' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Thêm thất bại!'
-                ], Response::HTTP_BAD_REQUEST);
-            }
+            return $translateHistory
+                ?
+                $this->responseSuccess($translateHistory, "Đã thêm bản dịch này vào lịch sử.", Response::HTTP_CREATED)
+                :
+                $this->responseError("Bad request", "Thêm thất bại!");
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 

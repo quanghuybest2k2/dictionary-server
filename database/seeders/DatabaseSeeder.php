@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\MeanSeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\WordSeeder;
+use Database\Seeders\ReviewsSeeder;
 use Database\Seeders\LoveTextSeeder;
 use Database\Seeders\WordTypeSeeder;
 use Database\Seeders\LoveVocabularySeeder;
@@ -31,6 +32,7 @@ class DatabaseSeeder extends Seeder
             TranslateHistorySeeder::class,
             LoveVocabularySeeder::class,
             LoveTextSeeder::class,
+            ReviewsSeeder::class,
         ]);
     }
 }

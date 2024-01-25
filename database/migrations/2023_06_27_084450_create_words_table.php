@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('specialization_id')->constrained('specializations')->onDelete('cascade');
             $table->string('synonymous', 1000)->nullable();
             $table->string('antonyms', 1000)->nullable();
+            $table->integer('status')->default(0)->comment('0 = chưa duyệt, 1= duyệt');
             $table->timestamps();
         });
     }

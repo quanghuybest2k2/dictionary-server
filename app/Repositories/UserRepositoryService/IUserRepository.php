@@ -7,6 +7,8 @@ interface IUserRepository
 {
     public function createUser(array $data);
 
+    public function login(array $data): array;
+
     public function getUserById(string $id);
 
     public function getUserByEmail(string $email);

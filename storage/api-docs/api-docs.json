@@ -136,77 +136,6 @@
                 }
             }
         },
-        "/api/v1/check-if-exist": {
-            "get": {
-                "tags": [
-                    "History"
-                ],
-                "summary": "Check if a word or love text exists in history",
-                "description": "Check if a word or love text exists in the user's history by English keyword and user ID",
-                "operationId": "9ab755f32174547070f22e6f2ba4bd94",
-                "parameters": [
-                    {
-                        "name": "english",
-                        "in": "query",
-                        "description": "English",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "user_id",
-                        "in": "query",
-                        "description": "User Id",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "integer",
-                                            "example": 200
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "validator_errors": {
-                                            "type": "object",
-                                            "example": {
-                                                "english": [
-                                                    "Vui lòng nhập Từ khóa tiếng anh"
-                                                ],
-                                                "user_id": [
-                                                    "Id người dùng phải là số nguyên dương."
-                                                ]
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/get-word-lookup-history/{user_id}": {
             "get": {
                 "tags": [
@@ -738,6 +667,77 @@
                                         "error": {
                                             "type": "string",
                                             "example": "Hiện tại chưa có từ vựng hot!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/check-if-exist-by-type": {
+            "get": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "Check if a word or love text exists in favorite",
+                "description": "Check if a word or love text exists in the user's favorite by English keyword and user ID",
+                "operationId": "b804afea1d3d28d4be128092fe3e5247",
+                "parameters": [
+                    {
+                        "name": "english",
+                        "in": "query",
+                        "description": "English",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "User Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "validator_errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "english": [
+                                                    "Vui lòng nhập Từ khóa tiếng anh"
+                                                ],
+                                                "user_id": [
+                                                    "Id người dùng phải là số nguyên dương."
+                                                ]
+                                            }
                                         }
                                     },
                                     "type": "object"
@@ -1391,6 +1391,132 @@
                 ]
             }
         },
+        "/api/v1/store-mean": {
+            "post": {
+                "tags": [
+                    "Means"
+                ],
+                "summary": "Thêm nghĩa mới",
+                "description": "Thêm một nghĩa mới dựa vào id từ.",
+                "operationId": "479b1a3b1fbf1bf56abbf28a12aec1c3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "word_id",
+                                    "word_type_id",
+                                    "means"
+                                ],
+                                "properties": {
+                                    "word_id": {
+                                        "description": "Id từ",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "word_type_id": {
+                                        "description": "Id từ loại",
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "means": {
+                                        "description": "Nghĩa của từ.",
+                                        "type": "string",
+                                        "example": "Test nghĩa"
+                                    },
+                                    "description": {
+                                        "description": "Mô tả (có thể trống).",
+                                        "type": "string",
+                                        "example": "Test mô tả"
+                                    },
+                                    "example": {
+                                        "description": "Ví dụ (có thể trống).",
+                                        "type": "string",
+                                        "example": "Test ví dụ"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Thêm nghĩa thành công.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "word_id",
+                                        "word_type_id",
+                                        "means"
+                                    ],
+                                    "properties": {
+                                        "word_id": {
+                                            "description": "Id từ",
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "word_type_id": {
+                                            "description": "Id từ loại",
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "means": {
+                                            "description": "Nghĩa của từ.",
+                                            "type": "string",
+                                            "example": "Test nghĩa"
+                                        },
+                                        "description": {
+                                            "description": "Mô tả (có thể trống).",
+                                            "type": "string",
+                                            "example": "Test mô tả"
+                                        },
+                                        "example": {
+                                            "description": "Ví dụ (có thể trống).",
+                                            "type": "string",
+                                            "example": "Test ví dụ"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-10-27T04:58:55.000000Z"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-10-27T04:58:55.000000Z"
+                                        },
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Lỗi trong quá trình xử lý request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Đã có lỗi xảy ra!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/get-questions/{limit}/{user_id}": {
             "get": {
                 "tags": [
@@ -1573,6 +1699,110 @@
                                         "error": {
                                             "type": "string",
                                             "example": "Lấy đáp án sai không thành công!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reviews": {
+            "post": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Tạo phản hồi",
+                "description": "Tạo phản hồi từ người dùng",
+                "operationId": "001ea51290c7797b57d13a750cc704b9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "rating"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "description": "Id người dùng",
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "rating": {
+                                        "description": "1 -> 5 sao",
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "comment": {
+                                        "description": "Phản hồi (có thể trống).",
+                                        "type": "string",
+                                        "example": "Ứng dụng tốt quá! rất ứng ý."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cảm ơn bạn đã đánh giá ứng dụng.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "user_id",
+                                        "rating"
+                                    ],
+                                    "properties": {
+                                        "user_id": {
+                                            "description": "Id người dùng",
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "rating": {
+                                            "description": "1 -> 5 sao",
+                                            "type": "integer",
+                                            "example": 5
+                                        },
+                                        "comment": {
+                                            "description": "Phản hồi (có thể trống).",
+                                            "type": "string",
+                                            "example": "Ứng dụng tốt quá! rất ứng ý."
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-10-27T04:58:55.000000Z"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-10-27T04:58:55.000000Z"
+                                        },
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Lỗi trong quá trình xử lý request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Đã có lỗi xảy ra!"
                                         }
                                     },
                                     "type": "object"
@@ -2085,7 +2315,7 @@
                 ],
                 "summary": "Get all specializations",
                 "description": "Retrieve a list of all specializations",
-                "operationId": "0af15fc5abb385a62032af0cb78ecb96",
+                "operationId": "589379887eed69f0a64bb5df9e08ea10",
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -2567,6 +2797,112 @@
                 }
             }
         },
+        "/api/v1/get-all-word": {
+            "get": {
+                "tags": [
+                    "Words"
+                ],
+                "summary": "Lấy từ vựng",
+                "operationId": "a3e8c41a05baf2f21c5c1b2a8eafd0cb",
+                "responses": {
+                    "200": {
+                        "description": "Lấy từ thành công.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy từ vựng!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Không tìm thấy từ vựng!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/get-unapproved": {
+            "get": {
+                "tags": [
+                    "Words"
+                ],
+                "summary": "Lấy từ vựng chưa kiểm duyệt",
+                "operationId": "a612b5bb338591736d4bd7a04c519ae4",
+                "responses": {
+                    "200": {
+                        "description": "Lấy từ thành công.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy từ vựng!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Không tìm thấy từ vựng!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/store-word": {
             "post": {
                 "tags": [
@@ -2664,7 +3000,35 @@
                                     "properties": {
                                         "error": {
                                             "type": "string",
-                                            "example": "Không thành công!"
+                                            "example": "Đã có lỗi xảy ra!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/get-all-word-type": {
+            "get": {
+                "tags": [
+                    "Word Type"
+                ],
+                "summary": "Get all Word Type",
+                "description": "Retrieve a list of all word type",
+                "operationId": "4785cb09635f48eecaa3c8920bdb520b",
+                "responses": {
+                    "200": {
+                        "description": "Lấy thành công tất cả từ loại.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"

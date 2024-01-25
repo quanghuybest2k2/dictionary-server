@@ -37,6 +37,7 @@ class WordSeeder extends Seeder
                     'specialization_id' => '1',
                     'synonymous' => 'Barricade',
                     'antonyms' => 'Firing',
+                    'status' => 1,
                 ],
                 [
                     'word_name' => 'ISP',
@@ -44,6 +45,7 @@ class WordSeeder extends Seeder
                     'specialization_id' => '1',
                     'synonymous' => '',
                     'antonyms' => '',
+                    'status' => 1,
                 ],
                 [
                     'word_name' => 'Download',
@@ -51,6 +53,7 @@ class WordSeeder extends Seeder
                     'specialization_id' => '1',
                     'synonymous' => 'Transfer',
                     'antonyms' => 'Upload',
+                    'status' => 1,
                 ],
                 [
                     'word_name' => 'Web hosting',
@@ -58,6 +61,7 @@ class WordSeeder extends Seeder
                     'specialization_id' => '1',
                     'synonymous' => 'Hosting services',
                     'antonyms' => 'Storage',
+                    'status' => 1,
                 ],
                 [
                     'word_name' => 'Variable',
@@ -65,6 +69,7 @@ class WordSeeder extends Seeder
                     'specialization_id' => '2',
                     'synonymous' => 'Varying',
                     'antonyms' => 'Invariable',
+                    'status' => 1,
                 ],
                 [
                     'word_name' => 'Calculation',
@@ -72,6 +77,7 @@ class WordSeeder extends Seeder
                     'specialization_id' => '2',
                     'synonymous' => 'computation',
                     'antonyms' => '',
+                    'status' => 1,
                 ],
                 [
                     'word_name' => 'Function',
@@ -79,6 +85,7 @@ class WordSeeder extends Seeder
                     'specialization_id' => '2',
                     'synonymous' => 'Task',
                     'antonyms' => '',
+                    'status' => 1,
                 ],
                 [
                     'word_name' => 'Horizontal',
@@ -86,6 +93,7 @@ class WordSeeder extends Seeder
                     'specialization_id' => '2',
                     'synonymous' => '',
                     'antonyms' => 'Vertical',
+                    'status' => 1,
                 ],
                 [
                     'word_name' => 'Queue',
@@ -93,6 +101,7 @@ class WordSeeder extends Seeder
                     'specialization_id' => '3',
                     'synonymous' => '',
                     'antonyms' => '',
+                    'status' => 1,
                 ],
                 [
                     'word_name' => 'Random',
@@ -100,6 +109,7 @@ class WordSeeder extends Seeder
                     'specialization_id' => '3',
                     'synonymous' => 'arbitrary',
                     'antonyms' => 'orderly',
+                    'status' => 1,
                 ],
                 [
                     'word_name' => 'Recovery',
@@ -107,6 +117,7 @@ class WordSeeder extends Seeder
                     'specialization_id' => '3',
                     'synonymous' => 'rehabilitation',
                     'antonyms' => 'loss',
+                    'status' => 1,
                 ],
             ]
         );

@@ -88,6 +88,80 @@ class WordController extends Controller
         }
     }
     /**
+     * @OA\Get(
+     *     path="/api/v1/get-all-word",
+     *     summary="Lấy từ vựng",
+     *     tags={"Words"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lấy từ thành công.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="integer", example=200),
+     *             @OA\Property(property="data", type="array", @OA\Items(type="string"))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Không tìm thấy từ vựng!",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="integer", example=404),
+     *             @OA\Property(property="error", type="string", example="Không tìm thấy từ vựng!")
+     *         )
+     *     )
+     * )
+     */
+    public function getAllWord()
+    {
+        try {
+            $data = $this->wordRepository->getAll();
+            return $data ?
+                $this->responseSuccess($data, 'Lấy từ thành công.')
+                :
+                $this->responseError(null, 'Không tìm thấy từ vựng!', Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    /**
+     * @OA\Get(
+     *     path="/api/v1/get-unapproved",
+     *     summary="Lấy từ vựng chưa kiểm duyệt",
+     *     tags={"Words"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lấy từ thành công.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="integer", example=200),
+     *             @OA\Property(property="data", type="array", @OA\Items(type="string"))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Không tìm thấy từ vựng!",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="integer", example=404),
+     *             @OA\Property(property="error", type="string", example="Không tìm thấy từ vựng!")
+     *         )
+     *     )
+     * )
+     */
+    public function getUnApproved()
+    {
+        try {
+            $data = $this->wordRepository->getUnApproved();
+            return $data ?
+                $this->responseSuccess($data, 'Lấy từ thành công.')
+                :
+                $this->responseError(null, 'Không tìm thấy từ vựng!', Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    /**
      * @OA\Post(
      *     path="/api/v1/store-word",
      *     summary="Thêm từ vựng mới",
@@ -120,7 +194,7 @@ class WordController extends Controller
      *         response=400,
      *         description="Lỗi trong quá trình xử lý request.",
      *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="string", example="Không thành công!"),
+     *             @OA\Property(property="error", type="string", example="Đã có lỗi xảy ra!"),
      *         ),
      *     ),
      * )
@@ -132,9 +206,9 @@ class WordController extends Controller
         try {
             $data = $this->wordRepository->createWord($request->all());
             return $data ?
-                $this->responseSuccess($data, 'Thêm từ thành công!')
+                $this->responseSuccess($data, 'Thêm từ thành công.')
                 :
-                $this->responseError(null, 'Lỗi rồi!', Response::HTTP_NOT_FOUND);
+                $this->responseError(null, 'Đã có lỗi xảy ra!');
         } catch (\Exception $e) {
             return $this->responseError(null, $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
